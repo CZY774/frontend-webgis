@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Admin Dashboard untuk mengelola data SIG Desa Prawoto"
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin Dashboard - SIG Desa Prawoto</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔐</text></svg>"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid px-4">
+        <a class="navbar-brand" href="index.html">
+          Admin Dashboard - SIG Desa Prawoto
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link fw-semibold" href="index.html">Lihat Peta</a>
+            </li>
+            <li class="nav-item">
+              <button
+                class="btn btn-danger btn-sm ms-2"
+                id="logoutBtn"
+                style="display: none"
+              >
+                Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div id="loginSection">
+        <div class="row justify-content-center">
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-body p-5">
+                <div class="text-center mb-4">
+                  <h3 class="card-title">Login Admin</h3>
+                  <p class="text-muted">Masuk untuk mengelola data SIG</p>
+                </div>
+                <form id="loginForm">
+                  <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="username"
+                      placeholder="Masukkan username"
+                      required
+                    />
+                  </div>
+                  <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      placeholder="Masukkan password"
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary w-100">
+                    Masuk
+                  </button>
+                </form>
+                <div
+                  id="loginError"
+                  class="alert alert-danger mt-3"
+                  style="display: none"
+                ></div>
+                <div class="text-center mt-4">
+                  <small class="text-muted">Default: admin / admin123</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="dashboardSection" style="display: none">
+        <h2>Kelola Data</h2>
+
+        <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="fasilitas-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#fasilitas"
+              type="button"
+            >
+              Fasilitas
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="umkm-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#umkm"
+              type="button"
+            >
+              UMKM
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="wisata-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#wisata"
+              type="button"
+            >
+              Wisata
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="sda-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#sda"
+              type="button"
+            >
+              SDA
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="kependudukan-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#kependudukan"
+              type="button"
+            >
+              Kependudukan
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="adminTabsContent">
+          <div class="tab-pane fade show active" id="fasilitas" role="tabpanel">
+            <button class="btn btn-success mb-3">Tambah Fasilitas</button>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>Jenis</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="fasilitasTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="umkm" role="tabpanel">
+            <button class="btn btn-success mb-3">Tambah UMKM</button>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>Jenis</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="umkmTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="wisata" role="tabpanel">
+            <button class="btn btn-success mb-3">Tambah Wisata</button>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>Jenis</th>
+                    <th>Deskripsi</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="wisataTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="sda" role="tabpanel">
+            <button class="btn btn-success mb-3">Tambah Lahan</button>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Jenis Lahan</th>
+                    <th>Luas (Ha)</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="sdaTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="kependudukan" role="tabpanel">
+            <div class="alert alert-info">
+              <strong>Info:</strong> Data kependudukan hanya bisa diupdate,
+              tidak bisa ditambah/dihapus karena terikat dengan batas RW.
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>RW</th>
+                    <th>Jumlah Warga</th>
+                    <th>Laki-laki</th>
+                    <th>Perempuan</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="kependudukanTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
