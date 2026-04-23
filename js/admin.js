@@ -21,7 +21,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     formData.append('username', username);
     formData.append('password', password);
 
-    const response = await fetch(`${API_URL}/auth/login`, {
+    const response = await fetch(`${API_URL}/auth/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -69,7 +69,7 @@ function showDashboard() {
 // Load Fasilitas data
 async function loadFasilitasData() {
   try {
-    const response = await fetch(`${API_URL}/fasilitas`, {
+    const response = await fetch(`${API_URL}/fasilitas/`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -105,7 +105,7 @@ async function loadFasilitasData() {
 // Load UMKM data
 async function loadUMKMData() {
   try {
-    const response = await fetch(`${API_URL}/umkm`, {
+    const response = await fetch(`${API_URL}/umkm/`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -141,7 +141,7 @@ async function loadUMKMData() {
 // Load Wisata data
 async function loadWisataData() {
   try {
-    const response = await fetch(`${API_URL}/wisata`, {
+    const response = await fetch(`${API_URL}/wisata/`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -176,7 +176,7 @@ async function loadWisataData() {
 // Load SDA data
 async function loadSDAData() {
   try {
-    const response = await fetch(`${API_URL}/sda`, {
+    const response = await fetch(`${API_URL}/sda/`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -210,7 +210,7 @@ async function loadSDAData() {
 // Load Kependudukan data
 async function loadKependudukanData() {
   try {
-    const response = await fetch(`${API_URL}/kependudukan`, {
+    const response = await fetch(`${API_URL}/kependudukan/`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
