@@ -2,6 +2,8 @@ const API_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:8000/api' 
     : 'https://backend-webgis-production.up.railway.app/api';
 
+console.log('Using API_URL:', API_URL);  // Debug
+
 let map;
 let routingControl;
 let layers = {
