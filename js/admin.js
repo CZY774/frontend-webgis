@@ -16,12 +16,17 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
 
   try {
+    // OAuth2 expects form data, not JSON
+    const formData = new URLSearchParams();
+    formData.append('username', username);
+    formData.append('password', password);
+
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: JSON.stringify({ username, password }),
+      body: formData,
     });
 
     if (response.ok) {
