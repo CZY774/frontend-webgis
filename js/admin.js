@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:8000/api";
+const API_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:8000/api' 
+    : 'https://backend-webgis-production.up.railway.app/api';
 let authToken = localStorage.getItem("authToken");
 
 // Check if already logged in
