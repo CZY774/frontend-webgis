@@ -46,7 +46,7 @@ async function loadAllData() {
 // Load Fasilitas
 async function loadFasilitas() {
   try {
-    const response = await fetch(`${API_URL}/fasilitas`);
+    const response = await fetch(`${API_URL}/fasilitas/`);  // Add trailing slash
     const data = await response.json();
 
     layers.fasilitas.clearLayers();
@@ -65,7 +65,7 @@ async function loadFasilitas() {
 // Load UMKM
 async function loadUMKM() {
   try {
-    const response = await fetch(`${API_URL}/umkm`);
+    const response = await fetch(`${API_URL}/umkm/`);
     const data = await response.json();
 
     layers.umkm.clearLayers();
@@ -95,7 +95,7 @@ async function loadUMKM() {
 // Load Wisata
 async function loadWisata() {
   try {
-    const response = await fetch(`${API_URL}/wisata`);
+    const response = await fetch(`${API_URL}/wisata/`);
     const data = await response.json();
 
     layers.wisata.clearLayers();
@@ -126,7 +126,7 @@ async function loadWisata() {
 // Load SDA
 async function loadSDA() {
   try {
-    const response = await fetch(`${API_URL}/sda`);
+    const response = await fetch(`${API_URL}/sda/`);
     const data = await response.json();
 
     layers.sda.clearLayers();
@@ -151,7 +151,7 @@ async function loadSDA() {
 // Load Kependudukan
 async function loadKependudukan() {
   try {
-    const response = await fetch(`${API_URL}/kependudukan`);
+    const response = await fetch(`${API_URL}/kependudukan/`);
     const data = await response.json();
 
     layers.rw.clearLayers();
