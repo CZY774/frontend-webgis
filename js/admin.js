@@ -1,6 +1,7 @@
-const API_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:8000/api' 
-    : 'https://backend-webgis-production.up.railway.app/api';
+const API_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8000/api"
+    : "https://backend-webgis-production.up.railway.app/api";
 let authToken = localStorage.getItem("authToken");
 
 if (authToken) {
@@ -16,8 +17,8 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
   try {
     const formData = new URLSearchParams();
-    formData.append('username', username);
-    formData.append('password', password);
+    formData.append("username", username);
+    formData.append("password", password);
 
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
@@ -33,11 +34,13 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       localStorage.setItem("authToken", authToken);
       showDashboard();
     } else {
-      document.getElementById("loginError").textContent = "Username atau password salah";
+      document.getElementById("loginError").textContent =
+        "Username atau password salah";
       document.getElementById("loginError").style.display = "block";
     }
   } catch (error) {
-    document.getElementById("loginError").textContent = "Terjadi kesalahan koneksi";
+    document.getElementById("loginError").textContent =
+      "Terjadi kesalahan koneksi";
     document.getElementById("loginError").style.display = "block";
   }
 });
@@ -97,7 +100,9 @@ async function loadFasilitasData() {
 
 function createFasilitas() {
   const nama = prompt("Nama Fasilitas:");
-  const jenis = prompt("Jenis (Pendidikan/Kesehatan/Pemerintahan/Sosial Umum/Keagamaan/Olahraga):");
+  const jenis = prompt(
+    "Jenis (Pendidikan/Kesehatan/Pemerintahan/Sosial Umum/Keagamaan/Olahraga):",
+  );
   const latitude = parseFloat(prompt("Latitude:"));
   const longitude = parseFloat(prompt("Longitude:"));
 
@@ -400,15 +405,17 @@ async function loadSDAData() {
 }
 
 function openMapDrawer() {
-  document.getElementById('mapDrawer').style.display = 'block';
+  document.getElementById("mapDrawer").style.display = "block";
   setTimeout(() => {
     if (!drawMap) {
-      drawMap = L.map('drawMap').setView([-6.7833, 111.0333], 15);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(drawMap);
-      
+      drawMap = L.map("drawMap").setView([-6.7833, 111.0333], 15);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+        drawMap,
+      );
+
       drawnItems = new L.FeatureGroup();
       drawMap.addLayer(drawnItems);
-      
+
       drawControl = new L.Control.Draw({
         draw: {
           polygon: true,
@@ -416,15 +423,15 @@ function openMapDrawer() {
           rectangle: false,
           circle: false,
           marker: false,
-          circlemarker: false
+          circlemarker: false,
         },
         edit: {
           featureGroup: drawnItems,
-          remove: true
-        }
+          remove: true,
+        },
       });
       drawMap.addControl(drawControl);
-      
+
       drawMap.on(L.Draw.Event.CREATED, (e) => {
         drawnItems.clearLayers();
         drawnPolygon = e.layer;
@@ -436,42 +443,42 @@ function openMapDrawer() {
 }
 
 function closeMapDrawer() {
-  document.getElementById('mapDrawer').style.display = 'none';
+  document.getElementById("mapDrawer").style.display = "none";
   if (drawnItems) drawnItems.clearLayers();
   drawnPolygon = null;
 }
 
 async function saveSDA() {
-  if (!drawnPolygon) return alert('Gambar polygon terlebih dahulu');
-  
+  if (!drawnPolygon) return alert("Gambar polygon terlebih dahulu");
+
   const geojson = drawnPolygon.toGeoJSON();
-  const jenis = document.getElementById('jenisLahan').value;
+  const jenis = document.getElementById("jenisLahan").value;
   const coords = geojson.geometry.coordinates[0];
   const luas = calculateArea(coords);
-  
+
   try {
     const response = await fetch(`${API_URL}/sda/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authToken}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
       },
       body: JSON.stringify({
         polygon: geojson.geometry,
         jenis_lahan: jenis,
-        luas_ha: luas
-      })
+        luas_ha: luas,
+      }),
     });
-    
+
     if (response.ok) {
-      alert('Lahan berhasil ditambahkan');
+      alert("Lahan berhasil ditambahkan");
       closeMapDrawer();
       loadSDAData();
     } else {
-      alert('Gagal menambahkan lahan');
+      alert("Gagal menambahkan lahan");
     }
   } catch (error) {
-    alert('Error: ' + error.message);
+    alert("Error: " + error.message);
   }
 }
 
@@ -484,17 +491,17 @@ function calculateArea(coords) {
 }
 
 async function deleteSDA(id) {
-  if (!confirm('Hapus lahan ini?')) return;
-  
+  if (!confirm("Hapus lahan ini?")) return;
+
   try {
     await fetch(`${API_URL}/sda/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${authToken}` }
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${authToken}` },
     });
-    alert('Lahan berhasil dihapus');
+    alert("Lahan berhasil dihapus");
     loadSDAData();
   } catch (error) {
-    alert('Error: ' + error.message);
+    alert("Error: " + error.message);
   }
 }
 
@@ -582,15 +589,15 @@ function editKependudukan(id) {
 
 // XSS Protection
 function escapeHtml(text) {
-  if (!text) return '';
-  const div = document.createElement('div');
+  if (!text) return "";
+  const div = document.createElement("div");
   div.textContent = text;
   return div.innerHTML;
 }
 
 // ===== PHOTO MANAGEMENT FOR WISATA =====
 function managePhotos(id, nama) {
-  const modal = document.createElement('div');
+  const modal = document.createElement("div");
   modal.innerHTML = `
     <div class="modal fade show" style="display:block; background:rgba(0,0,0,0.5)">
       <div class="modal-dialog modal-lg">
@@ -618,12 +625,14 @@ function managePhotos(id, nama) {
 async function loadPhotos(id) {
   try {
     const response = await fetch(`${API_URL}/wisata/${id}/photos`, {
-      headers: { Authorization: `Bearer ${authToken}` }
+      headers: { Authorization: `Bearer ${authToken}` },
     });
     const photos = await response.json();
-    
-    const gallery = document.getElementById('photoGallery');
-    gallery.innerHTML = photos.map(p => `
+
+    const gallery = document.getElementById("photoGallery");
+    gallery.innerHTML = photos
+      .map(
+        (p) => `
       <div class="col-md-4">
         <div class="card">
           <img src="${p.foto_base64}" class="card-img-top" style="height:150px; object-fit:cover">
@@ -632,66 +641,68 @@ async function loadPhotos(id) {
           </div>
         </div>
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
   } catch (error) {
-    console.error('Error loading photos:', error);
+    console.error("Error loading photos:", error);
   }
 }
 
 async function uploadPhoto(id) {
-  const input = document.getElementById('photoInput');
+  const input = document.getElementById("photoInput");
   const file = input.files[0];
-  if (!file) return alert('Pilih foto terlebih dahulu');
-  
+  if (!file) return alert("Pilih foto terlebih dahulu");
+
   const reader = new FileReader();
   reader.onload = async (e) => {
     try {
       const response = await fetch(`${API_URL}/wisata/photo/upload`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify({
           id_wisata: id,
-          foto_base64: e.target.result
-        })
+          foto_base64: e.target.result,
+        }),
       });
-      
+
       if (response.ok) {
-        alert('Foto berhasil diupload');
-        input.value = '';
+        alert("Foto berhasil diupload");
+        input.value = "";
         loadPhotos(id);
       } else {
         const error = await response.json();
-        alert(error.detail || 'Gagal upload foto');
+        alert(error.detail || "Gagal upload foto");
       }
     } catch (error) {
-      alert('Error: ' + error.message);
+      alert("Error: " + error.message);
     }
   };
   reader.readAsDataURL(file);
 }
 
 async function deletePhoto(idFoto, idWisata) {
-  if (!confirm('Hapus foto ini?')) return;
-  
+  if (!confirm("Hapus foto ini?")) return;
+
   try {
     await fetch(`${API_URL}/wisata/photo/${idFoto}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${authToken}` }
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${authToken}` },
     });
-    alert('Foto berhasil dihapus');
+    alert("Foto berhasil dihapus");
     loadPhotos(idWisata);
   } catch (error) {
-    alert('Error: ' + error.message);
+    alert("Error: " + error.message);
   }
 }
 
 // Attach create functions to buttons
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
-    const buttons = document.querySelectorAll('.btn-success');
+    const buttons = document.querySelectorAll(".btn-success");
     buttons.forEach((btn, idx) => {
       if (idx === 0) btn.onclick = createFasilitas;
       else if (idx === 1) btn.onclick = createUMKM;
