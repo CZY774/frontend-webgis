@@ -5,18 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Sistem Informasi Geografis Desa Prawoto, Sukolilo, Pati. Peta interaktif fasilitas umum, UMKM, wisata, dan data kependudukan."
+      content="Sistem Informasi Potensi Desa Prawoto, Sukolilo, Pati. Peta interaktif fasilitas umum, UMKM, wisata, dan data kependudukan."
     />
-    <meta
-      name="keywords"
-      content="SIG Desa Prawoto, Peta Prawoto, GIS Prawoto, Sukolilo, Pati, Wisata Prawoto, UMKM Prawoto"
-    />
-    <meta name="author" content="Desa Prawoto" />
-    <meta name="geo.region" content="ID-JT" />
-    <meta name="geo.placename" content="Desa Prawoto, Sukolilo, Pati" />
-    <meta name="geo.position" content="-6.963;110.828" />
-    <meta name="ICBM" content="-6.963, 110.828" />
-    <title>SIG Desa Prawoto - Peta Interaktif</title>
+    <title>Sistem Informasi Potensi Desa Prawoto</title>
     <link
       rel="icon"
       type="image/svg+xml"
@@ -34,12 +25,13 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid px-4">
-        <a class="navbar-brand" href="#"> SIG Desa Prawoto </a>
+        <a class="navbar-brand" href="#"> Sistem Informasi Potensi Desa Prawoto </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -51,6 +43,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
+              <a class="nav-link fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#profilModal">Profil Desa</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link fw-semibold" href="admin.html">Admin</a>
             </li>
           </ul>
@@ -58,7 +53,7 @@
       </div>
     </nav>
 
-    <div class="container-fluid">
+    <div id="peta" class="container-fluid">
       <div class="row">
         <div class="col-lg-3 col-md-4 p-0">
           <div class="sidebar">
@@ -74,37 +69,75 @@
 
             <h5>Layer Peta</h5>
             <div class="accordion" id="filterAccordion">
+              <!-- Wisata -->
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
                     class="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#fasilitasFilter"
+                    data-bs-target="#wisataFilter"
                   >
-                    Fasilitas Umum
+                    <i class="fas fa-map-marked-alt me-2"></i> Wisata
                   </button>
                 </h2>
-                <div
-                  id="fasilitasFilter"
-                  class="accordion-collapse collapse show"
-                >
+                <div id="wisataFilter" class="accordion-collapse collapse show">
                   <div class="accordion-body">
                     <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="showFasilitas"
-                        checked
-                      />
-                      <label class="form-check-label" for="showFasilitas">
-                        Tampilkan Semua
-                      </label>
+                      <input class="form-check-input" type="checkbox" id="wisataAlam" />
+                      <label class="form-check-label" for="wisataAlam">Wisata Alam</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="wisataReligi" />
+                      <label class="form-check-label" for="wisataReligi">Wisata Religi</label>
                     </div>
                   </div>
                 </div>
               </div>
 
+              <!-- Fasilitas Umum -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#fasilitasFilter"
+                  >
+                    <i class="fas fa-building me-2"></i> Fasilitas Umum
+                  </button>
+                </h2>
+                <div id="fasilitasFilter" class="accordion-collapse collapse">
+                  <div class="accordion-body">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="fasPendidikan" />
+                      <label class="form-check-label" for="fasPendidikan">Pendidikan</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="fasKesehatan" />
+                      <label class="form-check-label" for="fasKesehatan">Kesehatan</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="fasPemerintahan" />
+                      <label class="form-check-label" for="fasPemerintahan">Pemerintahan</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="fasSosial" />
+                      <label class="form-check-label" for="fasSosial">Sosial Umum</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="fasKeagamaan" />
+                      <label class="form-check-label" for="fasKeagamaan">Keagamaan</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="fasOlahraga" />
+                      <label class="form-check-label" for="fasOlahraga">Olahraga</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- UMKM -->
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
@@ -113,82 +146,114 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#umkmFilter"
                   >
-                    UMKM
+                    <i class="fas fa-store me-2"></i> UMKM
                   </button>
                 </h2>
                 <div id="umkmFilter" class="accordion-collapse collapse">
                   <div class="accordion-body">
                     <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="showUMKM"
-                        checked
-                      />
-                      <label class="form-check-label" for="showUMKM">
-                        Tampilkan Semua
-                      </label>
+                      <input class="form-check-input" type="checkbox" id="umkmKuliner" />
+                      <label class="form-check-label" for="umkmKuliner">Kuliner</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmFashion" />
+                      <label class="form-check-label" for="umkmFashion">Fashion</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmKosmetik" />
+                      <label class="form-check-label" for="umkmKosmetik">Kosmetik</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmKelontong" />
+                      <label class="form-check-label" for="umkmKelontong">Kelontong</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmSalon" />
+                      <label class="form-check-label" for="umkmSalon">Salon</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmFotokopi" />
+                      <label class="form-check-label" for="umkmFotokopi">Fotokopi</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmCarwash" />
+                      <label class="form-check-label" for="umkmCarwash">Carwash</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmBengkel" />
+                      <label class="form-check-label" for="umkmBengkel">Bengkel</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmIsiUlang" />
+                      <label class="form-check-label" for="umkmIsiUlang">Isi Ulang</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmPenjahit" />
+                      <label class="form-check-label" for="umkmPenjahit">Penjahit</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmPertanian" />
+                      <label class="form-check-label" for="umkmPertanian">Pertanian</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmTernakAyam" />
+                      <label class="form-check-label" for="umkmTernakAyam">Ternak Ayam</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmTernakSapi" />
+                      <label class="form-check-label" for="umkmTernakSapi">Ternak Sapi</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmPaketData" />
+                      <label class="form-check-label" for="umkmPaketData">Paket Data</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmTokoBangunan" />
+                      <label class="form-check-label" for="umkmTokoBangunan">Toko Bangunan</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmElektronik" />
+                      <label class="form-check-label" for="umkmElektronik">Elektronik</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="umkmATK" />
+                      <label class="form-check-label" for="umkmATK">ATK</label>
                     </div>
                   </div>
                 </div>
               </div>
 
+              <!-- Penggunaan Lahan -->
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
                     class="accordion-button collapsed"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#wisataFilter"
+                    data-bs-target="#lahanFilter"
                   >
-                    Wisata
+                    <i class="fas fa-layer-group me-2"></i> Penggunaan Lahan
                   </button>
                 </h2>
-                <div id="wisataFilter" class="accordion-collapse collapse">
+                <div id="lahanFilter" class="accordion-collapse collapse">
                   <div class="accordion-body">
                     <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="showWisata"
-                        checked
-                      />
-                      <label class="form-check-label" for="showWisata">
-                        Tampilkan Semua
-                      </label>
+                      <input class="form-check-input" type="checkbox" id="showLahan" />
+                      <label class="form-check-label" for="showLahan">Lahan</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="showJalan" checked />
+                      <label class="form-check-label" for="showJalan">Jalan</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="showSungai" checked />
+                      <label class="form-check-label" for="showSungai">Sungai</label>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#sdaFilter"
-                  >
-                    Lahan & SDA
-                  </button>
-                </h2>
-                <div id="sdaFilter" class="accordion-collapse collapse">
-                  <div class="accordion-body">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="showSDA"
-                        checked
-                      />
-                      <label class="form-check-label" for="showSDA">
-                        Tampilkan Semua
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+              <!-- Kependudukan -->
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
@@ -197,60 +262,70 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#kependudukanFilter"
                   >
-                    Kependudukan
+                    <i class="fas fa-users me-2"></i> Kependudukan
                   </button>
                 </h2>
-                <div
-                  id="kependudukanFilter"
-                  class="accordion-collapse collapse"
-                >
+                <div id="kependudukanFilter" class="accordion-collapse collapse">
                   <div class="accordion-body">
                     <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="showKependudukan"
-                        checked
-                      />
-                      <label class="form-check-label" for="showKependudukan">
-                        Tampilkan Batas RW
-                      </label>
+                      <input class="form-check-input" type="checkbox" id="showKependudukan" checked />
+                      <label class="form-check-label" for="showKependudukan">Tampilkan Batas RW</label>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <button class="btn btn-primary" id="routingBtn">
-              Aktifkan Navigasi
+            <button class="btn btn-primary mt-3" id="routingBtn">
+              <i class="fas fa-route me-2"></i> Aktifkan Navigasi
             </button>
 
-            <div
-              class="mt-4 p-3"
-              style="
-                background: #f0f9ff;
-                border-radius: 12px;
-                border-left: 4px solid #0ea5e9;
-              "
-            >
-              <small class="text-muted d-block mb-2" style="font-weight: 600"
-                >Petunjuk:</small
-              >
-              <small class="text-muted d-block"
-                >• Klik marker untuk info detail</small
-              >
-              <small class="text-muted d-block"
-                >• Gunakan scroll untuk zoom</small
-              >
-              <small class="text-muted d-block"
-                >• Aktifkan navigasi untuk rute</small
-              >
+            <div class="mt-4 p-3" style="background: #f0f9ff; border-radius: 12px; border-left: 4px solid #0ea5e9">
+              <small class="text-muted d-block mb-2" style="font-weight: 600">Petunjuk:</small>
+              <small class="text-muted d-block">• Klik marker untuk info detail</small>
+              <small class="text-muted d-block">• Gunakan scroll untuk zoom</small>
+              <small class="text-muted d-block">• Aktifkan navigasi untuk rute</small>
             </div>
           </div>
         </div>
 
         <div class="col-lg-9 col-md-8 p-0">
           <div id="map"></div>
+          <div id="loading" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profil Desa Modal -->
+    <div class="modal fade" id="profilModal" tabindex="-1" aria-labelledby="profilModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="profilModalLabel">Profil Desa Prawoto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row align-items-center">
+              <div class="col-md-5 mb-3 mb-md-0">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect fill='%23e0e0e0' width='600' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='%23666'%3EGerbang Desa Prawoto%3C/text%3E%3C/svg%3E" 
+                     alt="Gerbang Desa Prawoto" 
+                     class="img-fluid rounded">
+              </div>
+              <div class="col-md-7">
+                <p class="text-justify">
+                  Desa Prawoto merupakan sebuah desa yang terletak di Kecamatan Sukolilo, 
+                  Kabupaten Pati, Provinsi Jawa Tengah. Desa Prawoto dijuluki "Bumi Telon" karena 
+                  lokasinya yang strategis diapit tiga wilayah: Pati, Grobogan, dan Kudus. Desa ini 
+                  berada di Pegunungan Kendeng dan secara historis merupakan situs Istana Prawoto 
+                  serta pusat penting Kesultanan Demak.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -258,6 +333,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="js/utils.js"></script>
     <script src="js/map.js"></script>
   </body>
 </html>
