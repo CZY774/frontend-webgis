@@ -14,9 +14,24 @@ let layers = {
 function initMap() {
   map = L.map("map").setView([-6.963, 110.828], 14);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "© OpenStreetMap contributors",
-  }).addTo(map);
+  // Basemap layers
+  const basemaps = {
+    "OpenStreetMap": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap contributors"
+    }),
+    "Google Satellite": L.tileLayer("https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
+      attribution: "© Google"
+    }),
+    "ESRI Satellite": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "© ESRI"
+    }),
+    "Mapbox Light": L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw", {
+      attribution: "© Mapbox"
+    })
+  };
+  
+  basemaps["OpenStreetMap"].addTo(map);
+  L.control.layers(basemaps, null, { position: 'topright' }).addTo(map);
 
   // Add map controls
   addMapControls();
@@ -54,6 +69,48 @@ function addMapControls() {
     return div;
   };
   recenterControl.addTo(map);
+  
+  // Lahan legend
+  const legend = L.control({ position: 'bottomright' });
+  legend.onAdd = function() {
+    const div = L.DomUtil.create('div', 'info legend');
+    div.style.background = 'white';
+    div.style.padding = '10px';
+    div.style.border = '2px solid #ccc';
+    div.style.borderRadius = '5px';
+    div.style.maxHeight = '300px';
+    div.style.overflowY = 'auto';
+    
+    const lahanTypes = [
+      ['Tempat Tinggal', '#ffccbf'],
+      ['Perkarangan', '#d1d1d1'],
+      ['Perkantoran', '#c6997a'],
+      ['Pendidikan', '#ddcca0'],
+      ['Perdagangan dan Jasa', '#ffc9d6'],
+      ['Industri dan Pergudangan', '#ffaf84'],
+      ['Peribadatan', '#a5a0ba'],
+      ['Kesehatan', '#e8b5bf'],
+      ['Olahraga', '#edcc7c'],
+      ['Tempat Menarik/Pariwisata', '#c993e8'],
+      ['Pemakaman', '#8e8e8e'],
+      ['Perikanan Air Tawar', '#bab5ff'],
+      ['Peternakan', '#c6af00'],
+      ['Hutan', '#c6e0af'],
+      ['Hutan Rimba', '#96d67c'],
+      ['Sawah', '#99ffff'],
+      ['Ladang', '#ffff99'],
+      ['Vegetasi Non Budidaya Lainnya', '#89ed96'],
+      ['Lahan Terbuka (Tanah Kosong)', '#ffffff'],
+    ];
+    
+    let html = '<h6 style="margin:0 0 5px 0"><strong>Legenda Lahan</strong></h6>';
+    lahanTypes.forEach(([name, color]) => {
+      html += `<div style="font-size:11px"><span style="background:${color}; width:15px; height:12px; display:inline-block; margin-right:5px; border:1px solid #999"></span> ${name}</div>`;
+    });
+    div.innerHTML = html;
+    return div;
+  };
+  legend.addTo(map);
 }
 
 async function loadAllData() {
@@ -68,6 +125,7 @@ async function loadAllData() {
       loadSungai(),
       loadKependudukan(),
     ]);
+    buildSearchIndex();
   } catch (error) {
     console.error("Error loading data:", error);
     showError("Gagal memuat data peta");
@@ -83,8 +141,15 @@ async function loadWisata() {
     layers.wisata = { alam: L.layerGroup(), religi: L.layerGroup() };
     
     data.forEach((item) => {
+      const isAlam = ['Mata Air', 'Gunung', 'Alam'].some(j => item.jenis.includes(j));
+      const category = isAlam ? 'alam' : 'religi';
+      
+      const iconUrl = category === 'alam' 
+        ? "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"
+        : "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png";
+      
       const icon = L.icon({
-        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+        iconUrl: iconUrl,
         shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
         iconSize: [25, 41],
         iconAnchor: [12, 41],
@@ -98,7 +163,6 @@ async function loadWisata() {
         ${item.deskripsi ? `<p>${escapeHtml(item.deskripsi)}</p>` : ''}
       `);
 
-      const category = item.jenis.toLowerCase().includes('alam') ? 'alam' : 'religi';
       layers.wisata[category].addLayer(marker);
     });
 
@@ -127,13 +191,14 @@ async function loadFasilitas() {
         <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
       `);
 
-      const jenis = item.jenis.toLowerCase();
+      const jenis = item.jenis;
       let category = 'sosial';
-      if (jenis.includes('pendidikan') || jenis.includes('sekolah')) category = 'pendidikan';
-      else if (jenis.includes('kesehatan') || jenis.includes('puskesmas')) category = 'kesehatan';
-      else if (jenis.includes('pemerintahan') || jenis.includes('kantor')) category = 'pemerintahan';
-      else if (jenis.includes('masjid') || jenis.includes('mushola')) category = 'keagamaan';
-      else if (jenis.includes('olahraga') || jenis.includes('lapangan')) category = 'olahraga';
+      if (jenis === 'Pendidikan') category = 'pendidikan';
+      else if (jenis === 'Kesehatan') category = 'kesehatan';
+      else if (jenis === 'Pemerintah') category = 'pemerintahan';
+      else if (jenis === 'Peribadatan') category = 'keagamaan';
+      else if (jenis === 'Olahraga') category = 'olahraga';
+      else if (jenis === 'Sosial Umum') category = 'sosial';
 
       layers.fasilitas[category].addLayer(marker);
     });
@@ -170,24 +235,25 @@ async function loadUMKM() {
         <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
       `);
 
-      const jenis = item.jenis.toLowerCase().replace(/\s+/g, '');
+      const jenis = item.jenis;
       let category = 'kuliner';
-      if (jenis.includes('fashion')) category = 'fashion';
-      else if (jenis.includes('kosmetik')) category = 'kosmetik';
-      else if (jenis.includes('kelontong') || jenis.includes('toko')) category = 'kelontong';
-      else if (jenis.includes('salon')) category = 'salon';
-      else if (jenis.includes('fotokopi') || jenis.includes('fotocopy')) category = 'fotokopi';
-      else if (jenis.includes('carwash') || jenis.includes('cuci')) category = 'carwash';
-      else if (jenis.includes('bengkel')) category = 'bengkel';
-      else if (jenis.includes('isi') && jenis.includes('ulang')) category = 'isiulang';
-      else if (jenis.includes('penjahit')) category = 'penjahit';
-      else if (jenis.includes('pertanian') || jenis.includes('tani')) category = 'pertanian';
-      else if (jenis.includes('ayam')) category = 'ternakayam';
-      else if (jenis.includes('sapi')) category = 'ternaksapi';
-      else if (jenis.includes('paket') || jenis.includes('pulsa')) category = 'paketdata';
-      else if (jenis.includes('bangunan')) category = 'tokobangunan';
-      else if (jenis.includes('elektronik')) category = 'elektronik';
-      else if (jenis.includes('atk')) category = 'atk';
+      if (jenis === 'Kuliner') category = 'kuliner';
+      else if (jenis === 'Fashion') category = 'fashion';
+      else if (jenis === 'Kosmetik') category = 'kosmetik';
+      else if (jenis === 'Kelontong') category = 'kelontong';
+      else if (jenis === 'Salon') category = 'salon';
+      else if (jenis === 'Fotokopi') category = 'fotokopi';
+      else if (jenis === 'Carwash') category = 'carwash';
+      else if (jenis === 'Bengkel') category = 'bengkel';
+      else if (jenis === 'Isi Ulang') category = 'isiulang';
+      else if (jenis === 'Penjahit') category = 'penjahit';
+      else if (jenis === 'Pertanian') category = 'pertanian';
+      else if (jenis === 'Ternak Ayam') category = 'ternakayam';
+      else if (jenis === 'Ternak Sapi') category = 'ternaksapi';
+      else if (jenis === 'Paket Data') category = 'paketdata';
+      else if (jenis === 'Toko Bangunan') category = 'tokobangunan';
+      else if (jenis === 'Elektronik') category = 'elektronik';
+      else if (jenis === 'ATK') category = 'atk';
 
       if (layers.umkm[category]) {
         layers.umkm[category].addLayer(marker);
@@ -280,25 +346,22 @@ async function loadSungai() {
   }
 }
 
+// Kependudukan visualization state
+let kependudukanData = [];
+let kependudukanMode = 'basic'; // basic, umur, pendidikan, pekerjaan
+
 // Load Kependudukan
 async function loadKependudukan() {
   try {
     const data = await apiRequest('/kependudukan/');
+    kependudukanData = data;
     layers.rw.clearLayers();
     
     data.forEach((item) => {
       const polygon = L.geoJSON(JSON.parse(item.polygon), {
-        style: {
-          color: "#333",
-          weight: 2,
-          fillOpacity: 0.1,
-        },
-      }).bindPopup(`
-        <h6>RW ${item.nomor_rw}</h6>
-        <p><strong>Jumlah Warga:</strong> ${item.jumlah_warga}</p>
-        <p><strong>Laki-laki:</strong> ${item.laki_laki}</p>
-        <p><strong>Perempuan:</strong> ${item.perempuan}</p>
-      `);
+        style: getKependudukanStyle(item),
+      }).bindPopup(getKependudukanPopup(item));
+      polygon.rwData = item;
       layers.rw.addLayer(polygon);
     });
     
@@ -308,15 +371,103 @@ async function loadKependudukan() {
   }
 }
 
+function getKependudukanPopup(item) {
+  return `
+    <h6>RW ${item.nomor_rw}</h6>
+    <p><strong>Jumlah KK:</strong> ${item.jumlah_kk || 0}</p>
+    <p><strong>Jumlah Warga:</strong> ${item.jumlah_warga}</p>
+    <p><strong>Laki-laki:</strong> ${item.laki_laki}</p>
+    <p><strong>Perempuan:</strong> ${item.perempuan}</p>
+  `;
+}
+
+function getKependudukanStyle(item) {
+  if (kependudukanMode === 'basic') {
+    return {
+      color: "#333",
+      weight: 2,
+      fillOpacity: 0.1,
+    };
+  }
+  
+  let value = 0;
+  if (kependudukanMode === 'umur') {
+    const attr = document.querySelector('input[name="umurAttr"]:checked')?.value || 'anak_anak';
+    value = item[attr] || 0;
+  } else if (kependudukanMode === 'pendidikan') {
+    const attr = document.querySelector('input[name="pendidikanAttr"]:checked')?.value || 'tidak_sekolah';
+    value = item[attr] || 0;
+  } else if (kependudukanMode === 'pekerjaan') {
+    const attr = document.querySelector('input[name="pekerjaanAttr"]:checked')?.value || 'belum_bekerja';
+    value = item[attr] || 0;
+  }
+  
+  const fillColor = getGraduatedColor(value, kependudukanMode);
+  return {
+    color: "#333",
+    weight: 2,
+    fillColor: fillColor,
+    fillOpacity: 0.7,
+  };
+}
+
+function getGraduatedColor(value, mode) {
+  let values = [];
+  let attr = '';
+  
+  if (mode === 'umur') {
+    attr = document.querySelector('input[name="umurAttr"]:checked')?.value || 'anak_anak';
+    values = kependudukanData.map(d => d[attr] || 0);
+  } else if (mode === 'pendidikan') {
+    attr = document.querySelector('input[name="pendidikanAttr"]:checked')?.value || 'tidak_sekolah';
+    values = kependudukanData.map(d => d[attr] || 0);
+  } else if (mode === 'pekerjaan') {
+    attr = document.querySelector('input[name="pekerjaanAttr"]:checked')?.value || 'belum_bekerja';
+    values = kependudukanData.map(d => d[attr] || 0);
+  }
+  
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const normalized = max > min ? (value - min) / (max - min) : 0;
+  
+  // Gradient from light yellow to dark red
+  const r = Math.floor(255);
+  const g = Math.floor(255 * (1 - normalized));
+  const b = Math.floor(100 * (1 - normalized));
+  
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+function updateKependudukanVisualization() {
+  layers.rw.eachLayer(layer => {
+    if (layer.rwData) {
+      layer.setStyle(getKependudukanStyle(layer.rwData));
+    }
+  });
+}
+
 // Color helpers
 function getColorByJenisLahan(jenis) {
   const colors = {
-    'Sawah': '#90EE90',
-    'Kebun': '#228B22',
-    'Ladang': '#FFD700',
-    'Pemukiman': '#FF6347',
-    'Tempat Tinggal': '#FF6347',
-    'Perkarangan': '#98FB98',
+    'Tempat Tinggal': '#ffccbf',
+    'Perkarangan': '#d1d1d1',
+    'Perkantoran': '#c6997a',
+    'Pendidikan': '#ddcca0',
+    'Perdagangan dan Jasa': '#ffc9d6',
+    'Industri dan Pergudangan': '#ffaf84',
+    'Peribadatan': '#a5a0ba',
+    'Kesehatan': '#e8b5bf',
+    'Olahraga': '#edcc7c',
+    'Tempat Menarik/Pariwisata': '#c993e8',
+    'Pemakaman': '#8e8e8e',
+    'Perikanan Air Tawar': '#bab5ff',
+    'Peternakan': '#c6af00',
+    'Hutan': '#c6e0af',
+    'Hutan Rimba': '#96d67c',
+    'Sawah': '#99ffff',
+    'Ladang': '#ffff99',
+    'Vegetasi Non Budidaya Lainnya': '#89ed96',
+    'Lahan Terbuka (Tanah Kosong)': '#ffffff',
   };
   return colors[jenis] || '#808080';
 }
@@ -362,6 +513,112 @@ document.getElementById("wisataReligi").addEventListener("change", (e) => {
   }
 });
 
+// Search functionality
+let searchIndex = [];
+
+function buildSearchIndex() {
+  searchIndex = [];
+  
+  // Add Wisata
+  Object.values(layers.wisata).forEach(layerGroup => {
+    layerGroup.eachLayer(marker => {
+      const popup = marker.getPopup();
+      if (popup) {
+        const content = popup.getContent();
+        const nameMatch = content.match(/<h6>(.*?)<\/h6>/);
+        if (nameMatch) {
+          searchIndex.push({
+            name: nameMatch[1],
+            type: 'Wisata',
+            marker: marker
+          });
+        }
+      }
+    });
+  });
+  
+  // Add Fasilitas
+  Object.values(layers.fasilitas).forEach(layerGroup => {
+    layerGroup.eachLayer(marker => {
+      const popup = marker.getPopup();
+      if (popup) {
+        const content = popup.getContent();
+        const nameMatch = content.match(/<h6>(.*?)<\/h6>/);
+        if (nameMatch) {
+          searchIndex.push({
+            name: nameMatch[1],
+            type: 'Fasilitas',
+            marker: marker
+          });
+        }
+      }
+    });
+  });
+  
+  // Add UMKM
+  Object.values(layers.umkm).forEach(layerGroup => {
+    layerGroup.eachLayer(marker => {
+      const popup = marker.getPopup();
+      if (popup) {
+        const content = popup.getContent();
+        const nameMatch = content.match(/<h6>(.*?)<\/h6>/);
+        if (nameMatch) {
+          searchIndex.push({
+            name: nameMatch[1],
+            type: 'UMKM',
+            marker: marker
+          });
+        }
+      }
+    });
+  });
+}
+
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.createElement('div');
+searchResults.style.cssText = 'position:absolute; background:white; border:1px solid #ccc; max-height:200px; overflow-y:auto; width:100%; z-index:1000; display:none';
+searchInput.parentElement.style.position = 'relative';
+searchInput.parentElement.appendChild(searchResults);
+
+searchInput.addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase();
+  if (query.length < 2) {
+    searchResults.style.display = 'none';
+    return;
+  }
+  
+  const matches = searchIndex.filter(item => item.name.toLowerCase().includes(query)).slice(0, 10);
+  
+  if (matches.length === 0) {
+    searchResults.style.display = 'none';
+    return;
+  }
+  
+  searchResults.innerHTML = matches.map(item => 
+    `<div style="padding:8px; cursor:pointer; border-bottom:1px solid #eee" data-name="${escapeHtml(item.name)}">
+      <strong>${escapeHtml(item.name)}</strong> <small>(${item.type})</small>
+    </div>`
+  ).join('');
+  searchResults.style.display = 'block';
+  
+  searchResults.querySelectorAll('div').forEach((div, idx) => {
+    div.onclick = () => {
+      const item = matches[idx];
+      const latlng = item.marker.getLatLng();
+      map.setView(latlng, 17);
+      item.marker.openPopup();
+      searchResults.style.display = 'none';
+      searchInput.value = item.name;
+    };
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+    searchResults.style.display = 'none';
+  }
+});
+
 document.getElementById("showLahan").addEventListener("change", (e) => {
   e.target.checked ? map.addLayer(layers.lahan) : map.removeLayer(layers.lahan);
 });
@@ -376,6 +633,23 @@ document.getElementById("showSungai").addEventListener("change", (e) => {
 
 document.getElementById("showKependudukan").addEventListener("change", (e) => {
   e.target.checked ? map.addLayer(layers.rw) : map.removeLayer(layers.rw);
+});
+
+// Kependudukan visualization controls
+document.querySelectorAll('input[name="vizMode"]').forEach(radio => {
+  radio.addEventListener('change', (e) => {
+    kependudukanMode = e.target.value;
+    document.getElementById('umurOptions').style.display = e.target.value === 'umur' ? 'block' : 'none';
+    document.getElementById('pendidikanOptions').style.display = e.target.value === 'pendidikan' ? 'block' : 'none';
+    document.getElementById('pekerjaanOptions').style.display = e.target.value === 'pekerjaan' ? 'block' : 'none';
+    updateKependudukanVisualization();
+  });
+});
+
+document.querySelectorAll('input[name="umurAttr"], input[name="pendidikanAttr"], input[name="pekerjaanAttr"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    updateKependudukanVisualization();
+  });
 });
 
 // Routing functionality
