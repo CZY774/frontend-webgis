@@ -81,7 +81,7 @@
                     <i class="fas fa-map-marked-alt me-2"></i> Wisata
                   </button>
                 </h2>
-                <div id="wisataFilter" class="accordion-collapse collapse show">
+                <div id="wisataFilter" class="accordion-collapse collapse show" data-bs-parent="#filterAccordion">
                   <div class="accordion-body">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="wisataAlam" />
@@ -107,7 +107,7 @@
                     <i class="fas fa-building me-2"></i> Fasilitas Umum
                   </button>
                 </h2>
-                <div id="fasilitasFilter" class="accordion-collapse collapse">
+                <div id="fasilitasFilter" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
                   <div class="accordion-body">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="fasPendidikan" />
@@ -149,7 +149,7 @@
                     <i class="fas fa-store me-2"></i> UMKM
                   </button>
                 </h2>
-                <div id="umkmFilter" class="accordion-collapse collapse">
+                <div id="umkmFilter" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
                   <div class="accordion-body">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="umkmKuliner" />
@@ -265,11 +265,55 @@
                     <i class="fas fa-users me-2"></i> Kependudukan
                   </button>
                 </h2>
-                <div id="kependudukanFilter" class="accordion-collapse collapse">
+                <div id="kependudukanFilter" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
                   <div class="accordion-body">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="showKependudukan" checked />
                       <label class="form-check-label" for="showKependudukan">Tampilkan Batas RW</label>
+                    </div>
+                    
+                    <hr class="my-2">
+                    <h6 class="mb-2">Visualisasi Data:</h6>
+                    
+                    <div class="mb-2">
+                      <input type="radio" name="vizMode" value="basic" id="vizBasic" checked>
+                      <label for="vizBasic" style="font-size:13px">Dasar</label>
+                    </div>
+                    
+                    <div class="mb-2">
+                      <input type="radio" name="vizMode" value="umur" id="vizUmur">
+                      <label for="vizUmur" style="font-size:13px">Umur</label>
+                      <div id="umurOptions" style="display:none; margin-left:20px; font-size:12px">
+                        <input type="radio" name="umurAttr" value="anak_anak" checked> Anak-anak (&lt;15)<br>
+                        <input type="radio" name="umurAttr" value="produktif"> Produktif (15-64)<br>
+                        <input type="radio" name="umurAttr" value="lansia"> Lansia (&gt;64)
+                      </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                      <input type="radio" name="vizMode" value="pendidikan" id="vizPendidikan">
+                      <label for="vizPendidikan" style="font-size:13px">Pendidikan</label>
+                      <div id="pendidikanOptions" style="display:none; margin-left:20px; font-size:12px">
+                        <input type="radio" name="pendidikanAttr" value="tidak_sekolah" checked> Tidak/Belum Sekolah<br>
+                        <input type="radio" name="pendidikanAttr" value="tidak_tamat_sd"> Tidak Tamat SD<br>
+                        <input type="radio" name="pendidikanAttr" value="tamat_sd"> Tamat SD<br>
+                        <input type="radio" name="pendidikanAttr" value="sltp"> SLTP<br>
+                        <input type="radio" name="pendidikanAttr" value="slta"> SLTA<br>
+                        <input type="radio" name="pendidikanAttr" value="diploma_s1"> Diploma/S1
+                      </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                      <input type="radio" name="vizMode" value="pekerjaan" id="vizPekerjaan">
+                      <label for="vizPekerjaan" style="font-size:13px">Pekerjaan</label>
+                      <div id="pekerjaanOptions" style="display:none; margin-left:20px; font-size:12px">
+                        <input type="radio" name="pekerjaanAttr" value="belum_bekerja" checked> Belum/Tidak Bekerja<br>
+                        <input type="radio" name="pekerjaanAttr" value="pelajar"> Pelajar/Mahasiswa<br>
+                        <input type="radio" name="pekerjaanAttr" value="mengurus_rt"> Mengurus RT<br>
+                        <input type="radio" name="pekerjaanAttr" value="wiraswasta"> Wiraswasta<br>
+                        <input type="radio" name="pekerjaanAttr" value="petani"> Petani/Pekebun<br>
+                        <input type="radio" name="pekerjaanAttr" value="lainnya"> Lainnya
+                      </div>
                     </div>
                   </div>
                 </div>
