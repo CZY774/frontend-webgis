@@ -362,7 +362,6 @@ html {
 /* Tablet and desktop - keep sidebar visible */
 @media (min-width: 768px) {
   .row {
-    height: calc(100vh - 56px);
     margin: 0;
   }
   
@@ -397,4 +396,23 @@ html {
 .custom-marker {
   background: transparent !important;
   border: none !important;
+}
+
+/* Modal vertical spacing optimization for desktop/tablet */
+@media (min-width: 768px) {
+  .modal-dialog {
+    margin: 0.5rem auto !important;
+  }
+  
+  .modal-header {
+    padding: 0.75rem 1rem !important;
+  }
+  
+  .modal-body {
+    padding: 0.75rem 1rem !important;
+  }
+  
+  .modal-footer {
+    padding: 0.75rem 1rem !important;
+  }
 }
