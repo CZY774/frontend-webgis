@@ -393,3 +393,9 @@ html {
   border: none !important;
   text-align: center;
 }
+
+/* Custom Font Awesome marker styling */
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}

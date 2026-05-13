@@ -165,13 +165,14 @@ async function loadWisata() {
       );
       const category = isAlam ? "alam" : "religi";
 
-      const emoji = category === "alam" ? "🏞️" : "🕌";
+      const iconClass = category === "alam" ? "fa-tree" : "fa-mosque";
+      const iconColor = category === "alam" ? "#10b981" : "#ef4444";
 
       const icon = L.divIcon({
-        html: `<div style="font-size:24px">${emoji}</div>`,
-        className: "emoji-marker",
-        iconSize: [30, 30],
-        iconAnchor: [15, 30],
+        html: `<div style="background:${iconColor}; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 2px 4px rgba(0,0,0,0.3)"><i class="fas ${iconClass}" style="color:white; font-size:16px"></i></div>`,
+        className: "custom-marker",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
       });
 
       const marker = L.marker([item.latitude, item.longitude], { icon })
@@ -206,33 +207,40 @@ async function loadFasilitas() {
     data.forEach((item) => {
       const jenis = item.jenis;
       let category = "sosial";
-      let emoji = "🏢";
+      let iconClass = "fa-building";
+      let iconColor = "#6b7280";
 
       if (jenis === "Pendidikan") {
         category = "pendidikan";
-        emoji = "🏫";
+        iconClass = "fa-graduation-cap";
+        iconColor = "#3b82f6";
       } else if (jenis === "Kesehatan") {
         category = "kesehatan";
-        emoji = "🏥";
+        iconClass = "fa-hospital";
+        iconColor = "#ef4444";
       } else if (jenis === "Pemerintah") {
         category = "pemerintahan";
-        emoji = "🏛️";
+        iconClass = "fa-landmark";
+        iconColor = "#8b5cf6";
       } else if (jenis === "Peribadatan") {
         category = "keagamaan";
-        emoji = "🕌";
+        iconClass = "fa-mosque";
+        iconColor = "#10b981";
       } else if (jenis === "Olahraga") {
         category = "olahraga";
-        emoji = "⚽";
+        iconClass = "fa-futbol";
+        iconColor = "#f59e0b";
       } else if (jenis === "Sosial Umum") {
         category = "sosial";
-        emoji = "🏢";
+        iconClass = "fa-building";
+        iconColor = "#6b7280";
       }
 
       const icon = L.divIcon({
-        html: `<div style="font-size:24px">${emoji}</div>`,
-        className: "emoji-marker",
-        iconSize: [30, 30],
-        iconAnchor: [15, 30],
+        html: `<div style="background:${iconColor}; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 2px 4px rgba(0,0,0,0.3)"><i class="fas ${iconClass}" style="color:white; font-size:14px"></i></div>`,
+        className: "custom-marker",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
       });
 
       const marker = L.marker([item.latitude, item.longitude], { icon })
@@ -280,66 +288,84 @@ async function loadUMKM() {
     data.forEach((item) => {
       const jenis = item.jenis;
       let category = "kuliner";
-      let emoji = "🍽️";
+      let iconClass = "fa-utensils";
+      let iconColor = "#ef4444";
 
       if (jenis === "Kuliner") {
         category = "kuliner";
-        emoji = "🍽️";
+        iconClass = "fa-utensils";
+        iconColor = "#ef4444";
       } else if (jenis === "Fashion") {
         category = "fashion";
-        emoji = "👕";
+        iconClass = "fa-tshirt";
+        iconColor = "#ec4899";
       } else if (jenis === "Kosmetik") {
         category = "kosmetik";
-        emoji = "💄";
+        iconClass = "fa-spray-can";
+        iconColor = "#f472b6";
       } else if (jenis === "Kelontong") {
         category = "kelontong";
-        emoji = "🛒";
+        iconClass = "fa-shopping-basket";
+        iconColor = "#f59e0b";
       } else if (jenis === "Salon") {
         category = "salon";
-        emoji = "💇";
+        iconClass = "fa-cut";
+        iconColor = "#a855f7";
       } else if (jenis === "Fotokopi") {
         category = "fotokopi";
-        emoji = "📄";
+        iconClass = "fa-copy";
+        iconColor = "#6366f1";
       } else if (jenis === "Carwash") {
         category = "carwash";
-        emoji = "🚗";
+        iconClass = "fa-car";
+        iconColor = "#06b6d4";
       } else if (jenis === "Bengkel") {
         category = "bengkel";
-        emoji = "🔧";
+        iconClass = "fa-wrench";
+        iconColor = "#64748b";
       } else if (jenis === "Isi Ulang") {
         category = "isiulang";
-        emoji = "💧";
+        iconClass = "fa-tint";
+        iconColor = "#0ea5e9";
       } else if (jenis === "Penjahit") {
         category = "penjahit";
-        emoji = "🧵";
+        iconClass = "fa-scissors";
+        iconColor = "#8b5cf6";
       } else if (jenis === "Pertanian") {
         category = "pertanian";
-        emoji = "🌾";
+        iconClass = "fa-seedling";
+        iconColor = "#10b981";
       } else if (jenis === "Ternak Ayam") {
         category = "ternakayam";
-        emoji = "🐔";
+        iconClass = "fa-egg";
+        iconColor = "#f59e0b";
       } else if (jenis === "Ternak Sapi") {
         category = "ternaksapi";
-        emoji = "🐄";
+        iconClass = "fa-cow";
+        iconColor = "#78716c";
       } else if (jenis === "Paket Data") {
         category = "paketdata";
-        emoji = "📱";
+        iconClass = "fa-mobile-alt";
+        iconColor = "#3b82f6";
       } else if (jenis === "Toko Bangunan") {
         category = "tokobangunan";
-        emoji = "🏗️";
+        iconClass = "fa-hammer";
+        iconColor = "#f97316";
       } else if (jenis === "Elektronik") {
         category = "elektronik";
-        emoji = "🔌";
+        iconClass = "fa-plug";
+        iconColor = "#eab308";
       } else if (jenis === "ATK") {
         category = "atk";
-        emoji = "✏️";
+        iconClass = "fa-pen";
+        iconColor = "#6366f1";
       }
 
       const icon = L.divIcon({
-        html: `<div style="font-size:24px">${emoji}</div>`,
-        className: "emoji-marker",
-        iconSize: [30, 30],
-        iconAnchor: [15, 30],
+        html: `<div style="background:${iconColor}; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 2px 4px rgba(0,0,0,0.3)"><i class="fas ${iconClass}" style="color:white; font-size:14px"></i></div>`,
+        className: "custom-marker",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
       });
 
       const marker = L.marker([item.latitude, item.longitude], { icon })
