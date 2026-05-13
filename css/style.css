@@ -38,6 +38,26 @@ body {
 }
 
 /* Sidebar */
+
+/* Mobile navbar brand wrapping */
+@media (max-width: 767px) {
+  .navbar-expand-lg .navbar-brand {
+    white-space: normal !important;
+    line-height: 1.3 !important;
+    font-size: 0.95rem !important;
+    max-width: calc(100% - 60px) !important;
+    padding-right: 10px !important;
+  }
+  
+  .navbar .container-fluid {
+    align-items: flex-start !important;
+    flex-wrap: nowrap !important;
+  }
+  
+  .navbar-toggler {
+    margin-top: 0 !important;
+  }
+}
 .sidebar {
   background: var(--white);
   height: calc(100vh - 56px);
@@ -313,4 +333,63 @@ body {
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+/* Mobile legend repositioning */
+@media (max-width: 767px) {
+  /* Hide map legend on mobile */
+  .leaflet-bottom.leaflet-right {
+    display: none !important;
+  }
+  
+  /* Show sidebar legend on mobile */
+  #mobileLegend {
+    display: block !important;
+  }
+}
+
+/* Tablet and desktop - keep sidebar visible */
+@media (min-width: 768px) {
+  /* Show map legend on tablet/desktop */
+  .leaflet-bottom.leaflet-right {
+    display: block !important;
+  }
+  
+  /* Hide sidebar legend on tablet/desktop */
+  #mobileLegend {
+    display: none !important;
+  }
+
+/* Tablet and desktop - keep sidebar visible */
+@media (min-width: 768px) {
+  .row {
+    height: calc(100vh - 56px);
+    margin: 0;
+  }
+  
+  .col-lg-3, .col-md-4 {
+    height: 100%;
+  }
+  
+  .sidebar {
+    display: block !important;
+    height: 100% !important;
+    min-height: calc(100vh - 56px);
+  }
+  
+  #map {
+    height: calc(100vh - 56px) !important;
+  }
+  
+  body, html {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+/* Emoji marker styling */
+.emoji-marker {
+  background: transparent !important;
+  border: none !important;
+  text-align: center;
 }

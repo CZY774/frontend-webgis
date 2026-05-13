@@ -95,6 +95,10 @@ function addMapControls() {
     div.style.maxHeight = "300px";
     div.style.overflowY = "auto";
 
+    // Disable scroll propagation to map
+    L.DomEvent.disableScrollPropagation(div);
+    L.DomEvent.disableClickPropagation(div);
+
     const lahanTypes = [
       ["Tempat Tinggal", "#ffccbf"],
       ["Perkarangan", "#d1d1d1"],
@@ -161,19 +165,13 @@ async function loadWisata() {
       );
       const category = isAlam ? "alam" : "religi";
 
-      const iconUrl =
-        category === "alam"
-          ? "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"
-          : "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png";
+      const emoji = category === "alam" ? "🏞️" : "🕌";
 
-      const icon = L.icon({
-        iconUrl: iconUrl,
-        shadowUrl:
-          "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41],
+      const icon = L.divIcon({
+        html: `<div style="font-size:24px">${emoji}</div>`,
+        className: "emoji-marker",
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
       });
 
       const marker = L.marker([item.latitude, item.longitude], { icon })
@@ -206,19 +204,42 @@ async function loadFasilitas() {
     };
 
     data.forEach((item) => {
-      const marker = L.marker([item.latitude, item.longitude]).bindPopup(`
+      const jenis = item.jenis;
+      let category = "sosial";
+      let emoji = "🏢";
+
+      if (jenis === "Pendidikan") {
+        category = "pendidikan";
+        emoji = "🏫";
+      } else if (jenis === "Kesehatan") {
+        category = "kesehatan";
+        emoji = "🏥";
+      } else if (jenis === "Pemerintah") {
+        category = "pemerintahan";
+        emoji = "🏛️";
+      } else if (jenis === "Peribadatan") {
+        category = "keagamaan";
+        emoji = "🕌";
+      } else if (jenis === "Olahraga") {
+        category = "olahraga";
+        emoji = "⚽";
+      } else if (jenis === "Sosial Umum") {
+        category = "sosial";
+        emoji = "🏢";
+      }
+
+      const icon = L.divIcon({
+        html: `<div style="font-size:24px">${emoji}</div>`,
+        className: "emoji-marker",
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+      });
+
+      const marker = L.marker([item.latitude, item.longitude], { icon })
+        .bindPopup(`
         <h6>${escapeHtml(item.nama)}</h6>
         <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
       `);
-
-      const jenis = item.jenis;
-      let category = "sosial";
-      if (jenis === "Pendidikan") category = "pendidikan";
-      else if (jenis === "Kesehatan") category = "kesehatan";
-      else if (jenis === "Pemerintah") category = "pemerintahan";
-      else if (jenis === "Peribadatan") category = "keagamaan";
-      else if (jenis === "Olahraga") category = "olahraga";
-      else if (jenis === "Sosial Umum") category = "sosial";
 
       layers.fasilitas[category].addLayer(marker);
     });
@@ -257,15 +278,68 @@ async function loadUMKM() {
     categories.forEach((cat) => (layers.umkm[cat] = L.layerGroup()));
 
     data.forEach((item) => {
-      const icon = L.icon({
-        iconUrl:
-          "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-        shadowUrl:
-          "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41],
+      const jenis = item.jenis;
+      let category = "kuliner";
+      let emoji = "🍽️";
+
+      if (jenis === "Kuliner") {
+        category = "kuliner";
+        emoji = "🍽️";
+      } else if (jenis === "Fashion") {
+        category = "fashion";
+        emoji = "👕";
+      } else if (jenis === "Kosmetik") {
+        category = "kosmetik";
+        emoji = "💄";
+      } else if (jenis === "Kelontong") {
+        category = "kelontong";
+        emoji = "🛒";
+      } else if (jenis === "Salon") {
+        category = "salon";
+        emoji = "💇";
+      } else if (jenis === "Fotokopi") {
+        category = "fotokopi";
+        emoji = "📄";
+      } else if (jenis === "Carwash") {
+        category = "carwash";
+        emoji = "🚗";
+      } else if (jenis === "Bengkel") {
+        category = "bengkel";
+        emoji = "🔧";
+      } else if (jenis === "Isi Ulang") {
+        category = "isiulang";
+        emoji = "💧";
+      } else if (jenis === "Penjahit") {
+        category = "penjahit";
+        emoji = "🧵";
+      } else if (jenis === "Pertanian") {
+        category = "pertanian";
+        emoji = "🌾";
+      } else if (jenis === "Ternak Ayam") {
+        category = "ternakayam";
+        emoji = "🐔";
+      } else if (jenis === "Ternak Sapi") {
+        category = "ternaksapi";
+        emoji = "🐄";
+      } else if (jenis === "Paket Data") {
+        category = "paketdata";
+        emoji = "📱";
+      } else if (jenis === "Toko Bangunan") {
+        category = "tokobangunan";
+        emoji = "🏗️";
+      } else if (jenis === "Elektronik") {
+        category = "elektronik";
+        emoji = "🔌";
+      } else if (jenis === "ATK") {
+        category = "atk";
+        emoji = "✏️";
+      }
+
+      const icon = L.divIcon({
+        html: `<div style="font-size:24px">${emoji}</div>`,
+        className: "emoji-marker",
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
       });
 
       const marker = L.marker([item.latitude, item.longitude], { icon })
@@ -273,26 +347,6 @@ async function loadUMKM() {
         <h6>${escapeHtml(item.nama)}</h6>
         <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
       `);
-
-      const jenis = item.jenis;
-      let category = "kuliner";
-      if (jenis === "Kuliner") category = "kuliner";
-      else if (jenis === "Fashion") category = "fashion";
-      else if (jenis === "Kosmetik") category = "kosmetik";
-      else if (jenis === "Kelontong") category = "kelontong";
-      else if (jenis === "Salon") category = "salon";
-      else if (jenis === "Fotokopi") category = "fotokopi";
-      else if (jenis === "Carwash") category = "carwash";
-      else if (jenis === "Bengkel") category = "bengkel";
-      else if (jenis === "Isi Ulang") category = "isiulang";
-      else if (jenis === "Penjahit") category = "penjahit";
-      else if (jenis === "Pertanian") category = "pertanian";
-      else if (jenis === "Ternak Ayam") category = "ternakayam";
-      else if (jenis === "Ternak Sapi") category = "ternaksapi";
-      else if (jenis === "Paket Data") category = "paketdata";
-      else if (jenis === "Toko Bangunan") category = "tokobangunan";
-      else if (jenis === "Elektronik") category = "elektronik";
-      else if (jenis === "ATK") category = "atk";
 
       if (layers.umkm[category]) {
         layers.umkm[category].addLayer(marker);
@@ -565,37 +619,29 @@ document.getElementById("wisataReligi").addEventListener("change", (e) => {
   }
 });
 
-[
-  "kuliner",
-  "fashion",
-  "kosmetik",
-  "kelontong",
-  "salon",
-  "fotokopi",
-  "carwash",
-  "bengkel",
-  "isiulang",
-  "penjahit",
-  "pertanian",
-  "ternakayam",
-  "ternaksapi",
-  "paketdata",
-  "tokobangunan",
-  "elektronik",
-  "atk",
-].forEach((cat) => {
-  const id =
-    "umkm" +
-    cat.charAt(0).toUpperCase() +
-    cat
-      .slice(1)
-      .replace("ulang", "Ulang")
-      .replace("ayam", "Ayam")
-      .replace("sapi", "Sapi")
-      .replace("data", "Data")
-      .replace("bangunan", "Bangunan");
-  const el = document.getElementById(id);
-  if (el && layers.umkm[cat]) {
+const umkmIdMap = {
+  kuliner: "umkmKuliner",
+  fashion: "umkmFashion",
+  kosmetik: "umkmKosmetik",
+  kelontong: "umkmKelontong",
+  salon: "umkmSalon",
+  fotokopi: "umkmFotokopi",
+  carwash: "umkmCarwash",
+  bengkel: "umkmBengkel",
+  isiulang: "umkmIsiUlang",
+  penjahit: "umkmPenjahit",
+  pertanian: "umkmPertanian",
+  ternakayam: "umkmTernakAyam",
+  ternaksapi: "umkmTernakSapi",
+  paketdata: "umkmPaketData",
+  tokobangunan: "umkmTokoBangunan",
+  elektronik: "umkmElektronik",
+  atk: "umkmATK",
+};
+
+Object.keys(umkmIdMap).forEach((cat) => {
+  const el = document.getElementById(umkmIdMap[cat]);
+  if (el) {
     el.addEventListener("change", (e) => {
       e.target.checked
         ? map.addLayer(layers.umkm[cat])
