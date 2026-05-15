@@ -27,6 +27,24 @@ body {
   font-size: 1.25rem;
 }
 
+/* Mobile navbar brand wrapping */
+@media (max-width: 767px) {
+  .navbar-expand-lg .navbar-brand {
+    white-space: normal !important;
+    line-height: 1.3 !important;
+    font-size: 0.95rem !important;
+    max-width: calc(100% - 90px) !important;
+    padding-right: 10px !important;
+  }
+
+  .navbar .container-fluid {
+    align-items: flex-start !important;
+  }
+
+  .navbar-toggler {
+    margin-top: 0 !important;
+  }
+}
 /* Login Card */
 .card {
   border: none;
