@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Admin Dashboard untuk mengelola data SIG Desa Prawoto"
+      content="Admin Dashboard untuk mengelola data Sistem Informasi Potensi Desa Prawoto"
     />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Admin Dashboard - SIG Desa Prawoto</title>
+    <title>Sistem Informasi Potensi Desa Prawoto</title>
     <link
       rel="icon"
       type="image/svg+xml"
@@ -29,10 +29,79 @@
     />
   </head>
   <body>
+    <!-- Loading Overlay -->
+    <div
+      id="loadingOverlay"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1040;
+      "
+    >
+      <div
+        class="text-center text-white"
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        "
+      >
+        <div
+          class="spinner-border"
+          role="status"
+          style="width: 3rem; height: 3rem"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 fs-5">Memuat data...</p>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div
+      class="toast-container position-fixed top-0 end-0 p-3"
+      style="z-index: 10000"
+    >
+      <div
+        id="successToast"
+        class="toast align-items-center text-bg-success border-0"
+        role="alert"
+      >
+        <div class="d-flex">
+          <div class="toast-body" id="successToastMessage"></div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+      <div
+        id="errorToast"
+        class="toast align-items-center text-bg-danger border-0"
+        role="alert"
+      >
+        <div class="d-flex">
+          <div class="toast-body" id="errorToastMessage"></div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid px-4">
         <a class="navbar-brand" href="index.html">
-          Admin Dashboard - SIG Desa Prawoto
+          Sistem Informasi Potensi Desa Prawoto
         </a>
         <button
           class="navbar-toggler"
@@ -69,7 +138,10 @@
               <div class="card-body p-5">
                 <div class="text-center mb-4">
                   <h3 class="card-title">Login Admin</h3>
-                  <p class="text-muted">Masuk untuk mengelola data SIG</p>
+                  <p class="text-muted">
+                    Masuk untuk mengelola data Sistem Informasi Potensi Desa
+                    Prawoto
+                  </p>
                 </div>
                 <form id="loginForm">
                   <div class="mb-3">
@@ -291,6 +363,198 @@
                 <tbody id="kependudukanTable"></tbody>
               </table>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" style="z-index: 1055">
+      <div class="modal-dialog modal-xl" style="margin: 1.75rem auto">
+        <div
+          class="modal-content"
+          style="
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            pointer-events: auto;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 0.3rem;
+            outline: 0;
+          "
+        >
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalTitle">Edit Data</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs mb-3" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="info-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#info-pane"
+                  type="button"
+                >
+                  Informasi Dasar
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="location-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#location-pane"
+                  type="button"
+                >
+                  Lokasi
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="info-pane">
+                <form id="editForm">
+                  <input type="hidden" id="editId" />
+                  <input type="hidden" id="editEntity" />
+                  <div class="mb-3" id="editNamaGroup">
+                    <label for="editNama" class="form-label">Nama</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="editNama"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3" id="editJenisGroup">
+                    <label for="editJenis" class="form-label">Jenis</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="editJenis"
+                      required
+                    />
+                  </div>
+                  <div
+                    class="mb-3"
+                    id="editDeskripsiGroup"
+                    style="display: none"
+                  >
+                    <label for="editDeskripsi" class="form-label"
+                      >Deskripsi</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="editDeskripsi"
+                      rows="3"
+                    ></textarea>
+                  </div>
+                  <div id="kependudukanFields" style="display: none">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label">Jumlah Warga</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="editJumlahWarga"
+                        />
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label">Laki-laki</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="editLakiLaki"
+                        />
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label">Perempuan</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="editPerempuan"
+                        />
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label">Anak-anak</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="editAnakAnak"
+                        />
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label">Produktif</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="editProduktif"
+                        />
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label">Lansia</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="editLansia"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="tab-pane fade" id="location-pane">
+                <div
+                  id="editMap"
+                  style="height: 400px; margin-bottom: 15px"
+                ></div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="editLatitude" class="form-label"
+                      >Latitude</label
+                    >
+                    <input
+                      type="number"
+                      step="any"
+                      class="form-control"
+                      id="editLatitude"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="editLongitude" class="form-label"
+                      >Longitude</label
+                    >
+                    <input
+                      type="number"
+                      step="any"
+                      class="form-control"
+                      id="editLongitude"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Batal
+            </button>
+            <button type="button" class="btn btn-primary" id="saveEditBtn">
+              Simpan
+            </button>
           </div>
         </div>
       </div>
