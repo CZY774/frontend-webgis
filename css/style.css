@@ -360,6 +360,7 @@ html {
   }
 
 /* Tablet and desktop - keep sidebar visible */
+
 @media (min-width: 768px) {
   .row {
     margin: 0;
@@ -371,8 +372,9 @@ html {
   
   .sidebar {
     display: block !important;
-    height: 100% !important;
-    min-height: calc(100vh - 56px);
+    height: calc(100vh - 56px) !important;
+    max-height: calc(100vh - 56px);
+    overflow-y: auto !important;
   }
   
   #map {
@@ -415,4 +417,40 @@ html {
   .modal-footer {
     padding: 0.75rem 1rem !important;
   }
+}
+
+
+
+/* North Arrow Control */
+.leaflet-bar.north-arrow-inner,
+.leaflet-control .north-arrow-inner {
+  background: white !important;
+  border: 2px solid rgba(0,0,0,0.2) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4) !important;
+  width: 50px !important;
+  height: 50px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: default !important;
+  user-select: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.north-arrow-inner .arrow {
+  font-size: 24px !important;
+  font-weight: bold !important;
+  color: #e74c3c !important;
+  line-height: 1 !important;
+  margin-bottom: -2px !important;
+}
+
+.north-arrow-inner .label {
+  font-size: 10px !important;
+  font-weight: bold !important;
+  color: #333 !important;
+  line-height: 1 !important;
 }
