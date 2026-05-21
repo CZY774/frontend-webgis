@@ -42,7 +42,7 @@ function initMap() {
     ),
   };
 
-  basemaps["OpenStreetMap"].addTo(map);
+  basemaps["Google Satellite"].addTo(map);
   L.control.layers(basemaps, null, { position: "topright" }).addTo(map);
 
   // Add map controls
@@ -83,6 +83,16 @@ function addMapControls() {
     return div;
   };
   recenterControl.addTo(map);
+
+  // North arrow control
+  const northArrowControl = L.control({ position: "bottomleft" });
+  northArrowControl.onAdd = function () {
+    const div = L.DomUtil.create("div", "leaflet-bar leaflet-control");
+    div.style.cssText = "background: none; border: none; box-shadow: none;";
+    div.innerHTML = '<div style="background: white; border: 2px solid rgba(0,0,0,0.2); border-radius: 50%; box-shadow: 0 1px 5px rgba(0,0,0,0.4); width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; user-select: none;"><div style="font-size: 24px; font-weight: bold; color: #e74c3c; line-height: 1; margin-bottom: -2px;">▲</div><div style="font-size: 10px; font-weight: bold; color: #333; line-height: 1;">N</div></div>';
+    return div;
+  };
+  northArrowControl.addTo(map);
 
   // Lahan legend
   const legend = L.control({ position: "bottomright" });
@@ -143,6 +153,7 @@ async function loadAllData() {
       loadJalan(),
       loadSungai(),
       loadKependudukan(),
+      loadProfilDesa(),
     ]);
     buildSearchIndex();
   } catch (error) {
@@ -177,7 +188,7 @@ async function loadWisata() {
 
       const marker = L.marker([item.latitude, item.longitude], { icon })
         .bindPopup(`
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='180'%3E%3Crect width='300' height='180' fill='%23cccccc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23666666'%3EFoto Segera Hadir%3C/text%3E%3C/svg%3E" style="width:100%; height:auto; border-radius:8px; margin-bottom:10px; display:block;" alt="Placeholder">
+        ${item.foto_base64 ? `<img src="${item.foto_base64}" style="width:100%; height:auto; max-height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px; display:block;" alt="${escapeHtml(item.nama)}">` : '<img src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'180\'%3E%3Crect width=\'300\' height=\'180\' fill=\'%23cccccc\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'14\' fill=\'%23666666\'%3EFoto Segera Hadir%3C/text%3E%3C/svg%3E" style="width:100%; height:auto; border-radius:8px; margin-bottom:10px; display:block;" alt="Placeholder">'}
         <h6>${escapeHtml(item.nama)}</h6>
         <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
         ${item.deskripsi ? `<p>${escapeHtml(item.deskripsi)}</p>` : ""}
@@ -397,7 +408,7 @@ async function loadLahan() {
         style: {
           color: getColorByJenisLahan(item.jenis_lahan),
           weight: 1,
-          fillOpacity: 0.4,
+          fillOpacity: 1.0,
         },
       }).bindPopup(`
         <h6>Lahan ${escapeHtml(item.jenis_lahan)}</h6>
@@ -491,13 +502,69 @@ async function loadKependudukan() {
   }
 }
 
+// Load Profil Desa
+async function loadProfilDesa() {
+  try {
+    const data = await apiRequest("/desa/");
+    if (data.foto_base64) {
+      document.getElementById("profilDesaPhoto").src = data.foto_base64;
+    }
+  } catch (error) {
+    console.error("Error loading profil desa:", error);
+  }
+}
+
 function getKependudukanPopup(item) {
+  if (kependudukanMode === "basic") {
+    return `
+      <h6>RW ${item.nomor_rw}</h6>
+      <p><strong>Jumlah KK:</strong> ${item.jumlah_kk || 0}</p>
+      <p><strong>Jumlah Warga:</strong> ${item.jumlah_warga || 0}</p>
+      <p><strong>Laki-laki:</strong> ${item.laki_laki || 0}</p>
+      <p><strong>Perempuan:</strong> ${item.perempuan || 0}</p>
+    `;
+  }
+
+  // For filtered modes, show only the selected attribute
+  let attr = "";
+  let label = "";
+  
+  if (kependudukanMode === "umur") {
+    attr = document.querySelector('input[name="umurAttr"]:checked')?.value || "anak_anak";
+    const labels = {
+      anak_anak: "Anak-anak (<15 tahun)",
+      produktif: "Produktif (15-64 tahun)",
+      lansia: "Lansia (>64 tahun)"
+    };
+    label = labels[attr] || attr;
+  } else if (kependudukanMode === "pendidikan") {
+    attr = document.querySelector('input[name="pendidikanAttr"]:checked')?.value || "tidak_sekolah";
+    const labels = {
+      tidak_sekolah: "Tidak/Belum Sekolah",
+      tidak_tamat_sd: "Tidak Tamat SD",
+      tamat_sd: "Tamat SD",
+      sltp: "SLTP",
+      slta: "SLTA",
+      diploma_s1: "Diploma/S1"
+    };
+    label = labels[attr] || attr;
+  } else if (kependudukanMode === "pekerjaan") {
+    attr = document.querySelector('input[name="pekerjaanAttr"]:checked')?.value || "belum_bekerja";
+    const labels = {
+      belum_bekerja: "Belum/Tidak Bekerja",
+      pelajar: "Pelajar/Mahasiswa",
+      mengurus_rt: "Mengurus RT",
+      wiraswasta: "Wiraswasta",
+      petani: "Petani/Pekebun",
+      lainnya: "Lainnya"
+    };
+    label = labels[attr] || attr;
+  }
+
+  const value = item[attr] || 0;
   return `
     <h6>RW ${item.nomor_rw}</h6>
-    <p><strong>Jumlah KK:</strong> ${item.jumlah_kk || 0}</p>
-    <p><strong>Jumlah Warga:</strong> ${item.jumlah_warga}</p>
-    <p><strong>Laki-laki:</strong> ${item.laki_laki}</p>
-    <p><strong>Perempuan:</strong> ${item.perempuan}</p>
+    <p><strong>${label}:</strong> ${value} orang</p>
   `;
 }
 
@@ -574,6 +641,8 @@ function updateKependudukanVisualization() {
   layers.rw.eachLayer((layer) => {
     if (layer.rwData) {
       layer.setStyle(getKependudukanStyle(layer.rwData));
+      // Update popup content
+      layer.setPopupContent(getKependudukanPopup(layer.rwData));
     }
   });
 }
