@@ -22,6 +22,87 @@ body {
 
 /* Navbar */
 .navbar {
+  background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+/* Progress Bar */
+.loading-progress {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  z-index: 1040;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.loading-progress.hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.progress-bar-container {
+  height: 3px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+.progress-text {
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+}
+
+/* Layer Status Indicators */
+.layer-status {
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.layer-status .fa-check-circle {
+  color: #10b981;
+}
+
+.layer-status .fa-exclamation-circle {
+  color: #ef4444;
+}
+
+.layer-status .retry-btn {
+  font-size: 11px;
+  padding: 2px 8px;
+  margin-left: 8px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.layer-status .retry-btn:hover {
+  background: #dc2626;
+}
+
+/* Navbar */
+.navbar {
   background: linear-gradient(
     135deg,
     var(--primary) 0%,
@@ -48,11 +129,11 @@ body {
     max-width: calc(100% - 100px) !important;
     padding-right: 10px !important;
   }
-  
+
   .navbar .container-fluid {
     align-items: flex-start !important;
   }
-  
+
   .navbar-toggler {
     margin-top: 0 !important;
   }
@@ -340,7 +421,7 @@ html {
   .leaflet-bottom.leaflet-right {
     display: none !important;
   }
-  
+
   /* Show sidebar legend on mobile */
   #mobileLegend {
     display: block !important;
@@ -353,35 +434,35 @@ html {
   .leaflet-bottom.leaflet-right {
     display: block !important;
   }
-  
+
   /* Hide sidebar legend on tablet/desktop */
   #mobileLegend {
     display: none !important;
   }
 
-/* Tablet and desktop - keep sidebar visible */
-
-@media (min-width: 768px) {
+  /* Tablet and desktop - keep sidebar visible */
   .row {
     margin: 0;
   }
-  
-  .col-lg-3, .col-md-4 {
+
+  .col-lg-3,
+  .col-md-4 {
     height: 100%;
   }
-  
+
   .sidebar {
     display: block !important;
     height: calc(100vh - 56px) !important;
     max-height: calc(100vh - 56px);
     overflow-y: auto !important;
   }
-  
+
   #map {
     height: calc(100vh - 56px) !important;
   }
-  
-  body, html {
+
+  body,
+  html {
     height: 100%;
     overflow: hidden;
   }
@@ -405,29 +486,27 @@ html {
   .modal-dialog {
     margin: 0.5rem auto !important;
   }
-  
+
   .modal-header {
     padding: 0.75rem 1rem !important;
   }
-  
+
   .modal-body {
     padding: 0.75rem 1rem !important;
   }
-  
+
   .modal-footer {
     padding: 0.75rem 1rem !important;
   }
 }
 
-
-
 /* North Arrow Control */
 .leaflet-bar.north-arrow-inner,
 .leaflet-control .north-arrow-inner {
   background: white !important;
-  border: 2px solid rgba(0,0,0,0.2) !important;
+  border: 2px solid rgba(0, 0, 0, 0.2) !important;
   border-radius: 50% !important;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.4) !important;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4) !important;
   width: 50px !important;
   height: 50px !important;
   display: flex !important;
