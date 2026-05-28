@@ -678,20 +678,25 @@ async function loadUMKM() {
 async function loadDesaBoundary() {
   try {
     const data = await apiRequest("/desa/");
-    if (data && data.id_desa) {
-      // Desa boundary is always visible, styled as a simple outline
-      desaBoundary = L.rectangle(
-        [
-          [-6.98, 110.81],
-          [-6.95, 110.85],
-        ],
-        {
+    if (data && data.geometry) {
+      // Parse GeoJSON geometry and render as polygon
+      desaBoundary = L.geoJSON(JSON.parse(data.geometry), {
+        style: {
           color: "#333",
           weight: 3,
           fillOpacity: 0,
           dashArray: "5, 5",
         },
-      ).addTo(map);
+      })
+        .bindPopup(
+          `
+        <h6>${escapeHtml(data.nama_desa || "Desa Prawoto")}</h6>
+        <p><strong>Kecamatan:</strong> ${escapeHtml(data.kecamatan || "-")}</p>
+        <p><strong>Kabupaten:</strong> ${escapeHtml(data.kabupaten || "-")}</p>
+        <p><strong>Luas:</strong> ${data.luas_ha || "-"} ha</p>
+      `,
+        )
+        .addTo(map);
     }
   } catch (error) {
     console.error("Error loading desa boundary:", error);
