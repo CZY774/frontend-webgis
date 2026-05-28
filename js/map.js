@@ -1,5 +1,6 @@
 let map;
 let routingControl;
+let desaBoundary; // Desa boundary layer (always visible)
 let layers = {
   wisata: {},
   fasilitas: {},
@@ -9,6 +10,138 @@ let layers = {
   sungai: L.layerGroup(),
   rw: L.layerGroup(),
 };
+
+// Layer loading state
+const layerState = {
+  desa: "loading",
+  wisata: "loading",
+  fasilitas: "loading",
+  umkm: "loading",
+  kependudukan: "loading",
+  lahan: "loading",
+  jalan: "loading",
+  sungai: "loading",
+  profil: "loading",
+};
+
+const layerNames = [
+  "desa",
+  "wisata",
+  "fasilitas",
+  "umkm",
+  "kependudukan",
+  "lahan",
+  "jalan",
+  "sungai",
+  "profil",
+];
+let loadedCount = 0;
+
+// Update progress bar
+function updateProgress(layerName, status) {
+  layerState[layerName] = status;
+
+  if (status === "loaded") {
+    loadedCount++;
+  }
+
+  const total = layerNames.length;
+  const percentage = (loadedCount / total) * 100;
+
+  // Update progress bar
+  const progressBar = document.getElementById("progressBarFill");
+  const progressText = document.getElementById("progressText");
+
+  if (progressBar) {
+    progressBar.style.width = percentage + "%";
+  }
+
+  if (progressText) {
+    if (loadedCount < total) {
+      const currentLayer =
+        layerName.charAt(0).toUpperCase() + layerName.slice(1);
+      progressText.textContent = `Loading ${currentLayer}... (${loadedCount}/${total})`;
+    } else {
+      progressText.textContent = `All layers loaded (${total}/${total})`;
+      // Hide progress bar after 2 seconds
+      setTimeout(() => {
+        const progressContainer = document.getElementById("loadingProgress");
+        if (progressContainer) {
+          progressContainer.classList.add("hidden");
+        }
+      }, 2000);
+    }
+  }
+
+  // Update sidebar status indicator
+  const statusMap = {
+    wisata: "statusWisata",
+    fasilitas: "statusFasilitas",
+    umkm: "statusUMKM",
+    lahan: "statusLahan",
+    kependudukan: "statusKependudukan",
+  };
+
+  const statusId = statusMap[layerName];
+  if (statusId) {
+    const statusEl = document.getElementById(statusId);
+    if (statusEl) {
+      if (status === "loaded") {
+        statusEl.innerHTML = '<i class="fas fa-check-circle"></i>';
+      } else if (status === "error") {
+        statusEl.innerHTML =
+          '<i class="fas fa-exclamation-circle"></i><button class="retry-btn" onclick="retryLayer(\'' +
+          layerName +
+          "')\">Retry</button>";
+      }
+    }
+  }
+}
+
+// Retry failed layer
+function retryLayer(layerName) {
+  const statusMap = {
+    wisata: "statusWisata",
+    fasilitas: "statusFasilitas",
+    umkm: "statusUMKM",
+    lahan: "statusLahan",
+    kependudukan: "statusKependudukan",
+  };
+
+  const statusId = statusMap[layerName];
+  if (statusId) {
+    const statusEl = document.getElementById(statusId);
+    if (statusEl) {
+      statusEl.innerHTML =
+        '<i class="fas fa-spinner fa-spin text-primary"></i>';
+    }
+  }
+
+  layerState[layerName] = "loading";
+
+  const loadFunctions = {
+    desa: loadDesaBoundary,
+    wisata: loadWisata,
+    fasilitas: loadFasilitas,
+    umkm: loadUMKM,
+    kependudukan: loadKependudukan,
+    lahan: loadLahan,
+    jalan: loadJalan,
+    sungai: loadSungai,
+    profil: loadProfilDesa,
+  };
+
+  const loadFn = loadFunctions[layerName];
+  if (loadFn) {
+    loadFn()
+      .then(() => {
+        updateProgress(layerName, "loaded");
+      })
+      .catch(() => {
+        updateProgress(layerName, "error");
+      });
+  }
+}
 
 // Initialize map
 function initMap() {
@@ -89,12 +222,27 @@ function addMapControls() {
   northArrowControl.onAdd = function () {
     const div = L.DomUtil.create("div", "leaflet-bar leaflet-control");
     div.style.cssText = "background: none; border: none; box-shadow: none;";
-    div.innerHTML = '<div style="background: white; border: 2px solid rgba(0,0,0,0.2); border-radius: 50%; box-shadow: 0 1px 5px rgba(0,0,0,0.4); width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; user-select: none;"><div style="font-size: 24px; font-weight: bold; color: #e74c3c; line-height: 1; margin-bottom: -2px;">▲</div><div style="font-size: 10px; font-weight: bold; color: #333; line-height: 1;">N</div></div>';
+    div.innerHTML =
+      '<div style="background: white; border: 2px solid rgba(0,0,0,0.2); border-radius: 50%; box-shadow: 0 1px 5px rgba(0,0,0,0.4); width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; user-select: none;"><div style="font-size: 24px; font-weight: bold; color: #e74c3c; line-height: 1; margin-bottom: -2px;">▲</div><div style="font-size: 10px; font-weight: bold; color: #333; line-height: 1;">N</div></div>';
     return div;
   };
   northArrowControl.addTo(map);
 
-  // Lahan legend
+  // Navigation control
+  const navControl = L.control({ position: "topright" });
+  navControl.onAdd = function () {
+    const div = L.DomUtil.create("div", "leaflet-bar leaflet-control");
+    div.innerHTML =
+      '<a href="#" title="Navigasi ke Desa Prawoto" style="font-size:18px; line-height:30px; width:30px; height:30px; display:block; text-align:center;"><i class="fas fa-route"></i></a>';
+    div.onclick = function (e) {
+      e.preventDefault();
+      startNavigation();
+    };
+    return div;
+  };
+  navControl.addTo(map);
+
+  // Lahan, Jalan, Sungai legend (always visible)
   const legend = L.control({ position: "bottomright" });
   legend.onAdd = function () {
     const div = L.DomUtil.create("div", "info legend");
@@ -102,7 +250,7 @@ function addMapControls() {
     div.style.padding = "10px";
     div.style.border = "2px solid #ccc";
     div.style.borderRadius = "5px";
-    div.style.maxHeight = "300px";
+    div.style.maxHeight = "400px";
     div.style.overflowY = "auto";
 
     // Disable scroll propagation to map
@@ -131,36 +279,165 @@ function addMapControls() {
       ["Lahan Terbuka (Tanah Kosong)", "#ffffff"],
     ];
 
-    let html =
-      '<h6 style="margin:0 0 5px 0"><strong>Legenda Lahan</strong></h6>';
+    const jalanTypes = [
+      ["Jalan Lokal", "#ff6000"],
+      ["Jalan Lain", "#ff6000"],
+      ["Jalan Setapak", "#ff00ff"],
+      ["Jalan Pematang", "#808080"],
+    ];
+
+    let html = '<h6 style="margin:0 0 5px 0"><strong>Legenda</strong></h6>';
+
+    // Lahan section
+    html +=
+      '<div style="margin-bottom:10px"><strong style="font-size:12px">Penggunaan Lahan:</strong></div>';
     lahanTypes.forEach(([name, color]) => {
       html += `<div style="font-size:11px"><span style="background:${color}; width:15px; height:12px; display:inline-block; margin-right:5px; border:1px solid #999"></span> ${name}</div>`;
     });
+
+    // Jalan section
+    html +=
+      '<div style="margin:10px 0 5px 0"><strong style="font-size:12px">Jalan:</strong></div>';
+    jalanTypes.forEach(([name, color]) => {
+      html += `<div style="font-size:11px"><span style="background:${color}; width:20px; height:3px; display:inline-block; margin-right:5px; border:1px solid #999"></span> ${name}</div>`;
+    });
+
+    // Sungai section
+    html +=
+      '<div style="margin:10px 0 5px 0"><strong style="font-size:12px">Sungai:</strong></div>';
+    html +=
+      '<div style="font-size:11px"><span style="background:#00CED1; width:20px; height:3px; display:inline-block; margin-right:5px; border:1px solid #999"></span> Sungai</div>';
+
     div.innerHTML = html;
     return div;
   };
   legend.addTo(map);
 }
 
+// Navigation function
+function startNavigation() {
+  if (routingControl) {
+    map.removeControl(routingControl);
+    routingControl = null;
+  }
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        const desaLat = -6.963;
+        const desaLng = 110.828;
+
+        routingControl = L.Routing.control({
+          waypoints: [L.latLng(userLat, userLng), L.latLng(desaLat, desaLng)],
+          routeWhileDragging: false,
+          addWaypoints: false,
+          draggableWaypoints: false,
+          fitSelectedRoutes: true,
+          showAlternatives: false,
+          lineOptions: {
+            styles: [{ color: "#3388ff", weight: 6, opacity: 0.7 }],
+          },
+          createMarker: function (i, waypoint, n) {
+            const marker = L.marker(waypoint.latLng, {
+              draggable: false,
+              icon: L.divIcon({
+                html:
+                  i === 0
+                    ? '<i class="fas fa-map-marker-alt" style="color:#3388ff; font-size:24px"></i>'
+                    : '<i class="fas fa-flag-checkered" style="color:#e74c3c; font-size:24px"></i>',
+                className: "route-marker",
+                iconSize: [24, 24],
+                iconAnchor: [12, 24],
+              }),
+            });
+            return marker;
+          },
+        }).addTo(map);
+
+        // Clear route when clicking elsewhere on map
+        map.on("click", function () {
+          if (routingControl) {
+            map.removeControl(routingControl);
+            routingControl = null;
+          }
+        });
+      },
+      (error) => {
+        let errorMsg = "Tidak dapat mengakses lokasi Anda. ";
+        if (error.code === error.PERMISSION_DENIED) {
+          errorMsg += "Izinkan akses lokasi di browser Anda.";
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          errorMsg += "Lokasi tidak tersedia.";
+        } else {
+          errorMsg += "Timeout mendapatkan lokasi.";
+        }
+        alert(errorMsg);
+      },
+    );
+  } else {
+    alert("Browser Anda tidak mendukung geolocation.");
+  }
+}
+
 async function loadAllData() {
-  showLoading(true);
+  // Don't show blocking spinner - use progress bar instead
   try {
-    await Promise.all([
-      loadWisata(),
-      loadFasilitas(),
-      loadUMKM(),
-      loadLahan(),
-      loadJalan(),
-      loadSungai(),
-      loadKependudukan(),
-      loadProfilDesa(),
+    // Load layers in parallel with individual progress tracking
+    const desaPromise = loadDesaBoundary()
+      .then(() => updateProgress("desa", "loaded"))
+      .catch(() => updateProgress("desa", "error"));
+
+    const wisataPromise = loadWisata()
+      .then(() => updateProgress("wisata", "loaded"))
+      .catch(() => updateProgress("wisata", "error"));
+
+    const fasilitasPromise = loadFasilitas()
+      .then(() => updateProgress("fasilitas", "loaded"))
+      .catch(() => updateProgress("fasilitas", "error"));
+
+    const umkmPromise = loadUMKM()
+      .then(() => updateProgress("umkm", "loaded"))
+      .catch(() => updateProgress("umkm", "error"));
+
+    const kependudukanPromise = loadKependudukan()
+      .then(() => updateProgress("kependudukan", "loaded"))
+      .catch(() => updateProgress("kependudukan", "error"));
+
+    const lahanPromise = loadLahan()
+      .then(() => updateProgress("lahan", "loaded"))
+      .catch(() => updateProgress("lahan", "error"));
+
+    const jalanPromise = loadJalan()
+      .then(() => updateProgress("jalan", "loaded"))
+      .catch(() => updateProgress("jalan", "error"));
+
+    const sungaiPromise = loadSungai()
+      .then(() => updateProgress("sungai", "loaded"))
+      .catch(() => updateProgress("sungai", "error"));
+
+    const profilPromise = loadProfilDesa()
+      .then(() => updateProgress("profil", "loaded"))
+      .catch(() => updateProgress("profil", "error"));
+
+    // Wait for all to complete (but UI updates progressively)
+    await Promise.allSettled([
+      desaPromise,
+      wisataPromise,
+      fasilitasPromise,
+      umkmPromise,
+      kependudukanPromise,
+      lahanPromise,
+      jalanPromise,
+      sungaiPromise,
+      profilPromise,
     ]);
+
     buildSearchIndex();
   } catch (error) {
     console.error("Error loading data:", error);
     showError("Gagal memuat data peta");
-  } finally {
-    showLoading(false);
   }
 }
 
@@ -188,7 +465,7 @@ async function loadWisata() {
 
       const marker = L.marker([item.latitude, item.longitude], { icon })
         .bindPopup(`
-        ${item.foto_base64 ? `<img src="${item.foto_base64}" style="width:100%; height:auto; max-height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px; display:block;" alt="${escapeHtml(item.nama)}">` : '<img src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'180\'%3E%3Crect width=\'300\' height=\'180\' fill=\'%23cccccc\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'14\' fill=\'%23666666\'%3EFoto Segera Hadir%3C/text%3E%3C/svg%3E" style="width:100%; height:auto; border-radius:8px; margin-bottom:10px; display:block;" alt="Placeholder">'}
+        ${item.foto_base64 ? `<img src="${item.foto_base64}" style="width:100%; height:auto; max-height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px; display:block;" alt="${escapeHtml(item.nama)}">` : "<img src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='180'%3E%3Crect width='300' height='180' fill='%23cccccc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23666666'%3EFoto Segera Hadir%3C/text%3E%3C/svg%3E\" style=\"width:100%; height:auto; border-radius:8px; margin-bottom:10px; display:block;\" alt=\"Placeholder\">"}
         <h6>${escapeHtml(item.nama)}</h6>
         <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
         ${item.deskripsi ? `<p>${escapeHtml(item.deskripsi)}</p>` : ""}
@@ -397,6 +674,30 @@ async function loadUMKM() {
   }
 }
 
+// Load Desa Boundary (always visible)
+async function loadDesaBoundary() {
+  try {
+    const data = await apiRequest("/desa/");
+    if (data && data.id_desa) {
+      // Desa boundary is always visible, styled as a simple outline
+      desaBoundary = L.rectangle(
+        [
+          [-6.98, 110.81],
+          [-6.95, 110.85],
+        ],
+        {
+          color: "#333",
+          weight: 3,
+          fillOpacity: 0,
+          dashArray: "5, 5",
+        },
+      ).addTo(map);
+    }
+  } catch (error) {
+    console.error("Error loading desa boundary:", error);
+  }
+}
+
 // Load Lahan
 async function loadLahan() {
   try {
@@ -446,7 +747,7 @@ async function loadJalan() {
       layers.jalan.addLayer(line);
     });
 
-    layers.jalan.addTo(map);
+    // Don't add to map by default - user must enable via checkbox
   } catch (error) {
     console.error("Error loading jalan:", error);
   }
@@ -471,7 +772,7 @@ async function loadSungai() {
       layers.sungai.addLayer(line);
     });
 
-    layers.sungai.addTo(map);
+    // Don't add to map by default - user must enable via checkbox
   } catch (error) {
     console.error("Error loading sungai:", error);
   }
@@ -528,35 +829,41 @@ function getKependudukanPopup(item) {
   // For filtered modes, show only the selected attribute
   let attr = "";
   let label = "";
-  
+
   if (kependudukanMode === "umur") {
-    attr = document.querySelector('input[name="umurAttr"]:checked')?.value || "anak_anak";
+    attr =
+      document.querySelector('input[name="umurAttr"]:checked')?.value ||
+      "anak_anak";
     const labels = {
       anak_anak: "Anak-anak (<15 tahun)",
       produktif: "Produktif (15-64 tahun)",
-      lansia: "Lansia (>64 tahun)"
+      lansia: "Lansia (>64 tahun)",
     };
     label = labels[attr] || attr;
   } else if (kependudukanMode === "pendidikan") {
-    attr = document.querySelector('input[name="pendidikanAttr"]:checked')?.value || "tidak_sekolah";
+    attr =
+      document.querySelector('input[name="pendidikanAttr"]:checked')?.value ||
+      "tidak_sekolah";
     const labels = {
       tidak_sekolah: "Tidak/Belum Sekolah",
       tidak_tamat_sd: "Tidak Tamat SD",
       tamat_sd: "Tamat SD",
       sltp: "SLTP",
       slta: "SLTA",
-      diploma_s1: "Diploma/S1"
+      diploma_s1: "Diploma/S1",
     };
     label = labels[attr] || attr;
   } else if (kependudukanMode === "pekerjaan") {
-    attr = document.querySelector('input[name="pekerjaanAttr"]:checked')?.value || "belum_bekerja";
+    attr =
+      document.querySelector('input[name="pekerjaanAttr"]:checked')?.value ||
+      "belum_bekerja";
     const labels = {
       belum_bekerja: "Belum/Tidak Bekerja",
       pelajar: "Pelajar/Mahasiswa",
       mengurus_rt: "Mengurus RT",
       wiraswasta: "Wiraswasta",
       petani: "Petani/Pekebun",
-      lainnya: "Lainnya"
+      lainnya: "Lainnya",
     };
     label = labels[attr] || attr;
   }
