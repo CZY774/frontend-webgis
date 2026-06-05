@@ -524,9 +524,13 @@ async function loadKependudukanData() {
     tbody.innerHTML = "";
 
     data.forEach((item) => {
+      const areaLabel =
+        item.nomor_rt !== undefined && item.nomor_rt !== null
+          ? `RT ${item.nomor_rt} / RW ${item.nomor_rw}`
+          : `RW ${item.nomor_rw}`;
       const row = `
         <tr>
-          <td>RW ${item.nomor_rw}</td>
+          <td>${areaLabel}</td>
           <td>${item.jumlah_warga}</td>
           <td>${item.laki_laki}</td>
           <td>${item.perempuan}</td>
