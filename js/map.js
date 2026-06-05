@@ -1,6 +1,7 @@
 let map;
 let routingControl;
 let desaBoundary; // Desa boundary layer (always visible)
+let mapLegendControl = null;
 let layers = {
   wisata: {},
   fasilitas: {},
@@ -9,6 +10,80 @@ let layers = {
   jalan: L.layerGroup(),
   sungai: L.layerGroup(),
   rw: L.layerGroup(),
+};
+
+const layerLegendState = {
+  wisata: false,
+  fasilitas: false,
+  umkm: false,
+  lahan: false,
+};
+
+const legendConfig = {
+  wisata: {
+    title: "Wisata",
+    items: [
+      { label: "Wisata Alam", color: "#10b981", icon: "fa-tree" },
+      { label: "Wisata Religi", color: "#ef4444", icon: "fa-mosque" },
+    ],
+  },
+  fasilitas: {
+    title: "Fasilitas Umum",
+    items: [
+      { label: "Pendidikan", color: "#3b82f6", icon: "fa-graduation-cap" },
+      { label: "Kesehatan", color: "#ef4444", icon: "fa-hospital" },
+      { label: "Pemerintahan", color: "#8b5cf6", icon: "fa-landmark" },
+      { label: "Sosial Umum", color: "#6b7280", icon: "fa-building" },
+      { label: "Keagamaan", color: "#10b981", icon: "fa-mosque" },
+      { label: "Olahraga", color: "#f59e0b", icon: "fa-futbol" },
+    ],
+  },
+  umkm: {
+    title: "UMKM",
+    items: [
+      { label: "Kuliner", color: "#ef4444", icon: "fa-utensils" },
+      { label: "Fashion", color: "#ec4899", icon: "fa-tshirt" },
+      { label: "Kosmetik", color: "#f472b6", icon: "fa-spray-can" },
+      { label: "Kelontong", color: "#f59e0b", icon: "fa-shopping-basket" },
+      { label: "Salon", color: "#a855f7", icon: "fa-cut" },
+      { label: "Fotokopi", color: "#6366f1", icon: "fa-copy" },
+      { label: "Carwash", color: "#06b6d4", icon: "fa-car" },
+      { label: "Bengkel", color: "#64748b", icon: "fa-wrench" },
+      { label: "Isi Ulang", color: "#0ea5e9", icon: "fa-tint" },
+      { label: "Penjahit", color: "#8b5cf6", icon: "fa-scissors" },
+      { label: "Pertanian", color: "#10b981", icon: "fa-seedling" },
+      { label: "Ternak Ayam", color: "#f59e0b", icon: "fa-egg" },
+      { label: "Ternak Sapi", color: "#78716c", icon: "fa-cow" },
+      { label: "Paket Data", color: "#3b82f6", icon: "fa-mobile-alt" },
+      { label: "Toko Bangunan", color: "#f97316", icon: "fa-hammer" },
+      { label: "Elektronik", color: "#eab308", icon: "fa-plug" },
+      { label: "ATK", color: "#6366f1", icon: "fa-pen" },
+    ],
+  },
+  lahan: {
+    title: "Penggunaan Lahan",
+    items: [
+      { label: "Tempat Tinggal", color: "#ffccbf" },
+      { label: "Perkarangan", color: "#d1d1d1" },
+      { label: "Perkantoran", color: "#c6997a" },
+      { label: "Pendidikan", color: "#ddcca0" },
+      { label: "Perdagangan dan Jasa", color: "#ffc9d6" },
+      { label: "Industri dan Pergudangan", color: "#ffaf84" },
+      { label: "Peribadatan", color: "#a5a0ba" },
+      { label: "Kesehatan", color: "#e8b5bf" },
+      { label: "Olahraga", color: "#edcc7c" },
+      { label: "Tempat Menarik/Pariwisata", color: "#c993e8" },
+      { label: "Pemakaman", color: "#8e8e8e" },
+      { label: "Perikanan Air Tawar", color: "#bab5ff" },
+      { label: "Peternakan", color: "#c6af00" },
+      { label: "Hutan", color: "#c6e0af" },
+      { label: "Hutan Rimba", color: "#96d67c" },
+      { label: "Sawah", color: "#99ffff" },
+      { label: "Ladang", color: "#ffff99" },
+      { label: "Vegetasi Non Budidaya Lainnya", color: "#89ed96" },
+      { label: "Lahan Terbuka (Tanah Kosong)", color: "#ffffff" },
+    ],
+  },
 };
 
 // Layer loading state
@@ -241,10 +316,75 @@ function addMapControls() {
     return div;
   };
   navControl.addTo(map);
+}
 
-  // Lahan, Jalan, Sungai legend (always visible)
-  const legend = L.control({ position: "bottomright" });
-  legend.onAdd = function () {
+function displayValue(value) {
+  if (value === null || value === undefined || value === "") return "-";
+  return escapeHtml(String(value));
+}
+
+function buildAttributePopup(title, rows, imageHtml = "") {
+  const tableRows = rows
+    .map(
+      ([label, value]) => `
+        <tr>
+          <th>${escapeHtml(label)}</th>
+          <td>${displayValue(value)}</td>
+        </tr>`,
+    )
+    .join("");
+
+  return `
+    <div class="attribute-popup">
+      ${imageHtml}
+      <h6>${escapeHtml(title)}</h6>
+      <table>
+        <tbody>${tableRows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function buildPhotoHtml(item) {
+  if (item.foto_base64) {
+    return `<img src="${item.foto_base64}" class="popup-photo" alt="${escapeHtml(item.nama)}">`;
+  }
+
+  return '<div class="popup-photo popup-photo-placeholder">Foto Segera Hadir</div>';
+}
+
+function markerIcon(iconClass, iconColor, iconSize = 32) {
+  return L.divIcon({
+    html: `<div style="background:${iconColor}; width:${iconSize}px; height:${iconSize}px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 2px 4px rgba(0,0,0,0.3)"><i class="fas ${iconClass}" style="color:white; font-size:${iconSize === 32 ? 14 : 16}px"></i></div>`,
+    className: "custom-marker",
+    iconSize: [iconSize, iconSize],
+    iconAnchor: [iconSize / 2, iconSize / 2],
+  });
+}
+
+function setMarkerSearchData(marker, data) {
+  marker.searchData = data;
+  return marker;
+}
+
+function updateLayerLegend(layerName, active) {
+  layerLegendState[layerName] = active;
+  renderLegends();
+}
+
+function renderLegends() {
+  if (mapLegendControl) {
+    map.removeControl(mapLegendControl);
+    mapLegendControl = null;
+  }
+
+  const activeNames = Object.keys(layerLegendState).filter(
+    (name) => layerLegendState[name],
+  );
+  if (!activeNames.length) return;
+
+  mapLegendControl = L.control({ position: "bottomright" });
+  mapLegendControl.onAdd = function () {
     const div = L.DomUtil.create("div", "info legend");
     div.style.background = "white";
     div.style.padding = "10px";
@@ -253,65 +393,64 @@ function addMapControls() {
     div.style.maxHeight = "400px";
     div.style.overflowY = "auto";
 
-    // Disable scroll propagation to map
     L.DomEvent.disableScrollPropagation(div);
     L.DomEvent.disableClickPropagation(div);
 
-    const lahanTypes = [
-      ["Tempat Tinggal", "#ffccbf"],
-      ["Perkarangan", "#d1d1d1"],
-      ["Perkantoran", "#c6997a"],
-      ["Pendidikan", "#ddcca0"],
-      ["Perdagangan dan Jasa", "#ffc9d6"],
-      ["Industri dan Pergudangan", "#ffaf84"],
-      ["Peribadatan", "#a5a0ba"],
-      ["Kesehatan", "#e8b5bf"],
-      ["Olahraga", "#edcc7c"],
-      ["Tempat Menarik/Pariwisata", "#c993e8"],
-      ["Pemakaman", "#8e8e8e"],
-      ["Perikanan Air Tawar", "#bab5ff"],
-      ["Peternakan", "#c6af00"],
-      ["Hutan", "#c6e0af"],
-      ["Hutan Rimba", "#96d67c"],
-      ["Sawah", "#99ffff"],
-      ["Ladang", "#ffff99"],
-      ["Vegetasi Non Budidaya Lainnya", "#89ed96"],
-      ["Lahan Terbuka (Tanah Kosong)", "#ffffff"],
-    ];
-
-    const jalanTypes = [
-      ["Jalan Lokal", "#ff6000"],
-      ["Jalan Lain", "#ff6000"],
-      ["Jalan Setapak", "#ff00ff"],
-      ["Jalan Pematang", "#808080"],
-    ];
-
-    let html = '<h6 style="margin:0 0 5px 0"><strong>Legenda</strong></h6>';
-
-    // Lahan section
-    html +=
-      '<div style="margin-bottom:10px"><strong style="font-size:12px">Penggunaan Lahan:</strong></div>';
-    lahanTypes.forEach(([name, color]) => {
-      html += `<div style="font-size:11px"><span style="background:${color}; width:15px; height:12px; display:inline-block; margin-right:5px; border:1px solid #999"></span> ${name}</div>`;
-    });
-
-    // Jalan section
-    html +=
-      '<div style="margin:10px 0 5px 0"><strong style="font-size:12px">Jalan:</strong></div>';
-    jalanTypes.forEach(([name, color]) => {
-      html += `<div style="font-size:11px"><span style="background:${color}; width:20px; height:3px; display:inline-block; margin-right:5px; border:1px solid #999"></span> ${name}</div>`;
-    });
-
-    // Sungai section
-    html +=
-      '<div style="margin:10px 0 5px 0"><strong style="font-size:12px">Sungai:</strong></div>';
-    html +=
-      '<div style="font-size:11px"><span style="background:#00CED1; width:20px; height:3px; display:inline-block; margin-right:5px; border:1px solid #999"></span> Sungai</div>';
-
-    div.innerHTML = html;
+    div.innerHTML = activeNames
+      .map((name) => buildLegendSection(legendConfig[name]))
+      .join("");
     return div;
   };
-  legend.addTo(map);
+  mapLegendControl.addTo(map);
+}
+
+function buildLegendSection(config) {
+  const items = config.items
+    .map((item) => {
+      if (item.icon) {
+        return `<div class="legend-item"><span class="legend-marker" style="background:${item.color}"><i class="fas ${item.icon}"></i></span>${escapeHtml(item.label)}</div>`;
+      }
+
+      return `<div class="legend-item"><span class="legend-swatch" style="background:${item.color}"></span>${escapeHtml(item.label)}</div>`;
+    })
+    .join("");
+
+  return `<div class="legend-section"><h6>${escapeHtml(config.title)}</h6>${items}</div>`;
+}
+
+function isAnyLayerActive(layerMap) {
+  return Object.values(layerMap).some((layerGroup) => map.hasLayer(layerGroup));
+}
+
+function ensureSearchLayerVisible(item) {
+  if (item.layerGroup && !map.hasLayer(item.layerGroup)) {
+    map.addLayer(item.layerGroup);
+  }
+
+  if (item.layerType === "wisata") {
+    const checkboxId = item.category === "alam" ? "wisataAlam" : "wisataReligi";
+    const checkbox = document.getElementById(checkboxId);
+    if (checkbox) checkbox.checked = true;
+    updateLayerLegend("wisata", true);
+  } else if (item.layerType === "fasilitas") {
+    const checkbox = document.getElementById(
+      "fas" + item.category.charAt(0).toUpperCase() + item.category.slice(1),
+    );
+    if (checkbox) checkbox.checked = true;
+    updateLayerLegend("fasilitas", true);
+  } else if (item.layerType === "umkm") {
+    const checkbox = document.getElementById(umkmIdMap[item.category]);
+    if (checkbox) checkbox.checked = true;
+    updateLayerLegend("umkm", true);
+  }
+}
+
+function formatNumber(value, decimals = 0) {
+  const number = Number(value || 0);
+  return number.toLocaleString("id-ID", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
 }
 
 // Navigation function
@@ -456,22 +595,50 @@ async function loadWisata() {
       const iconClass = category === "alam" ? "fa-tree" : "fa-mosque";
       const iconColor = category === "alam" ? "#10b981" : "#ef4444";
 
-      const icon = L.divIcon({
-        html: `<div style="background:${iconColor}; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 2px 4px rgba(0,0,0,0.3)"><i class="fas ${iconClass}" style="color:white; font-size:16px"></i></div>`,
-        className: "custom-marker",
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-      });
+      const layerGroup = layers.wisata[category];
+      const marker = setMarkerSearchData(
+        L.marker([item.latitude, item.longitude], {
+          icon: markerIcon(iconClass, iconColor),
+        }).bindPopup(
+          buildAttributePopup(
+            item.nama,
+            [
+              ["Nama", item.nama],
+              ["Jenis", item.jenis],
+              ["Deskripsi", item.deskripsi],
+              ["Lokasi", item.lokasi],
+              ["Tarif", item.tarif],
+              ["Fasilitas", item.fasilitas],
+              ["Cagar Budaya", item.cagar_budaya],
+            ],
+            buildPhotoHtml(item),
+          ),
+        ),
+        {
+          name: item.nama,
+          type: "Wisata",
+          layerType: "wisata",
+          category,
+          layerGroup,
+          marker: null,
+          searchableText: [
+            item.nama,
+            item.jenis,
+            category === "alam" ? "wisata alam" : "wisata religi religi",
+            item.deskripsi,
+            item.lokasi,
+            item.tarif,
+            item.fasilitas,
+            item.cagar_budaya,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase(),
+        },
+      );
+      marker.searchData.marker = marker;
 
-      const marker = L.marker([item.latitude, item.longitude], { icon })
-        .bindPopup(`
-        ${item.foto_base64 ? `<img src="${item.foto_base64}" style="width:100%; height:auto; max-height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px; display:block;" alt="${escapeHtml(item.nama)}">` : "<img src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='180'%3E%3Crect width='300' height='180' fill='%23cccccc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23666666'%3EFoto Segera Hadir%3C/text%3E%3C/svg%3E\" style=\"width:100%; height:auto; border-radius:8px; margin-bottom:10px; display:block;\" alt=\"Placeholder\">"}
-        <h6>${escapeHtml(item.nama)}</h6>
-        <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
-        ${item.deskripsi ? `<p>${escapeHtml(item.deskripsi)}</p>` : ""}
-      `);
-
-      layers.wisata[category].addLayer(marker);
+      layerGroup.addLayer(marker);
     });
 
     // Don't add to map by default - let user enable via checkbox
@@ -511,7 +678,11 @@ async function loadFasilitas() {
         category = "pemerintahan";
         iconClass = "fa-landmark";
         iconColor = "#8b5cf6";
-      } else if (jenis === "Peribadatan") {
+      } else if (
+        jenis === "Peribadatan" ||
+        jenis === "Keagamaan" ||
+        jenis === "Kegamaan"
+      ) {
         category = "keagamaan";
         iconClass = "fa-mosque";
         iconColor = "#10b981";
@@ -525,20 +696,43 @@ async function loadFasilitas() {
         iconColor = "#6b7280";
       }
 
-      const icon = L.divIcon({
-        html: `<div style="background:${iconColor}; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 2px 4px rgba(0,0,0,0.3)"><i class="fas ${iconClass}" style="color:white; font-size:14px"></i></div>`,
-        className: "custom-marker",
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-      });
+      const layerGroup = layers.fasilitas[category];
+      const marker = setMarkerSearchData(
+        L.marker([item.latitude, item.longitude], {
+          icon: markerIcon(iconClass, iconColor),
+        }).bindPopup(
+          buildAttributePopup(item.nama, [
+            ["Nama", item.nama],
+            ["Jenis", item.jenis],
+            ["Deskripsi", item.deskripsi],
+            ["Lokasi", item.lokasi],
+            ["Jam Operasional", item.jam_operasional],
+            ["Fasilitas Pendukung", item.fasilitas_pendukung],
+          ]),
+        ),
+        {
+          name: item.nama,
+          type: "Fasilitas",
+          layerType: "fasilitas",
+          category,
+          layerGroup,
+          marker: null,
+          searchableText: [
+            item.nama,
+            item.jenis,
+            item.deskripsi,
+            item.lokasi,
+            item.jam_operasional,
+            item.fasilitas_pendukung,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase(),
+        },
+      );
+      marker.searchData.marker = marker;
 
-      const marker = L.marker([item.latitude, item.longitude], { icon })
-        .bindPopup(`
-        <h6>${escapeHtml(item.nama)}</h6>
-        <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
-      `);
-
-      layers.fasilitas[category].addLayer(marker);
+      layerGroup.addLayer(marker);
     });
 
     // Don't add to map by default
@@ -650,21 +844,46 @@ async function loadUMKM() {
         iconColor = "#6366f1";
       }
 
-      const icon = L.divIcon({
-        html: `<div style="background:${iconColor}; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 2px 4px rgba(0,0,0,0.3)"><i class="fas ${iconClass}" style="color:white; font-size:14px"></i></div>`,
-        className: "custom-marker",
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-      });
+      const layerGroup = layers.umkm[category];
+      const marker = setMarkerSearchData(
+        L.marker([item.latitude, item.longitude], {
+          icon: markerIcon(iconClass, iconColor),
+        }).bindPopup(
+          buildAttributePopup(item.nama, [
+            ["Nama", item.nama],
+            ["Jenis", item.jenis],
+            ["Pemilik", item.pemilik],
+            ["Lokasi", item.lokasi],
+            ["Produk", item.produk],
+            ["Jam Operasional", item.jam_operasional],
+            ["Fasilitas Pendukung", item.fasilitas_pendukung],
+          ]),
+        ),
+        {
+          name: item.nama,
+          type: "UMKM",
+          layerType: "umkm",
+          category,
+          layerGroup,
+          marker: null,
+          searchableText: [
+            item.nama,
+            item.jenis,
+            item.pemilik,
+            item.lokasi,
+            item.produk,
+            item.jam_operasional,
+            item.fasilitas_pendukung,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase(),
+        },
+      );
+      marker.searchData.marker = marker;
 
-      const marker = L.marker([item.latitude, item.longitude], { icon })
-        .bindPopup(`
-        <h6>${escapeHtml(item.nama)}</h6>
-        <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
-      `);
-
-      if (layers.umkm[category]) {
-        layers.umkm[category].addLayer(marker);
+      if (layerGroup) {
+        layerGroup.addLayer(marker);
       }
     });
 
@@ -689,12 +908,16 @@ async function loadDesaBoundary() {
         },
       })
         .bindPopup(
-          `
-        <h6>${escapeHtml(data.nama_desa || "Desa Prawoto")}</h6>
-        <p><strong>Kecamatan:</strong> ${escapeHtml(data.kecamatan || "-")}</p>
-        <p><strong>Kabupaten:</strong> ${escapeHtml(data.kabupaten || "-")}</p>
-        <p><strong>Luas:</strong> ${data.luas_ha || "-"} ha</p>
-      `,
+          buildAttributePopup(data.nama_desa || "Desa Prawoto", [
+            ["Nama Desa", data.nama_desa || "Desa Prawoto"],
+            ["Kecamatan", data.kecamatan],
+            ["Kabupaten", data.kabupaten],
+            ["Provinsi", data.provinsi],
+            [
+              "Luas",
+              data.luas_ha ? `${formatNumber(data.luas_ha, 2)} ha` : "-",
+            ],
+          ]),
         )
         .addTo(map);
     }
@@ -716,10 +939,12 @@ async function loadLahan() {
           weight: 1,
           fillOpacity: 1.0,
         },
-      }).bindPopup(`
-        <h6>Lahan ${escapeHtml(item.jenis_lahan)}</h6>
-        <p><strong>Luas:</strong> ${item.luas_ha} Ha</p>
-      `);
+      }).bindPopup(
+        buildAttributePopup(`Lahan ${item.jenis_lahan}`, [
+          ["Jenis Lahan", item.jenis_lahan],
+          ["Luas", `${formatNumber(item.luas_ha, 2)} ha`],
+        ]),
+      );
       layers.lahan.addLayer(polygon);
     });
 
@@ -743,12 +968,14 @@ async function loadJalan() {
           weight: item.jenis === "lokal" ? 3 : item.jenis === "setapak" ? 1 : 2,
           opacity: 0.7,
         },
-      }).bindPopup(`
-        <h6>${escapeHtml(item.nama_jalan || "Jalan")}</h6>
-        <p><strong>Jenis:</strong> ${escapeHtml(item.jenis)}</p>
-        <p><strong>Permukaan:</strong> ${escapeHtml(item.permukaan || "-")}</p>
-        <p><strong>Lebar:</strong> ${item.lebar_m || "-"} m</p>
-      `);
+      }).bindPopup(
+        buildAttributePopup(item.nama_jalan || "Jalan", [
+          ["Nama Jalan", item.nama_jalan || "Jalan"],
+          ["Jenis", item.jenis],
+          ["Permukaan", item.permukaan],
+          ["Lebar", item.lebar_m ? `${formatNumber(item.lebar_m, 2)} m` : "-"],
+        ]),
+      );
       layers.jalan.addLayer(line);
     });
 
@@ -771,9 +998,11 @@ async function loadSungai() {
           weight: 2,
           opacity: 0.7,
         },
-      }).bindPopup(`
-        <h6>${escapeHtml(item.nama_sungai || "Sungai")}</h6>
-      `);
+      }).bindPopup(
+        buildAttributePopup(item.nama_sungai || "Sungai", [
+          ["Nama Sungai", item.nama_sungai || "Sungai"],
+        ]),
+      );
       layers.sungai.addLayer(line);
     });
 
@@ -822,13 +1051,13 @@ async function loadProfilDesa() {
 
 function getKependudukanPopup(item) {
   if (kependudukanMode === "basic") {
-    return `
-      <h6>RW ${item.nomor_rw}</h6>
-      <p><strong>Jumlah KK:</strong> ${item.jumlah_kk || 0}</p>
-      <p><strong>Jumlah Warga:</strong> ${item.jumlah_warga || 0}</p>
-      <p><strong>Laki-laki:</strong> ${item.laki_laki || 0}</p>
-      <p><strong>Perempuan:</strong> ${item.perempuan || 0}</p>
-    `;
+    return buildAttributePopup(getKependudukanAreaLabel(item), [
+      ["Wilayah", getKependudukanAreaLabel(item)],
+      ["Jumlah KK", formatNumber(item.jumlah_kk || 0)],
+      ["Jumlah Warga", formatNumber(item.jumlah_warga || 0)],
+      ["Laki-laki", formatNumber(item.laki_laki || 0)],
+      ["Perempuan", formatNumber(item.perempuan || 0)],
+    ]);
   }
 
   // For filtered modes, show only the selected attribute
@@ -874,10 +1103,18 @@ function getKependudukanPopup(item) {
   }
 
   const value = item[attr] || 0;
-  return `
-    <h6>RW ${item.nomor_rw}</h6>
-    <p><strong>${label}:</strong> ${value} orang</p>
-  `;
+  return buildAttributePopup(getKependudukanAreaLabel(item), [
+    ["Wilayah", getKependudukanAreaLabel(item)],
+    [label, `${formatNumber(value)} orang`],
+  ]);
+}
+
+function getKependudukanAreaLabel(item) {
+  if (item.nomor_rt !== undefined && item.nomor_rt !== null) {
+    return `RT ${item.nomor_rt} / RW ${item.nomor_rw}`;
+  }
+
+  return `RW ${item.nomor_rw}`;
 }
 
 function getKependudukanStyle(item) {
@@ -1000,12 +1237,14 @@ document.getElementById("wisataAlam").addEventListener("change", (e) => {
   e.target.checked
     ? map.addLayer(layers.wisata.alam)
     : map.removeLayer(layers.wisata.alam);
+  updateLayerLegend("wisata", isAnyLayerActive(layers.wisata));
 });
 
 document.getElementById("wisataReligi").addEventListener("change", (e) => {
   e.target.checked
     ? map.addLayer(layers.wisata.religi)
     : map.removeLayer(layers.wisata.religi);
+  updateLayerLegend("wisata", isAnyLayerActive(layers.wisata));
 });
 
 [
@@ -1023,6 +1262,7 @@ document.getElementById("wisataReligi").addEventListener("change", (e) => {
       e.target.checked
         ? map.addLayer(layers.fasilitas[cat])
         : map.removeLayer(layers.fasilitas[cat]);
+      updateLayerLegend("fasilitas", isAnyLayerActive(layers.fasilitas));
     });
   }
 });
@@ -1054,6 +1294,7 @@ Object.keys(umkmIdMap).forEach((cat) => {
       e.target.checked
         ? map.addLayer(layers.umkm[cat])
         : map.removeLayer(layers.umkm[cat]);
+      updateLayerLegend("umkm", isAnyLayerActive(layers.umkm));
     });
   }
 });
@@ -1064,56 +1305,26 @@ let searchIndex = [];
 function buildSearchIndex() {
   searchIndex = [];
 
-  // Add Wisata
   Object.values(layers.wisata).forEach((layerGroup) => {
     layerGroup.eachLayer((marker) => {
-      const popup = marker.getPopup();
-      if (popup) {
-        const content = popup.getContent();
-        const nameMatch = content.match(/<h6>(.*?)<\/h6>/);
-        if (nameMatch) {
-          searchIndex.push({
-            name: nameMatch[1],
-            type: "Wisata",
-            marker: marker,
-          });
-        }
+      if (marker.searchData) {
+        searchIndex.push(marker.searchData);
       }
     });
   });
 
-  // Add Fasilitas
   Object.values(layers.fasilitas).forEach((layerGroup) => {
     layerGroup.eachLayer((marker) => {
-      const popup = marker.getPopup();
-      if (popup) {
-        const content = popup.getContent();
-        const nameMatch = content.match(/<h6>(.*?)<\/h6>/);
-        if (nameMatch) {
-          searchIndex.push({
-            name: nameMatch[1],
-            type: "Fasilitas",
-            marker: marker,
-          });
-        }
+      if (marker.searchData) {
+        searchIndex.push(marker.searchData);
       }
     });
   });
 
-  // Add UMKM
   Object.values(layers.umkm).forEach((layerGroup) => {
     layerGroup.eachLayer((marker) => {
-      const popup = marker.getPopup();
-      if (popup) {
-        const content = popup.getContent();
-        const nameMatch = content.match(/<h6>(.*?)<\/h6>/);
-        if (nameMatch) {
-          searchIndex.push({
-            name: nameMatch[1],
-            type: "UMKM",
-            marker: marker,
-          });
-        }
+      if (marker.searchData) {
+        searchIndex.push(marker.searchData);
       }
     });
   });
@@ -1127,14 +1338,14 @@ searchInput.parentElement.style.position = "relative";
 searchInput.parentElement.appendChild(searchResults);
 
 searchInput.addEventListener("input", (e) => {
-  const query = e.target.value.toLowerCase();
+  const query = e.target.value.trim().toLowerCase();
   if (query.length < 2) {
     searchResults.style.display = "none";
     return;
   }
 
   const matches = searchIndex
-    .filter((item) => item.name.toLowerCase().includes(query))
+    .filter((item) => item.searchableText.includes(query))
     .slice(0, 10);
 
   if (matches.length === 0) {
@@ -1155,6 +1366,7 @@ searchInput.addEventListener("input", (e) => {
   searchResults.querySelectorAll("div").forEach((div, idx) => {
     div.onclick = () => {
       const item = matches[idx];
+      ensureSearchLayerVisible(item);
       const latlng = item.marker.getLatLng();
       map.setView(latlng, 17);
       item.marker.openPopup();
@@ -1172,6 +1384,7 @@ document.addEventListener("click", (e) => {
 
 document.getElementById("showLahan").addEventListener("change", (e) => {
   e.target.checked ? map.addLayer(layers.lahan) : map.removeLayer(layers.lahan);
+  updateLayerLegend("lahan", e.target.checked);
 });
 
 document.getElementById("showJalan").addEventListener("change", (e) => {
