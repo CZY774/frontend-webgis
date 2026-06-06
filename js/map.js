@@ -17,6 +17,8 @@ const layerLegendState = {
   fasilitas: false,
   umkm: false,
   lahan: false,
+  jalan: false,
+  sungai: false,
 };
 
 const legendConfig = {
@@ -83,6 +85,19 @@ const legendConfig = {
       { label: "Vegetasi Non Budidaya Lainnya", color: "#89ed96" },
       { label: "Lahan Terbuka (Tanah Kosong)", color: "#ffffff" },
     ],
+  },
+  jalan: {
+    title: "Jalan",
+    items: [
+      { label: "Jalan Lokal", color: "#FF6347", line: true },
+      { label: "Jalan Lain", color: "#FFA500", line: true },
+      { label: "Jalan Setapak", color: "#A9A9A9", line: true },
+      { label: "Jalan Pematang", color: "#8B4513", line: true },
+    ],
+  },
+  sungai: {
+    title: "Sungai",
+    items: [{ label: "Sungai", color: "#00CED1", line: true }],
   },
 };
 
@@ -390,7 +405,6 @@ function renderLegends() {
     div.style.padding = "10px";
     div.style.border = "2px solid #ccc";
     div.style.borderRadius = "5px";
-    div.style.maxHeight = "400px";
     div.style.overflowY = "auto";
 
     L.DomEvent.disableScrollPropagation(div);
@@ -409,6 +423,9 @@ function buildLegendSection(config) {
     .map((item) => {
       if (item.icon) {
         return `<div class="legend-item"><span class="legend-marker" style="background:${item.color}"><i class="fas ${item.icon}"></i></span>${escapeHtml(item.label)}</div>`;
+      }
+      if (item.line) {
+        return `<div class="legend-item"><span class="legend-line" style="background:${item.color}"></span>${escapeHtml(item.label)}</div>`;
       }
 
       return `<div class="legend-item"><span class="legend-swatch" style="background:${item.color}"></span>${escapeHtml(item.label)}</div>`;
@@ -1389,12 +1406,14 @@ document.getElementById("showLahan").addEventListener("change", (e) => {
 
 document.getElementById("showJalan").addEventListener("change", (e) => {
   e.target.checked ? map.addLayer(layers.jalan) : map.removeLayer(layers.jalan);
+  updateLayerLegend("jalan", e.target.checked);
 });
 
 document.getElementById("showSungai").addEventListener("change", (e) => {
   e.target.checked
     ? map.addLayer(layers.sungai)
     : map.removeLayer(layers.sungai);
+  updateLayerLegend("sungai", e.target.checked);
 });
 
 document.getElementById("showKependudukan").addEventListener("change", (e) => {
