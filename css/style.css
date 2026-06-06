@@ -348,6 +348,18 @@ body {
   flex: 0 0 auto;
 }
 
+.info.legend {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.info.legend .legend-line {
+  width: 22px;
+  height: 4px;
+  border: 1px solid #999;
+  flex: 0 0 auto;
+}
+
 /* Buttons */
 .btn-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
@@ -515,29 +527,33 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Mobile legend repositioning */
+/* Mobile legend sizing */
 @media (max-width: 767px) {
-  /* Hide map legend on mobile */
-  .leaflet-bottom.leaflet-right {
-    display: none !important;
+  .leaflet-bottom.leaflet-right .info.legend {
+    display: block !important;
+    max-width: min(210px, calc(100vw - 32px));
+    max-height: clamp(84px, 16vh, 100px);
+    padding: 8px;
+    font-size: 10px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
-  /* Show sidebar legend on mobile */
-  #mobileLegend {
-    display: block !important;
+  .info.legend .legend-section h6 {
+    font-size: 11px;
+  }
+
+  .info.legend .legend-item {
+    font-size: 10px;
+    margin-bottom: 3px;
   }
 }
 
 /* Tablet and desktop - keep sidebar visible */
 @media (min-width: 768px) {
   /* Show map legend on tablet/desktop */
-  .leaflet-bottom.leaflet-right {
+  .leaflet-bottom.leaflet-right .info.legend {
     display: block !important;
-  }
-
-  /* Hide sidebar legend on tablet/desktop */
-  #mobileLegend {
-    display: none !important;
   }
 
   /* Tablet and desktop - keep sidebar visible */
