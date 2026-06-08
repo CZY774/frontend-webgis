@@ -353,6 +353,10 @@ body {
   overflow-y: auto;
 }
 
+.info.legend.administrative-legend {
+  max-height: 160px;
+}
+
 .info.legend .legend-line {
   width: 22px;
   height: 4px;
@@ -544,6 +548,10 @@ html {
     font-size: 10px;
     overflow-y: auto;
     overscroll-behavior: contain;
+  }
+
+  .leaflet-bottom.leaflet-right .info.legend.administrative-legend {
+    max-height: clamp(48px, 12vh, 72px);
   }
 
   .info.legend .legend-section h6 {
