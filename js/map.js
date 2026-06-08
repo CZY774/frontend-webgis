@@ -1,7 +1,8 @@
 let map;
 let routingControl;
 let desaBoundary; // Desa boundary layer (always visible)
-let mapLegendControl = null;
+let administrativeLegendControl = null;
+let layerLegendControl = null;
 let layers = {
   wisata: {},
   fasilitas: {},
@@ -271,7 +272,9 @@ function initMap() {
 
   // Add map controls
   addMapControls();
-  renderLegends();
+  syncInitialLegendState();
+  renderAdministrativeLegend();
+  renderLayerLegends();
 
   // Load all data
   loadAllData();
@@ -384,28 +387,26 @@ function setMarkerSearchData(marker, data) {
   return marker;
 }
 
-function updateLayerLegend(layerName, active) {
-  layerLegendState[layerName] = active;
-  renderLegends();
+function syncInitialLegendState() {
+  const kependudukanCheckbox = document.getElementById("showKependudukan");
+  layerLegendState.kependudukan = Boolean(kependudukanCheckbox?.checked);
 }
 
-function renderLegends() {
-  if (mapLegendControl) {
-    map.removeControl(mapLegendControl);
-    mapLegendControl = null;
+function updateLayerLegend(layerName, active) {
+  layerLegendState[layerName] = active;
+
+  if (layerName === "kependudukan") {
+    renderAdministrativeLegend();
+    return;
   }
 
-  const activeNames = Object.keys(layerLegendState).filter(
-    (name) => layerLegendState[name] && legendConfig[name],
-  );
-  const sections = [
-    buildLegendSection(getAdministrativeLegendConfig()),
-    ...activeNames.map((name) => buildLegendSection(legendConfig[name])),
-  ];
+  renderLayerLegends();
+}
 
-  mapLegendControl = L.control({ position: "bottomright" });
-  mapLegendControl.onAdd = function () {
-    const div = L.DomUtil.create("div", "info legend");
+function createLegendControl(className, sections) {
+  const control = L.control({ position: "bottomright" });
+  control.onAdd = function () {
+    const div = L.DomUtil.create("div", `info legend ${className}`);
     div.style.background = "white";
     div.style.padding = "10px";
     div.style.border = "2px solid #ccc";
@@ -418,7 +419,38 @@ function renderLegends() {
     div.innerHTML = sections.join("");
     return div;
   };
-  mapLegendControl.addTo(map);
+
+  return control;
+}
+
+function renderAdministrativeLegend() {
+  if (administrativeLegendControl) {
+    map.removeControl(administrativeLegendControl);
+    administrativeLegendControl = null;
+  }
+
+  administrativeLegendControl = createLegendControl("administrative-legend", [
+    buildLegendSection(getAdministrativeLegendConfig()),
+  ]);
+  administrativeLegendControl.addTo(map);
+}
+
+function renderLayerLegends() {
+  if (layerLegendControl) {
+    map.removeControl(layerLegendControl);
+    layerLegendControl = null;
+  }
+
+  const activeNames = Object.keys(layerLegendState).filter(
+    (name) => layerLegendState[name] && legendConfig[name],
+  );
+  if (!activeNames.length) return;
+
+  layerLegendControl = createLegendControl(
+    "layer-legend",
+    activeNames.map((name) => buildLegendSection(legendConfig[name])),
+  );
+  layerLegendControl.addTo(map);
 }
 
 function getAdministrativeLegendConfig() {
