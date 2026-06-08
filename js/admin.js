@@ -684,6 +684,68 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ===== EDIT MODAL FUNCTIONS =====
+const editableExtraFields = {
+  fasilitas: [
+    { name: "deskripsi", label: "Deskripsi", type: "textarea", rows: 3 },
+    { name: "lokasi", label: "Lokasi", type: "textarea", rows: 2 },
+    { name: "jam_operasional", label: "Jam Operasional", type: "text" },
+    {
+      name: "fasilitas_pendukung",
+      label: "Fasilitas Pendukung",
+      type: "textarea",
+      rows: 2,
+    },
+  ],
+  umkm: [
+    { name: "pemilik", label: "Pemilik", type: "text" },
+    { name: "lokasi", label: "Lokasi", type: "textarea", rows: 2 },
+    { name: "produk", label: "Produk", type: "textarea", rows: 2 },
+    { name: "jam_operasional", label: "Jam Operasional", type: "text" },
+    {
+      name: "fasilitas_pendukung",
+      label: "Fasilitas Pendukung",
+      type: "textarea",
+      rows: 2,
+    },
+  ],
+  wisata: [
+    { name: "cagar_budaya", label: "Cagar Budaya", type: "textarea", rows: 2 },
+    { name: "lokasi", label: "Lokasi", type: "textarea", rows: 2 },
+    { name: "tarif", label: "Tarif", type: "text" },
+    { name: "fasilitas", label: "Fasilitas", type: "textarea", rows: 2 },
+  ],
+};
+
+function getExtraFieldId(fieldName) {
+  return `editExtra_${fieldName}`;
+}
+
+function renderAdditionalEditFields(entity, data) {
+  const container = document.getElementById("additionalEditFields");
+  if (!container) return;
+
+  const fields = editableExtraFields[entity] || [];
+  container.innerHTML = fields
+    .map((field) => {
+      const value = data[field.name] || "";
+      const id = getExtraFieldId(field.name);
+      if (field.type === "textarea") {
+        return `<div class="mb-3"><label for="${id}" class="form-label">${field.label}</label><textarea class="form-control" id="${id}" rows="${field.rows || 2}">${escapeHtml(value)}</textarea></div>`;
+      }
+
+      return `<div class="mb-3"><label for="${id}" class="form-label">${field.label}</label><input type="text" class="form-control" id="${id}" value="${escapeHtml(value)}" /></div>`;
+    })
+    .join("");
+}
+
+function collectAdditionalEditFields(entity, body) {
+  const fields = editableExtraFields[entity] || [];
+  fields.forEach((field) => {
+    const input = document.getElementById(getExtraFieldId(field.name));
+    body[field.name] = input ? input.value : "";
+  });
+}
+
 function openEditModal(entity, id, data) {
   console.log("openEditModal called:", entity, id, data);
   document.getElementById("editEntity").value = entity;
@@ -692,6 +754,7 @@ function openEditModal(entity, id, data) {
   // Hide all conditional fields first
   document.getElementById("editDeskripsiGroup").style.display = "none";
   document.getElementById("kependudukanFields").style.display = "none";
+  renderAdditionalEditFields(entity, {});
 
   if (entity === "kependudukan") {
     // Kependudukan doesn't have nama/jenis, hide those fields
@@ -719,11 +782,14 @@ function openEditModal(entity, id, data) {
     document.getElementById("editLatitude").value = data.latitude;
     document.getElementById("editLongitude").value = data.longitude;
 
-    // Show deskripsi field only for wisata
     if (entity === "wisata") {
       document.getElementById("editDeskripsiGroup").style.display = "block";
       document.getElementById("editDeskripsi").value = data.deskripsi || "";
+    } else {
+      document.getElementById("editDeskripsi").value = "";
     }
+
+    renderAdditionalEditFields(entity, data);
   }
 
   document.getElementById("editModalTitle").textContent =
@@ -874,6 +940,7 @@ document.getElementById("saveEditBtn").addEventListener("click", function () {
     if (entity === "wisata") {
       body.deskripsi = document.getElementById("editDeskripsi").value;
     }
+    collectAdditionalEditFields(entity, body);
 
     fetch(`${API_URL}/${entity}/${id}`, {
       method: "PUT",
