@@ -360,6 +360,13 @@ body {
   flex: 0 0 auto;
 }
 
+.info.legend .legend-line.dashed {
+  height: 0;
+  background: transparent;
+  border: 0;
+  border-top: 3px dashed #333;
+}
+
 /* Buttons */
 .btn-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
