@@ -19,6 +19,7 @@ const layerLegendState = {
   lahan: false,
   jalan: false,
   sungai: false,
+  kependudukan: false,
 };
 
 const legendConfig = {
@@ -270,6 +271,7 @@ function initMap() {
 
   // Add map controls
   addMapControls();
+  renderLegends();
 
   // Load all data
   loadAllData();
@@ -394,9 +396,12 @@ function renderLegends() {
   }
 
   const activeNames = Object.keys(layerLegendState).filter(
-    (name) => layerLegendState[name],
+    (name) => layerLegendState[name] && legendConfig[name],
   );
-  if (!activeNames.length) return;
+  const sections = [
+    buildLegendSection(getAdministrativeLegendConfig()),
+    ...activeNames.map((name) => buildLegendSection(legendConfig[name])),
+  ];
 
   mapLegendControl = L.control({ position: "bottomright" });
   mapLegendControl.onAdd = function () {
@@ -410,12 +415,25 @@ function renderLegends() {
     L.DomEvent.disableScrollPropagation(div);
     L.DomEvent.disableClickPropagation(div);
 
-    div.innerHTML = activeNames
-      .map((name) => buildLegendSection(legendConfig[name]))
-      .join("");
+    div.innerHTML = sections.join("");
     return div;
   };
   mapLegendControl.addTo(map);
+}
+
+function getAdministrativeLegendConfig() {
+  const items = [
+    { label: "Batas Desa", color: "#333333", line: true, dashed: true },
+  ];
+
+  if (layerLegendState.kependudukan) {
+    items.push({ label: "Batas RT", color: "#333333", line: true });
+  }
+
+  return {
+    title: "Batas Administrasi",
+    items,
+  };
 }
 
 function buildLegendSection(config) {
@@ -425,7 +443,11 @@ function buildLegendSection(config) {
         return `<div class="legend-item"><span class="legend-marker" style="background:${item.color}"><i class="fas ${item.icon}"></i></span>${escapeHtml(item.label)}</div>`;
       }
       if (item.line) {
-        return `<div class="legend-item"><span class="legend-line" style="background:${item.color}"></span>${escapeHtml(item.label)}</div>`;
+        const lineClass = item.dashed ? "legend-line dashed" : "legend-line";
+        const lineStyle = item.dashed
+          ? `border-top-color:${item.color}`
+          : `background:${item.color}`;
+        return `<div class="legend-item"><span class="${lineClass}" style="${lineStyle}"></span>${escapeHtml(item.label)}</div>`;
       }
 
       return `<div class="legend-item"><span class="legend-swatch" style="background:${item.color}"></span>${escapeHtml(item.label)}</div>`;
@@ -1418,6 +1440,7 @@ document.getElementById("showSungai").addEventListener("change", (e) => {
 
 document.getElementById("showKependudukan").addEventListener("change", (e) => {
   e.target.checked ? map.addLayer(layers.rw) : map.removeLayer(layers.rw);
+  updateLayerLegend("kependudukan", e.target.checked);
 });
 
 // Kependudukan visualization controls
