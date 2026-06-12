@@ -1,7 +1,7 @@
-const API_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:8000/api"
-    : "https://backend-webgis-production.up.railway.app/api";
+const LOCAL_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"];
+const API_URL = LOCAL_HOSTS.includes(window.location.hostname)
+  ? "http://localhost:8000/api"
+  : "https://backend-webgis-production.up.railway.app/api";
 let authToken = localStorage.getItem("authToken");
 let editMap = null;
 let editMarker = null;
@@ -305,7 +305,7 @@ async function loadWisataData() {
           <td>${item.deskripsi ? escapeHtml(item.deskripsi.substring(0, 50)) + "..." : "-"}</td>
           <td>
             <div class="btn-group btn-group-sm">
-              <button class="btn btn-info" onclick="managePhotos(${item.id_wisata}, '${escapeHtml(item.nama)}')">Foto</button>
+              <button class="btn btn-info" data-nama="${escapeAttr(item.nama)}" onclick="managePhotos(${item.id_wisata}, this.dataset.nama)">Foto</button>
               <button class="btn btn-warning" onclick="editWisata(${item.id_wisata})">Edit</button>
               <button class="btn btn-danger" onclick="deleteWisata(${item.id_wisata})">Hapus</button>
             </div>
@@ -530,7 +530,7 @@ async function loadKependudukanData() {
           : `RW ${item.nomor_rw}`;
       const row = `
         <tr>
-          <td>${areaLabel}</td>
+          <td>${escapeHtml(areaLabel)}</td>
           <td>${item.jumlah_warga}</td>
           <td>${item.laki_laki}</td>
           <td>${item.perempuan}</td>
@@ -565,6 +565,27 @@ function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text;
   return div.innerHTML;
+}
+
+function escapeAttr(text) {
+  return escapeHtml(String(text ?? "")).replace(/`/g, "&#96;");
+}
+
+function isSafeImageSrc(value) {
+  if (!value || typeof value !== "string") return false;
+
+  const trimmed = value.trim();
+  if (
+    /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=\s]+$/i.test(trimmed)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function safeImageSrc(value) {
+  return isSafeImageSrc(value) ? value.trim() : "";
 }
 
 // ===== PHOTO MANAGEMENT FOR WISATA =====
@@ -603,18 +624,20 @@ async function loadPhotos(id) {
 
     const gallery = document.getElementById("photoGallery");
     gallery.innerHTML = photos
-      .map(
-        (p) => `
+      .map((p) => {
+        const src = safeImageSrc(p.foto_base64);
+        if (!src) return "";
+        return `
       <div class="col-md-4">
         <div class="card">
-          <img src="${p.foto_base64}" class="card-img-top" style="height:150px; object-fit:cover">
+          <img src="${escapeAttr(src)}" class="card-img-top" style="height:150px; object-fit:cover" alt="Foto wisata">
           <div class="card-body p-2">
             <button class="btn btn-danger btn-sm w-100" onclick="deletePhoto(${p.id_foto}, ${id})">Hapus</button>
           </div>
         </div>
       </div>
-    `,
-      )
+    `;
+      })
       .join("");
   } catch (error) {
     console.error("Error loading photos:", error);
@@ -625,6 +648,13 @@ async function uploadPhoto(id) {
   const input = document.getElementById("photoInput");
   const file = input.files[0];
   if (!file) return alert("Pilih foto terlebih dahulu");
+  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+  if (!allowedTypes.includes(file.type)) {
+    return alert("Format foto harus JPEG, PNG, atau WebP");
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    return alert("Ukuran foto maksimal 5 MB");
+  }
 
   const reader = new FileReader();
   reader.onload = async (e) => {
@@ -730,10 +760,10 @@ function renderAdditionalEditFields(entity, data) {
       const value = data[field.name] || "";
       const id = getExtraFieldId(field.name);
       if (field.type === "textarea") {
-        return `<div class="mb-3"><label for="${id}" class="form-label">${field.label}</label><textarea class="form-control" id="${id}" rows="${field.rows || 2}">${escapeHtml(value)}</textarea></div>`;
+        return `<div class="mb-3"><label for="${escapeAttr(id)}" class="form-label">${escapeHtml(field.label)}</label><textarea class="form-control" id="${escapeAttr(id)}" rows="${field.rows || 2}">${escapeHtml(value)}</textarea></div>`;
       }
 
-      return `<div class="mb-3"><label for="${id}" class="form-label">${field.label}</label><input type="text" class="form-control" id="${id}" value="${escapeHtml(value)}" /></div>`;
+      return `<div class="mb-3"><label for="${escapeAttr(id)}" class="form-label">${escapeHtml(field.label)}</label><input type="text" class="form-control" id="${escapeAttr(id)}" value="${escapeAttr(value)}" /></div>`;
     })
     .join("");
 }
