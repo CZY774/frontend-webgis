@@ -15,6 +15,9 @@ function byId(id) {
   return document.getElementById(id);
 }
 
+const POTENTIAL_PAGE_SIZE = 10;
+const potentialTableStates = {};
+
 function maxValue(items, key) {
   return Math.max(...items.map((item) => Number(item[key]) || 0), 1);
 }
@@ -206,16 +209,54 @@ function renderPotentialTable(containerId, rows, columns) {
   const container = byId(containerId);
   if (!container) return;
 
-  const mobileRows = rows
+  potentialTableStates[containerId] = {
+    rows,
+    columns,
+    page: 1,
+    pageSize: POTENTIAL_PAGE_SIZE,
+    query: "",
+    counter: potentialTableStates[containerId]?.counter || null,
+  };
+
+  renderPotentialTablePage(containerId);
+}
+
+function rowMatchesPotentialSearch(row, columns, query) {
+  if (!query) return true;
+  return columns
+    .map((column) => row[column.key] ?? "")
+    .join(" ")
+    .toLowerCase()
+    .includes(query);
+}
+
+function renderPotentialTablePage(containerId) {
+  const container = byId(containerId);
+  const state = potentialTableStates[containerId];
+  if (!container || !state) return;
+
+  const filteredRows = state.rows.filter((row) =>
+    rowMatchesPotentialSearch(row, state.columns, state.query),
+  );
+  const totalPages = Math.ceil(filteredRows.length / state.pageSize) || 1;
+  state.page = Math.min(Math.max(state.page, 1), totalPages);
+
+  const startIndex = (state.page - 1) * state.pageSize;
+  const pageRows = filteredRows.slice(startIndex, startIndex + state.pageSize);
+  const visibleStart = filteredRows.length ? startIndex + 1 : 0;
+  const visibleEnd = Math.min(startIndex + state.pageSize, filteredRows.length);
+
+  const mobileRows = pageRows
     .map((row) => {
-      const searchable = columns
+      const searchable = state.columns
         .map((column) => row[column.key] ?? "")
         .join(" ")
         .toLowerCase();
       const titleColumn =
-        columns.find((column) => column.key === "Nama") || columns[0];
-      const typeColumn = columns.find((column) => column.key === "Jenis");
-      const detailColumns = columns.filter(
+        state.columns.find((column) => column.key === "Nama") ||
+        state.columns[0];
+      const typeColumn = state.columns.find((column) => column.key === "Jenis");
+      const detailColumns = state.columns.filter(
         (column) =>
           !["No", titleColumn.key, typeColumn?.key].includes(column.key),
       );
@@ -247,11 +288,11 @@ function renderPotentialTable(containerId, rows, columns) {
     })
     .join("");
 
-  const htmlRows = rows
+  const htmlRows = pageRows
     .map(
       (row) => `
         <tr>
-          ${columns
+          ${state.columns
             .map((column) => {
               const value = row[column.key] ?? "";
               const className = column.wide ? ' class="wide-cell"' : "";
@@ -268,14 +309,40 @@ function renderPotentialTable(containerId, rows, columns) {
       <table class="table table-hover align-middle data-table searchable-table">
         <thead>
           <tr>
-            ${columns.map((column) => `<th>${safeHtml(column.label)}</th>`).join("")}
+            ${state.columns.map((column) => `<th>${safeHtml(column.label)}</th>`).join("")}
           </tr>
         </thead>
-        <tbody>${htmlRows}</tbody>
+        <tbody>${htmlRows || `<tr><td colspan="${state.columns.length}">Tidak ada data yang cocok.</td></tr>`}</tbody>
       </table>
     </div>
-    <div class="mobile-record-list">${mobileRows}</div>
+    <div class="mobile-record-list">${mobileRows || `<p class="empty-record">Tidak ada data yang cocok.</p>`}</div>
+    <div class="table-pagination" data-pagination-for="${safeHtml(containerId)}">
+      <span>Menampilkan ${visibleStart}-${visibleEnd} dari ${filteredRows.length} data</span>
+      <div class="pagination-actions">
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-page-action="prev" ${state.page <= 1 ? "disabled" : ""}>Sebelumnya</button>
+        <strong>${state.page} / ${totalPages}</strong>
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-page-action="next" ${state.page >= totalPages ? "disabled" : ""}>Berikutnya</button>
+      </div>
+    </div>
   `;
+
+  if (state.counter) {
+    state.counter.textContent = `${filteredRows.length} dari ${state.rows.length} data`;
+  }
+
+  container
+    .querySelector('[data-page-action="prev"]')
+    ?.addEventListener("click", () => {
+      state.page -= 1;
+      renderPotentialTablePage(containerId);
+    });
+
+  container
+    .querySelector('[data-page-action="next"]')
+    ?.addEventListener("click", () => {
+      state.page += 1;
+      renderPotentialTablePage(containerId);
+    });
 }
 
 function bindTableSearch(inputId, tableId) {
@@ -284,33 +351,22 @@ function bindTableSearch(inputId, tableId) {
   if (!input || !tableContainer) return;
 
   const toolbar = input.closest(".table-toolbar");
-  const counter = document.createElement("span");
-  counter.className = "table-count";
-  if (toolbar) {
+  if (!toolbar) return;
+  let counter = toolbar?.querySelector(`[data-table-counter="${tableId}"]`);
+  if (!counter) {
+    counter = document.createElement("span");
+    counter.className = "table-count";
+    counter.dataset.tableCounter = tableId;
     toolbar.appendChild(counter);
   }
 
   const updateRows = () => {
-    const query = input.value.trim().toLowerCase();
-    const rows = tableContainer.querySelectorAll("tbody tr");
-    const records = tableContainer.querySelectorAll(".mobile-record");
-    let visible = 0;
-
-    rows.forEach((row) => {
-      const haystack = row.textContent.toLowerCase();
-      const matched = haystack.includes(query);
-      row.style.display = matched ? "" : "none";
-      if (matched) visible += 1;
-    });
-
-    records.forEach((record) => {
-      const haystack =
-        record.dataset.search || record.textContent.toLowerCase();
-      const matched = haystack.includes(query);
-      record.style.display = matched ? "" : "none";
-    });
-
-    counter.textContent = `${visible} dari ${rows.length} data`;
+    const state = potentialTableStates[tableId];
+    if (!state) return;
+    state.query = input.value.trim().toLowerCase();
+    state.page = 1;
+    state.counter = counter;
+    renderPotentialTablePage(tableId);
   };
 
   input.addEventListener("input", updateRows);
