@@ -67,25 +67,25 @@ const legendConfig = {
   lahan: {
     title: "Penggunaan Lahan",
     items: [
-      { label: "Tempat Tinggal", color: "#ffccbf" },
-      { label: "Perkarangan", color: "#d1d1d1" },
-      { label: "Perkantoran", color: "#c6997a" },
-      { label: "Pendidikan", color: "#ddcca0" },
-      { label: "Perdagangan dan Jasa", color: "#ffc9d6" },
-      { label: "Industri dan Pergudangan", color: "#ffaf84" },
-      { label: "Peribadatan", color: "#a5a0ba" },
-      { label: "Kesehatan", color: "#e8b5bf" },
-      { label: "Olahraga", color: "#edcc7c" },
-      { label: "Tempat Menarik/Pariwisata", color: "#c993e8" },
-      { label: "Pemakaman", color: "#8e8e8e" },
-      { label: "Perikanan Air Tawar", color: "#bab5ff" },
-      { label: "Peternakan", color: "#c6af00" },
-      { label: "Hutan", color: "#c6e0af" },
-      { label: "Hutan Rimba", color: "#96d67c" },
-      { label: "Sawah", color: "#99ffff" },
-      { label: "Ladang", color: "#ffff99" },
-      { label: "Vegetasi Non Budidaya Lainnya", color: "#89ed96" },
-      { label: "Lahan Terbuka (Tanah Kosong)", color: "#ffffff" },
+      { label: "Tempat Tinggal", color: "#F4A6A6" },
+      { label: "Pekarangan", color: "#E6D5B8" },
+      { label: "Perkantoran", color: "#8D6E63" },
+      { label: "Pendidikan", color: "#42A5F5" },
+      { label: "Perdagangan dan Jasa", color: "#EF5350" },
+      { label: "Industri dan Pergudangan", color: "#616161" },
+      { label: "Peribadatan", color: "#AB47BC" },
+      { label: "Kesehatan", color: "#D32F2F" },
+      { label: "Olahraga", color: "#FB8C00" },
+      { label: "Tempat Menarik/Pariwisata", color: "#FFD54F" },
+      { label: "Pemakaman", color: "#8BC34A" },
+      { label: "Perikanan Air Tawar", color: "#29B6F6" },
+      { label: "Peternakan", color: "#C0A000" },
+      { label: "Hutan", color: "#388E3C" },
+      { label: "Hutan Rimba", color: "#1B5E20" },
+      { label: "Sawah", color: "#C5E1A5" },
+      { label: "Ladang", color: "#FFF59D" },
+      { label: "Vegetasi Non Budidaya Lainnya", color: "#A5D6A7" },
+      { label: "Lahan Terbuka (Tanah Kosong)", color: "#E0E0E0" },
     ],
   },
   jalan: {
@@ -101,6 +101,38 @@ const legendConfig = {
     title: "Sungai",
     items: [{ label: "Sungai", color: "#00CED1", line: true }],
   },
+};
+
+const ADMIN_BOUNDARY_COLOR = "#E53935";
+const CHOROPLETH_COLORS = [
+  "#F3E5F5",
+  "#CE93D8",
+  "#AB47BC",
+  "#7B1FA2",
+  "#4A148C",
+];
+const CHOROPLETH_CLASSES = {
+  umur: [
+    { label: "Sangat Rendah", min: 0, max: 50 },
+    { label: "Rendah", min: 51, max: 100 },
+    { label: "Sedang", min: 101, max: 150 },
+    { label: "Tinggi", min: 151, max: 200 },
+    { label: "Sangat Tinggi", min: 201, max: Infinity },
+  ],
+  pendidikan: [
+    { label: "Sangat Rendah", min: 0, max: 25 },
+    { label: "Rendah", min: 26, max: 50 },
+    { label: "Sedang", min: 51, max: 75 },
+    { label: "Tinggi", min: 76, max: 100 },
+    { label: "Sangat Tinggi", min: 101, max: Infinity },
+  ],
+  pekerjaan: [
+    { label: "Sangat Rendah", min: 0, max: 20 },
+    { label: "Rendah", min: 21, max: 40 },
+    { label: "Sedang", min: 41, max: 60 },
+    { label: "Tinggi", min: 61, max: 80 },
+    { label: "Sangat Tinggi", min: 81, max: Infinity },
+  ],
 };
 
 // Layer loading state
@@ -152,9 +184,9 @@ function updateProgress(layerName, status) {
     if (loadedCount < total) {
       const currentLayer =
         layerName.charAt(0).toUpperCase() + layerName.slice(1);
-      progressText.textContent = `Loading ${currentLayer}... (${loadedCount}/${total})`;
+      progressText.textContent = `Memuat ${currentLayer}... (${loadedCount}/${total})`;
     } else {
-      progressText.textContent = `All layers loaded (${total}/${total})`;
+      progressText.textContent = `Semua layer dimuat (${total}/${total})`;
       // Hide progress bar after 2 seconds
       setTimeout(() => {
         const progressContainer = document.getElementById("loadingProgress");
@@ -237,6 +269,8 @@ function retryLayer(layerName) {
 
 // Initialize map
 function initMap() {
+  if (map) return;
+
   map = L.map("map").setView([-6.963, 110.828], 14);
 
   // Basemap layers
@@ -366,8 +400,10 @@ function buildAttributePopup(title, rows, imageHtml = "") {
 }
 
 function buildPhotoHtml(item) {
-  if (item.foto_base64) {
-    return `<img src="${item.foto_base64}" class="popup-photo" alt="${escapeHtml(item.nama)}">`;
+  const src =
+    typeof safeImageSrc === "function" ? safeImageSrc(item.foto_base64) : "";
+  if (src) {
+    return `<img src="${escapeAttr(src)}" class="popup-photo" alt="${escapeAttr(item.nama)}">`;
   }
 
   return '<div class="popup-photo popup-photo-placeholder">Foto Segera Hadir</div>';
@@ -397,7 +433,6 @@ function updateLayerLegend(layerName, active) {
 
   if (layerName === "kependudukan") {
     renderAdministrativeLegend();
-    return;
   }
 
   renderLayerLegends();
@@ -441,30 +476,64 @@ function renderLayerLegends() {
     layerLegendControl = null;
   }
 
-  const activeNames = Object.keys(layerLegendState).filter(
-    (name) => layerLegendState[name] && legendConfig[name],
-  );
-  if (!activeNames.length) return;
+  const sections = Object.keys(layerLegendState)
+    .filter((name) => layerLegendState[name])
+    .map((name) => getLayerLegendConfig(name))
+    .filter(Boolean)
+    .map((config) => buildLegendSection(config));
+  if (!sections.length) return;
 
-  layerLegendControl = createLegendControl(
-    "layer-legend",
-    activeNames.map((name) => buildLegendSection(legendConfig[name])),
-  );
+  layerLegendControl = createLegendControl("layer-legend", sections);
   layerLegendControl.addTo(map);
 }
 
 function getAdministrativeLegendConfig() {
   const items = [
-    { label: "Batas Desa", color: "#333333", line: true, dashed: true },
+    {
+      label: "Batas Desa",
+      color: ADMIN_BOUNDARY_COLOR,
+      line: true,
+      dashed: true,
+    },
   ];
 
   if (layerLegendState.kependudukan) {
-    items.push({ label: "Batas RT", color: "#333333", line: true });
+    items.push({ label: "Batas RT", color: ADMIN_BOUNDARY_COLOR, line: true });
   }
 
   return {
     title: "Batas Administrasi",
     items,
+  };
+}
+
+function getLayerLegendConfig(name) {
+  if (name === "kependudukan") {
+    return getKependudukanLegendConfig();
+  }
+
+  return legendConfig[name] || null;
+}
+
+function getKependudukanLegendConfig() {
+  if (kependudukanMode === "basic") return null;
+
+  const titles = {
+    umur: "Kependudukan - Umur",
+    pendidikan: "Kependudukan - Pendidikan",
+    pekerjaan: "Kependudukan - Pekerjaan",
+  };
+
+  const classes = CHOROPLETH_CLASSES[kependudukanMode] || [];
+  return {
+    title: titles[kependudukanMode] || "Kependudukan",
+    items: classes.map((item, index) => ({
+      label:
+        item.max === Infinity
+          ? `${item.label} (> ${item.min - 1})`
+          : `${item.label} (${item.min}-${item.max})`,
+      color: CHOROPLETH_COLORS[index],
+    })),
   };
 }
 
@@ -772,14 +841,18 @@ async function loadFasilitas() {
         L.marker([item.latitude, item.longitude], {
           icon: markerIcon(iconClass, iconColor),
         }).bindPopup(
-          buildAttributePopup(item.nama, [
-            ["Nama", item.nama],
-            ["Jenis", item.jenis],
-            ["Deskripsi", item.deskripsi],
-            ["Lokasi", item.lokasi],
-            ["Jam Operasional", item.jam_operasional],
-            ["Fasilitas Pendukung", item.fasilitas_pendukung],
-          ]),
+          buildAttributePopup(
+            item.nama,
+            [
+              ["Nama", item.nama],
+              ["Jenis", item.jenis],
+              ["Deskripsi", item.deskripsi],
+              ["Lokasi", item.lokasi],
+              ["Jam Operasional", item.jam_operasional],
+              ["Fasilitas Pendukung", item.fasilitas_pendukung],
+            ],
+            item.foto_base64 ? buildPhotoHtml(item) : "",
+          ),
         ),
         {
           name: item.nama,
@@ -920,15 +993,19 @@ async function loadUMKM() {
         L.marker([item.latitude, item.longitude], {
           icon: markerIcon(iconClass, iconColor),
         }).bindPopup(
-          buildAttributePopup(item.nama, [
-            ["Nama", item.nama],
-            ["Jenis", item.jenis],
-            ["Pemilik", item.pemilik],
-            ["Lokasi", item.lokasi],
-            ["Produk", item.produk],
-            ["Jam Operasional", item.jam_operasional],
-            ["Fasilitas Pendukung", item.fasilitas_pendukung],
-          ]),
+          buildAttributePopup(
+            item.nama,
+            [
+              ["Nama", item.nama],
+              ["Jenis", item.jenis],
+              ["Pemilik", item.pemilik],
+              ["Lokasi", item.lokasi],
+              ["Produk", item.produk],
+              ["Jam Operasional", item.jam_operasional],
+              ["Fasilitas Pendukung", item.fasilitas_pendukung],
+            ],
+            item.foto_base64 ? buildPhotoHtml(item) : "",
+          ),
         ),
         {
           name: item.nama,
@@ -972,7 +1049,7 @@ async function loadDesaBoundary() {
       // Parse GeoJSON geometry and render as polygon
       desaBoundary = L.geoJSON(JSON.parse(data.geometry), {
         style: {
-          color: "#333",
+          color: ADMIN_BOUNDARY_COLOR,
           weight: 3,
           fillOpacity: 0,
           dashArray: "5, 5",
@@ -1112,8 +1189,11 @@ async function loadKependudukan() {
 async function loadProfilDesa() {
   try {
     const data = await apiRequest("/desa/");
-    if (data.foto_base64) {
-      document.getElementById("profilDesaPhoto").src = data.foto_base64;
+    const profilPhoto = document.getElementById("profilDesaPhoto");
+    const profilePhotoSrc =
+      typeof safeImageSrc === "function" ? safeImageSrc(data.foto_base64) : "";
+    if (profilePhotoSrc && profilPhoto) {
+      profilPhoto.src = profilePhotoSrc;
     }
   } catch (error) {
     console.error("Error loading profil desa:", error);
@@ -1191,9 +1271,9 @@ function getKependudukanAreaLabel(item) {
 function getKependudukanStyle(item) {
   if (kependudukanMode === "basic") {
     return {
-      color: "#333",
+      color: ADMIN_BOUNDARY_COLOR,
       weight: 2,
-      fillOpacity: 0.1,
+      fillOpacity: 0.08,
     };
   }
 
@@ -1217,7 +1297,7 @@ function getKependudukanStyle(item) {
 
   const fillColor = getGraduatedColor(value, kependudukanMode);
   return {
-    color: "#333",
+    color: ADMIN_BOUNDARY_COLOR,
     weight: 2,
     fillColor: fillColor,
     fillOpacity: 0.7,
@@ -1225,36 +1305,12 @@ function getKependudukanStyle(item) {
 }
 
 function getGraduatedColor(value, mode) {
-  let values = [];
-  let attr = "";
+  const classes = CHOROPLETH_CLASSES[mode] || [];
+  const classIndex = classes.findIndex(
+    (item) => value >= item.min && value <= item.max,
+  );
 
-  if (mode === "umur") {
-    attr =
-      document.querySelector('input[name="umurAttr"]:checked')?.value ||
-      "anak_anak";
-    values = kependudukanData.map((d) => d[attr] || 0);
-  } else if (mode === "pendidikan") {
-    attr =
-      document.querySelector('input[name="pendidikanAttr"]:checked')?.value ||
-      "tidak_sekolah";
-    values = kependudukanData.map((d) => d[attr] || 0);
-  } else if (mode === "pekerjaan") {
-    attr =
-      document.querySelector('input[name="pekerjaanAttr"]:checked')?.value ||
-      "belum_bekerja";
-    values = kependudukanData.map((d) => d[attr] || 0);
-  }
-
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const normalized = max > min ? (value - min) / (max - min) : 0;
-
-  // Gradient from light yellow to dark red
-  const r = Math.floor(255);
-  const g = Math.floor(255 * (1 - normalized));
-  const b = Math.floor(100 * (1 - normalized));
-
-  return `rgb(${r}, ${g}, ${b})`;
+  return CHOROPLETH_COLORS[classIndex >= 0 ? classIndex : 0];
 }
 
 function updateKependudukanVisualization() {
@@ -1265,30 +1321,32 @@ function updateKependudukanVisualization() {
       layer.setPopupContent(getKependudukanPopup(layer.rwData));
     }
   });
+  renderLayerLegends();
 }
 
 // Color helpers
 function getColorByJenisLahan(jenis) {
   const colors = {
-    "Tempat Tinggal": "#ffccbf",
-    Perkarangan: "#d1d1d1",
-    Perkantoran: "#c6997a",
-    Pendidikan: "#ddcca0",
-    "Perdagangan dan Jasa": "#ffc9d6",
-    "Industri dan Pergudangan": "#ffaf84",
-    Peribadatan: "#a5a0ba",
-    Kesehatan: "#e8b5bf",
-    Olahraga: "#edcc7c",
-    "Tempat Menarik/Pariwisata": "#c993e8",
-    Pemakaman: "#8e8e8e",
-    "Perikanan Air Tawar": "#bab5ff",
-    Peternakan: "#c6af00",
-    Hutan: "#c6e0af",
-    "Hutan Rimba": "#96d67c",
-    Sawah: "#99ffff",
-    Ladang: "#ffff99",
-    "Vegetasi Non Budidaya Lainnya": "#89ed96",
-    "Lahan Terbuka (Tanah Kosong)": "#ffffff",
+    "Tempat Tinggal": "#F4A6A6",
+    Pekarangan: "#E6D5B8",
+    Perkarangan: "#E6D5B8",
+    Perkantoran: "#8D6E63",
+    Pendidikan: "#42A5F5",
+    "Perdagangan dan Jasa": "#EF5350",
+    "Industri dan Pergudangan": "#616161",
+    Peribadatan: "#AB47BC",
+    Kesehatan: "#D32F2F",
+    Olahraga: "#FB8C00",
+    "Tempat Menarik/Pariwisata": "#FFD54F",
+    Pemakaman: "#8BC34A",
+    "Perikanan Air Tawar": "#29B6F6",
+    Peternakan: "#C0A000",
+    Hutan: "#388E3C",
+    "Hutan Rimba": "#1B5E20",
+    Sawah: "#C5E1A5",
+    Ladang: "#FFF59D",
+    "Vegetasi Non Budidaya Lainnya": "#A5D6A7",
+    "Lahan Terbuka (Tanah Kosong)": "#E0E0E0",
   };
   return colors[jenis] || "#808080";
 }
@@ -1427,7 +1485,7 @@ searchInput.addEventListener("input", (e) => {
   searchResults.innerHTML = matches
     .map(
       (item) =>
-        `<div style="padding:8px; cursor:pointer; border-bottom:1px solid #eee" data-name="${escapeHtml(item.name)}">
+        `<div style="padding:8px; cursor:pointer; border-bottom:1px solid #eee" data-name="${escapeAttr(item.name)}">
       <strong>${escapeHtml(item.name)}</strong> <small>(${item.type})</small>
     </div>`,
     )
@@ -1531,5 +1589,10 @@ document.getElementById("routingBtn").addEventListener("click", () => {
   }
 });
 
-// Initialize map on page load
-document.addEventListener("DOMContentLoaded", initMap);
+window.initPrawotoMap = initMap;
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initMap);
+} else {
+  initMap();
+}
