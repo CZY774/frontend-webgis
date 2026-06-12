@@ -1,0 +1,1640 @@
+{
+  "meta": {
+    "source": "../Data Website revision files",
+    "generated_at": "2026-06-11 12:55:42"
+  },
+  "home": {
+    "title": "Desa Prawoto",
+    "subtitle": "Kecamatan Sukolilo, Kabupaten Pati, Jawa Tengah",
+    "tagline": "Sistem Informasi Potensi Desa Prawoto",
+    "profile": "Desa Prawoto merupakan sebuah desa yang terletak di Kecamatan Sukolilo, Kabupaten Pati, Provinsi Jawa Tengah. Desa Prawoto dijuluki \"Bumi Telon\" karena lokasinya yang strategis diapit tiga wilayah: Pati, Grobogan, dan Kudus. Desa ini berada di Pegunungan Kendeng dan secara historis merupakan situs Istana Prawoto serta pusat penting Kesultanan Demak.",
+    "vision": "Terwujudnya Desa Prawoto yang Bareng Nyawiji, Mbangun Masyarakat lan Desane",
+    "missions": [
+      "Menciptakan tata kelola pemerintahan yang baik berdasarkan demokratisasi, transparansi, partisipatif, akuntabilitas, dan mengutamakan pelayanan kepada masyarakat.",
+      "Meningkatkan system “Perencanaan Pembangunan Desa” yang partisipatif dengan menekankan DOUM (Dari, Oleh, Untuk Masyarakat).",
+      "Transparansi Informasi Penyelenggaraan Pembangunan Desa (IPPD)."
+    ],
+    "history": [
+      "Nama Prawoto sangat erat kaitannya dengan Sunan Prawoto atau Raden Bagus Hadi Mukmin, putra Sultan Trenggono dan cucu Raden Fatah, pendiri Kesultanan Demak. Setelah Sultan Trenggono wafat pada tahun 1546, Sunan Prawoto naik takhta sebagai penguasa Demak. Dalam sejumlah sumber sejarah Jawa disebutkan bahwa pada masa pemerintahannya, pusat aktivitas kerajaan tidak selalu berada di Demak, melainkan juga berada di kawasan Prawoto yang saat itu menjadi tempat tinggal dan pusat kekuasaannya.",
+      "Masa pemerintahan Sunan Prawoto berlangsung pada periode yang penuh gejolak. Setelah wafatnya Sultan Trenggono, terjadi perebutan kekuasaan di lingkungan Kesultanan Demak. Konflik tersebut melibatkan keturunan kerajaan, termasuk Arya Penangsang dari Jipang. Perselisihan politik inilah yang kemudian berujung pada terbunuhnya Sunan Prawoto dan menjadi awal keruntuhan Kesultanan Demak. Setelah itu, pusat kekuasaan berpindah ke Pajang di bawah kepemimpinan Jaka Tingkir atau Sultan Hadiwijaya."
+    ],
+    "images": [
+      "assets/home-profil-1.webp",
+      "assets/home-profil-2.webp"
+    ]
+  },
+  "infographics": {
+    "summary": [
+      {
+        "label": "Total Penduduk",
+        "value": 12814,
+        "display": "12.814"
+      },
+      {
+        "label": "Kartu Keluarga",
+        "value": 3996,
+        "display": "3.996"
+      },
+      {
+        "label": "Perempuan",
+        "value": 6364,
+        "display": "6.364"
+      },
+      {
+        "label": "Laki-laki",
+        "value": 6450,
+        "display": "6.450"
+      }
+    ],
+    "age": [
+      {
+        "range": "0–9",
+        "male": 128,
+        "male_display": "128",
+        "female": 118,
+        "female_display": "118"
+      },
+      {
+        "range": "10–19",
+        "male": 992,
+        "male_display": "992",
+        "female": 943,
+        "female_display": "943"
+      },
+      {
+        "range": "20–29",
+        "male": 1127,
+        "male_display": "1.127",
+        "female": 1075,
+        "female_display": "1.075"
+      },
+      {
+        "range": "30–39",
+        "male": 1025,
+        "male_display": "1.025",
+        "female": 977,
+        "female_display": "977"
+      },
+      {
+        "range": "40–49",
+        "male": 1011,
+        "male_display": "1.011",
+        "female": 992,
+        "female_display": "992"
+      },
+      {
+        "range": "50–59",
+        "male": 862,
+        "male_display": "862",
+        "female": 882,
+        "female_display": "882"
+      },
+      {
+        "range": "60–69",
+        "male": 671,
+        "male_display": "671",
+        "female": 640,
+        "female_display": "640"
+      },
+      {
+        "range": "70–79",
+        "male": 340,
+        "male_display": "340",
+        "female": 424,
+        "female_display": "424"
+      },
+      {
+        "range": "80+",
+        "male": 294,
+        "male_display": "294",
+        "female": 313,
+        "female_display": "313"
+      }
+    ],
+    "by_dusun": [
+      {
+        "dusun": "Plosokerep",
+        "population": 2208,
+        "population_display": "2.208"
+      },
+      {
+        "dusun": "Sawahan",
+        "population": 837,
+        "population_display": "837"
+      },
+      {
+        "dusun": "Domasan",
+        "population": 2871,
+        "population_display": "2.871"
+      },
+      {
+        "dusun": "Karangtandan",
+        "population": 2125,
+        "population_display": "2.125"
+      },
+      {
+        "dusun": "Perangan",
+        "population": 2431,
+        "population_display": "2.431"
+      },
+      {
+        "dusun": "Sewunegaran",
+        "population": 2342,
+        "population_display": "2.342"
+      }
+    ],
+    "education": [
+      {
+        "education": "Tidak/Belum Sekolah",
+        "population": 5064,
+        "population_display": "5.064"
+      },
+      {
+        "education": "Tidak Tamat SD/Sederajat",
+        "population": 1375,
+        "population_display": "1.375"
+      },
+      {
+        "education": "Tamat SD/Sederajat",
+        "population": 3517,
+        "population_display": "3.517"
+      },
+      {
+        "education": "SLTP/Sederajat",
+        "population": 1743,
+        "population_display": "1.743"
+      },
+      {
+        "education": "SLTA/Sederajat",
+        "population": 865,
+        "population_display": "865"
+      },
+      {
+        "education": "Diploma I/II",
+        "population": 36,
+        "population_display": "36"
+      },
+      {
+        "education": "Akademi/Diploma III/Sarjana Muda",
+        "population": 56,
+        "population_display": "56"
+      },
+      {
+        "education": "Diploma IV/Strata I",
+        "population": 154,
+        "population_display": "154"
+      },
+      {
+        "education": "Strata II",
+        "population": 3,
+        "population_display": "3"
+      },
+      {
+        "education": "Strata III",
+        "population": 1,
+        "population_display": "1"
+      }
+    ],
+    "occupation": [
+      {
+        "occupation": "Belum/Tidak Bekerja",
+        "population": 4819,
+        "population_display": "4.819"
+      },
+      {
+        "occupation": "Pelajar/Mahasiswa",
+        "population": 465,
+        "population_display": "465"
+      },
+      {
+        "occupation": "Mengurus Rumah Tangga",
+        "population": 949,
+        "population_display": "949"
+      },
+      {
+        "occupation": "Wiraswasta",
+        "population": 3723,
+        "population_display": "3.723"
+      },
+      {
+        "occupation": "Petani/Pekebun",
+        "population": 1962,
+        "population_display": "1.962"
+      },
+      {
+        "occupation": "Lainnya",
+        "population": 896,
+        "population_display": "896"
+      }
+    ],
+    "marital_status": [
+      {
+        "status": "Belum Kawin",
+        "population": 5449,
+        "population_display": "5.449"
+      },
+      {
+        "status": "Kawin",
+        "population": 6598,
+        "population_display": "6.598"
+      },
+      {
+        "status": "Cerai Hidup",
+        "population": 90,
+        "population_display": "90"
+      },
+      {
+        "status": "Cerai Mati",
+        "population": 677,
+        "population_display": "677"
+      }
+    ],
+    "religion": [
+      {
+        "religion": "Islam",
+        "population": 12813,
+        "population_display": "12.813"
+      },
+      {
+        "religion": "Kristen",
+        "population": 1,
+        "population_display": "1"
+      },
+      {
+        "religion": "Katolik",
+        "population": 0,
+        "population_display": "0"
+      },
+      {
+        "religion": "Hindu",
+        "population": 0,
+        "population_display": "0"
+      },
+      {
+        "religion": "Buddha",
+        "population": 0,
+        "population_display": "0"
+      },
+      {
+        "religion": "Konghucu",
+        "population": 0,
+        "population_display": "0"
+      }
+    ],
+    "welfare": [
+      {
+        "category": "Desil 1",
+        "kk": 573,
+        "kk_display": "573",
+        "individuals": 1850,
+        "individuals_display": "1.850"
+      },
+      {
+        "category": "Desil 2",
+        "kk": 532,
+        "kk_display": "532",
+        "individuals": 1770,
+        "individuals_display": "1.770"
+      },
+      {
+        "category": "Desil 3",
+        "kk": 491,
+        "kk_display": "491",
+        "individuals": 1643,
+        "individuals_display": "1.643"
+      },
+      {
+        "category": "Desil 4",
+        "kk": 386,
+        "kk_display": "386",
+        "individuals": 1244,
+        "individuals_display": "1.244"
+      },
+      {
+        "category": "Desil 5",
+        "kk": 312,
+        "kk_display": "312",
+        "individuals": 984,
+        "individuals_display": "984"
+      },
+      {
+        "category": "Desil 6–10",
+        "kk": 1540,
+        "kk_display": "1.540",
+        "individuals": 4975,
+        "individuals_display": "4.975"
+      },
+      {
+        "category": "Belum Pemeringkatan",
+        "kk": 108,
+        "kk_display": "108",
+        "individuals": 210,
+        "individuals_display": "210"
+      },
+      {
+        "category": "Nonaktif",
+        "kk": 54,
+        "kk_display": "54",
+        "individuals": 138,
+        "individuals_display": "138"
+      }
+    ]
+  },
+  "idm": {
+    "general": [
+      {
+        "component": "Provinsi",
+        "value": "Jawa Tengah"
+      },
+      {
+        "component": "Kabupaten",
+        "value": "Pati"
+      },
+      {
+        "component": "Kecamatan",
+        "value": "Sukolilo"
+      },
+      {
+        "component": "Desa",
+        "value": "Prawoto"
+      },
+      {
+        "component": "Status IDM",
+        "value": "Mandiri"
+      },
+      {
+        "component": "Nilai IDM",
+        "value": "0,8195"
+      }
+    ],
+    "indices": [
+      {
+        "index": "IKS (Indeks Ketahanan Sosial)",
+        "value": "0,909",
+        "contribution": "36,97%"
+      },
+      {
+        "index": "IKE (Indeks Ketahanan Ekonomi)",
+        "value": "0,683",
+        "contribution": "27,78%"
+      },
+      {
+        "index": "IKL (Indeks Ketahanan Lingkungan)",
+        "value": "0,867",
+        "contribution": "35,26%"
+      },
+      {
+        "index": "IDM",
+        "value": "0,8195",
+        "contribution": "100%"
+      }
+    ],
+    "recommendations": [
+      {
+        "section": "Dimensi Sosial (IKS)",
+        "dimension": "Akses Pendidikan Non Formal",
+        "indicator": "Kegiatan PKBM/Paket A-B-C",
+        "value": "0,20"
+      },
+      {
+        "section": "Dimensi Sosial (IKS)",
+        "dimension": "Akses Pendidikan Non Formal",
+        "indicator": "Kegiatan Kursus",
+        "value": "0,20"
+      },
+      {
+        "section": "Dimensi Sosial (IKS)",
+        "dimension": "Toleransi",
+        "indicator": "Keragaman Suku/Etnis di Desa",
+        "value": "0,20"
+      },
+      {
+        "section": "Dimensi Sosial (IKS)",
+        "dimension": "Akses Fasilitas Sanitasi",
+        "indicator": "Terdapat Tempat Pembuangan Sampah",
+        "value": "0,20"
+      },
+      {
+        "section": "Dimensi Ekonomi (IKE)",
+        "dimension": "Akses Distribusi Logistik",
+        "indicator": "Terdapat Kantor Pos dan Jasa Logistik",
+        "value": "0,60"
+      },
+      {
+        "section": "Dimensi Ekonomi (IKE)",
+        "dimension": "Akses Kredit",
+        "indicator": "Tersedianya Lembaga Perbankan Umum dan BPR",
+        "value": "0,00"
+      },
+      {
+        "section": "Dimensi Ekonomi (IKE)",
+        "dimension": "Akses Kredit",
+        "indicator": "Akses Penduduk ke Kredit",
+        "value": "0,20"
+      },
+      {
+        "section": "Dimensi Ekonomi (IKE)",
+        "dimension": "Lembaga Ekonomi",
+        "indicator": "Tersedianya Lembaga Ekonomi Rakyat (Koperasi/BUMDes)",
+        "value": "0,60"
+      },
+      {
+        "section": "Dimensi Ekonomi (IKE)",
+        "dimension": "Lembaga Ekonomi",
+        "indicator": "Terdapat Usaha Kedai Makanan, Restoran, Hotel dan Penginapan",
+        "value": "0,60"
+      },
+      {
+        "section": "Dimensi Ekonomi (IKE)",
+        "dimension": "Keterbukaan Wilayah",
+        "indicator": "Terdapat Moda Angkutan Umum, Trayek Reguler dan Jam Operasi",
+        "value": "0,20"
+      },
+      {
+        "section": "Dimensi Lingkungan (IKL)",
+        "dimension": "Tanggap Bencana",
+        "indicator": "Upaya/Tindakan terhadap Potensi Bencana Alam",
+        "value": "0,60"
+      }
+    ],
+    "priorities": [
+      {
+        "field": "Pendidikan",
+        "problem": "Kegiatan PKBM/Paket A-B-C dan kursus masih rendah"
+      },
+      {
+        "field": "Sosial",
+        "problem": "Keragaman suku/etnis dan pengelolaan sampah perlu ditingkatkan"
+      },
+      {
+        "field": "Ekonomi",
+        "problem": "Belum tersedia lembaga perbankan umum/BPR dan akses kredit masih rendah"
+      },
+      {
+        "field": "Ekonomi",
+        "problem": "Koperasi/BUMDes serta usaha pendukung ekonomi perlu diperkuat"
+      },
+      {
+        "field": "Transportasi",
+        "problem": "Ketersediaan angkutan umum masih terbatas"
+      },
+      {
+        "field": "Lingkungan",
+        "problem": "Kapasitas tanggap bencana perlu ditingkatkan"
+      }
+    ],
+    "score": "0,8195",
+    "status": "Mandiri"
+  },
+  "potentials": {
+    "facilities": [
+      {
+        "No": "1",
+        "Nama": "TK PGRI 02 Prawoto",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Lembaga pendidikan anak usia dini yang menyelenggarakan pendidikan KB, PAUD, dan TK.",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 11.30 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, area bermain, toilet."
+      },
+      {
+        "No": "2",
+        "Nama": "TK Dharma Wanita",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Lembaga pendidikan anak usia dini yang menyelenggarakan pendidikan TK.",
+        "Lokasi": "RT 1 RW 2, Dukuh Sawahan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 11.30 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, area bermain, toilet, halaman sekolah."
+      },
+      {
+        "No": "3",
+        "Nama": "RA Masithoh",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Raudhatul Athfal yang memberikan pendidikan dasar anak usia dini berbasis Islam.",
+        "Lokasi": "RT 7 RW 6, Dukuh Perangan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 11.30 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, area bermain, toilet, halaman sekolah."
+      },
+      {
+        "No": "4",
+        "Nama": "SLB Sunan Prawoto",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Sekolah Luar Biasa yang melayani pendidikan bagi peserta didik berkebutuhan khusus.",
+        "Lokasi": "RT 1 RW 2, Dukuh Sawahan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 13.00 WIB",
+        "Fasilitas Pendukung": "Ruang kelas khusus, ruang terapi, toilet, halaman sekolah."
+      },
+      {
+        "No": "5",
+        "Nama": "SD Negeri 1 Prawoto",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Sekolah dasar negeri yang menyelenggarakan pendidikan tingkat dasar.",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 13.00 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, perpustakaan, UKS, toilet, halaman sekolah."
+      },
+      {
+        "No": "6",
+        "Nama": "SD Negeri 2 Prawoto",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Sekolah dasar negeri yang menyelenggarakan pendidikan tingkat dasar.",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 13.00 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, perpustakaan, UKS, toilet, halaman sekolah."
+      },
+      {
+        "No": "7",
+        "Nama": "SD Negeri 3 Prawoto",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Sekolah dasar negeri yang menyelenggarakan pendidikan tingkat dasar.",
+        "Lokasi": "RT 9 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 13.00 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, perpustakaan, UKS, toilet, halaman sekolah."
+      },
+      {
+        "No": "8",
+        "Nama": "SD Negeri Plosokerep",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Sekolah dasar negeri yang menyelenggarakan pendidikan tingkat dasar.",
+        "Lokasi": "RT 6 RW 1, Dukuh Plosokerep, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 13.00 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, perpustakaan, UKS, toilet, halaman sekolah."
+      },
+      {
+        "No": "9",
+        "Nama": "MI Al Hidayah",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Madrasah Ibtidaiyah yang menyelenggarakan pendidikan dasar berbasis Islam.",
+        "Lokasi": "RT 10 RW 4, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 13.00 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, perpustakaan, UKS, toilet, halaman sekolah."
+      },
+      {
+        "No": "10",
+        "Nama": "MI Al Mu'min",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Madrasah Ibtidaiyah yang menyelenggarakan pendidikan dasar berbasis Islam.",
+        "Lokasi": "RT 6 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 13.00 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, perpustakaan, UKS, toilet, halaman sekolah."
+      },
+      {
+        "No": "11",
+        "Nama": "SMP PGRI 15 Sukolilo",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Sekolah menengah pertama yang memberikan pendidikan tingkat menengah pertama.",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 13.00 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, ruang ekstra, laboratorium, perpustakaan, UKS, musholla, halaman sekolah."
+      },
+      {
+        "No": "12",
+        "Nama": "MTS Sunan Prawoto",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Madrasah Tsanawiyah yang menyelenggarakan pendidikan menengah pertama berbasis Islam.",
+        "Lokasi": "RT 2 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "06.45 - 13.30 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, ruang ekstra, laboratorium, perpustakaan, UKS, musholla, halaman sekolah."
+      },
+      {
+        "No": "13",
+        "Nama": "MA Sunan Prawoto",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Madrasah Aliyah yang menyediakan pendidikan tingkat menengah atas berbasis Islam.",
+        "Lokasi": "RT 1 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.00 - 15.00 WIB",
+        "Fasilitas Pendukung": "Ruang kelas, ruang ekstra, laboratorium, perpustakaan, UKS, musholla, halaman sekolah."
+      },
+      {
+        "No": "14",
+        "Nama": "Pondok Pesantren Ushulul Quran",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Lembaga pendidikan Islam yang berfokus pada pembelajaran Al-Qur'an dan ilmu agama.",
+        "Lokasi": "RT 5 RW 6, Dukuh Klantangan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Asrama santri, musholla, ruang belajar."
+      },
+      {
+        "No": "15",
+        "Nama": "Pondok Pesantren Miftahul Khoir",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Lembaga pendidikan Islam yang berfokus pada pembelajaran Al-Qur'an dan ilmu agama.",
+        "Lokasi": "RT 7 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Asrama santri, musholla, ruang belajar."
+      },
+      {
+        "No": "16",
+        "Nama": "Pondok Pesantren Sirajul Mubtadiin Al Kahfi",
+        "Jenis": "Pendidikan",
+        "Deskripsi": "Lembaga pendidikan Islam yang berfokus pada pembelajaran Al-Qur'an dan ilmu agama.",
+        "Lokasi": "RT 1 RW 4, Dukuh Grobog, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Asrama santri, musholla, ruang belajar."
+      },
+      {
+        "No": "17",
+        "Nama": "Puskesmas Sukolilo II",
+        "Jenis": "Kesehatan",
+        "Deskripsi": "Fasilitas pelayanan kesehatan tingkat pertama bagi masyarakat Desa Prawoto dan sekitarnya.",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "07.30 - 14.00 WIB",
+        "Fasilitas Pendukung": "UGD, ruang pemeriksaan, apotek, ruang tunggu, parkir, ambulans."
+      },
+      {
+        "No": "18",
+        "Nama": "Lapangan Voli Sulodoro",
+        "Jenis": "Olahraga",
+        "Deskripsi": "Sarana olahraga masyarakat untuk kegiatan bola voli.",
+        "Lokasi": "RT 3 RW 6, Dukuh Sulodoro, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Lapangan voli, penerangan, area parkir."
+      },
+      {
+        "No": "19",
+        "Nama": "Lapangan Voli Sawahan",
+        "Jenis": "Olahraga",
+        "Deskripsi": "Sarana olahraga masyarakat untuk kegiatan bola voli.",
+        "Lokasi": "RT 10 RW 3, Dukuh Sawahan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Lapangan voli, penerangan, area parkir."
+      },
+      {
+        "No": "20",
+        "Nama": "Lapangan Sendang Bebek",
+        "Jenis": "Olahraga",
+        "Deskripsi": "Lapangan umum yang digunakan untuk olahraga dan kegiatan desa.",
+        "Lokasi": "RT 9 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Lapangan serbaguna."
+      },
+      {
+        "No": "21",
+        "Nama": "Lapangan Desa Prawoto",
+        "Jenis": "Olahraga",
+        "Deskripsi": "Lapangan umum yang digunakan untuk olahraga dan kegiatan desa.",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Lapangan voli, penerangan, area parkir."
+      },
+      {
+        "No": "22",
+        "Nama": "Balai Desa Prawoto",
+        "Jenis": "Pemerintah",
+        "Deskripsi": "Pusat pelayanan administrasi dan pemerintahan desa.",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "08.00 - 16.00 WIB",
+        "Fasilitas Pendukung": "Ruang pelayanan, ruang rapat, aula, toilet, parkir."
+      },
+      {
+        "No": "23",
+        "Nama": "Alun-Alun Desa Prawoto",
+        "Jenis": "Sosial Umum",
+        "Deskripsi": "Ruang terbuka publik untuk kegiatan umum dan rekreasi masyarakat.",
+        "Lokasi": "RT 10 RW 4, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Area duduk, taman, parkir, penerangan."
+      },
+      {
+        "No": "24",
+        "Nama": "Pasar Anyar Prawoto",
+        "Jenis": "Sosial Umum",
+        "Deskripsi": "Pusat kegiatan ekonomi masyarakat untuk jual beli kebutuhan sehari-hari.",
+        "Lokasi": "RT 9 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "04.00 - 11.00 WIB",
+        "Fasilitas Pendukung": "Kios pedagang, area parkir, toilet, tempat sampah."
+      },
+      {
+        "No": "25",
+        "Nama": "Gedung Serbaguna Prawoto",
+        "Jenis": "Sosial Umum",
+        "Deskripsi": "Bangunan yang digunakan untuk kegiatan olahraga, sosial, budaya, dan pertemuan masyarakat.",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Aula, lapangan badminton, parkir."
+      },
+      {
+        "No": "26",
+        "Nama": "TPU Desa Prawoto",
+        "Jenis": "Sosial Umum",
+        "Deskripsi": "Tempat pemakaman umum yang digunakan sebagai lokasi pemakaman warga.",
+        "Lokasi": "RT 8 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Area pemakaman, jalan akses, tempat parkir sederhana."
+      },
+      {
+        "No": "27",
+        "Nama": "TPU Sentono",
+        "Jenis": "Sosial Umum",
+        "Deskripsi": "Tempat pemakaman umum yang digunakan sebagai lokasi pemakaman warga.",
+        "Lokasi": "RT 9 RW 6, Dukuh Perangan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Area pemakaman, jalan akses, tempat parkir sederhana."
+      },
+      {
+        "No": "28",
+        "Nama": "TPU Lembur",
+        "Jenis": "Sosial Umum",
+        "Deskripsi": "Tempat pemakaman umum yang digunakan sebagai lokasi pemakaman warga.",
+        "Lokasi": "RT 5 RW 3, Dukuh Lembur, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Area pemakaman, jalan akses, tempat parkir sederhana."
+      },
+      {
+        "No": "29",
+        "Nama": "TPU Krawa'an Lembur",
+        "Jenis": "Sosial Umum",
+        "Deskripsi": "Tempat pemakaman umum yang digunakan sebagai lokasi pemakaman warga.",
+        "Lokasi": "RT 7 RW 3, Dukuh Lembur, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Area pemakaman, jalan akses, tempat parkir sederhana."
+      },
+      {
+        "No": "30",
+        "Nama": "TPU Brentolo",
+        "Jenis": "Sosial Umum",
+        "Deskripsi": "Tempat pemakaman umum yang digunakan sebagai lokasi pemakaman warga.",
+        "Lokasi": "RT 3 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Area pemakaman, jalan akses, tempat parkir sederhana."
+      },
+      {
+        "No": "31",
+        "Nama": "TPU Klumpit",
+        "Jenis": "Sosial Umum",
+        "Deskripsi": "Tempat pemakaman umum yang digunakan sebagai lokasi pemakaman warga.",
+        "Lokasi": "RT 10 RW 1, Dukuh Plosokerep, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Area pemakaman, jalan akses, tempat parkir sederhana."
+      },
+      {
+        "No": "32",
+        "Nama": "Musholla Roudlotul Qulub",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 4 RW 4, Dukuh Prambatan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "33",
+        "Nama": "Musholla Karangtandan",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 8 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "34",
+        "Nama": "Musholla Prambatan",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 5 RW 4, Dukuh Prambatan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "35",
+        "Nama": "Musholla Baitul Yaqin",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 2 RW 4, Dukuh Grobog, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "36",
+        "Nama": "Musholla Nahdlatul Jami'iyyah",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 1 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "37",
+        "Nama": "Musholla Baitul Maghfur",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 2 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "38",
+        "Nama": "Musholla Roudlotul Muta'alimin",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 3 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "39",
+        "Nama": "Musholla At-Tarbiyah",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "40",
+        "Nama": "Musholla Baitunnasuha",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 4 RW 6, Dukuh Klantangan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "41",
+        "Nama": "Musholla Kiyai Shohib",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 10 RW 6, Dukuh Klantangan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "42",
+        "Nama": "Musholla Maslahul Huda",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 9 RW 3, Dukuh Lembur, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "43",
+        "Nama": "Musholla Syaikhul Ali",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 7 RW 3, Dukuh Lembur, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "44",
+        "Nama": "Musholla Al Hikmah",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 3 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "45",
+        "Nama": "Musholla Pesapen",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 1 RW 2, Dukuh Sawahan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "46",
+        "Nama": "Musholla Kiyai Nukri",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 10 RW 3, Dukuh Lembur, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "47",
+        "Nama": "Musholla Sunan Prawoto",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 7 RW 5, Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "48",
+        "Nama": "Musholla Situs Tabek",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 3 RW 3, Domasan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "49",
+        "Nama": "Musholla Plosokerep",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 6 RW 1, Dukuh Plosokerep, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "50",
+        "Nama": "Musholla Al Habib",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Tempat ibadah umat Islam yang digunakan untuk salat berjamaah dan kegiatan keagamaan.",
+        "Lokasi": "RT 6 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, perlengkapan tahlil."
+      },
+      {
+        "No": "51",
+        "Nama": "Masjid Wali Kauman",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Sarana ibadah utama umat Islam serta pusat kegiatan keagamaan masyarakat.",
+        "Lokasi": "Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, aula kegiatan."
+      },
+      {
+        "No": "52",
+        "Nama": "Masjid Jami' Al Hadi",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Sarana ibadah utama umat Islam serta pusat kegiatan keagamaan masyarakat.",
+        "Lokasi": "RT 8 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, aula kegiatan, perlengkapan tahlil."
+      },
+      {
+        "No": "53",
+        "Nama": "Masjid Jami' Baitul Mu'min",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Sarana ibadah utama umat Islam serta pusat kegiatan keagamaan masyarakat.",
+        "Lokasi": "RT 2 RW 2, Dukuh Sawahan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, aula kegiatan."
+      },
+      {
+        "No": "54",
+        "Nama": "Masjid Baitul Muttaqin",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Sarana ibadah utama umat Islam serta pusat kegiatan keagamaan masyarakat.",
+        "Lokasi": "RT 8 RW 6, Dukuh Perangan, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, aula kegiatan."
+      },
+      {
+        "No": "55",
+        "Nama": "Masjid Al Amin Sulodoro",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Sarana ibadah utama umat Islam serta pusat kegiatan keagamaan masyarakat.",
+        "Lokasi": "RT 3 RW 6, Dukuh Sulodoro, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, aula kegiatan."
+      },
+      {
+        "No": "56",
+        "Nama": "Masjid Baiturrohim Plosokerep",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Sarana ibadah utama umat Islam serta pusat kegiatan keagamaan masyarakat.",
+        "Lokasi": "RT 6 RW 1, Dukuh Plosokerep, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, aula kegiatan."
+      },
+      {
+        "No": "57",
+        "Nama": "Masjid Baitus Salam Plosokerep",
+        "Jenis": "Kegamaan",
+        "Deskripsi": "Sarana ibadah utama umat Islam serta pusat kegiatan keagamaan masyarakat.",
+        "Lokasi": "RT 1 RW 1, Dukuh Plosokerep, Prawoto, Sukolilo, Pati",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Tempat wudhu, toilet, area parkir, pengeras suara, aula kegiatan."
+      }
+    ],
+    "umkm": [
+      {
+        "No": "1",
+        "Nama": "Warung Makan Pinggir Sawah",
+        "Jenis": "Kuliner",
+        "Pemilik": "Ali",
+        "Lokasi": "Prawoto, Sukolilo, Pati",
+        "Produk": "Makanan dan minuman",
+        "Jam Operasional": "05.00–12.00 WIB",
+        "Fasilitas Pendukung": "Area makan, parkir"
+      },
+      {
+        "No": "2",
+        "Nama": "Warung Makan Bu Siti Grobog",
+        "Jenis": "Kuliner",
+        "Pemilik": "Siti",
+        "Lokasi": "RT 1 RW 4, Dukuh Grobog, Prawoto, Sukolilo, Pati",
+        "Produk": "Makanan dan minuman",
+        "Jam Operasional": "05.00–12.00 WIB",
+        "Fasilitas Pendukung": "Area makan, parkir"
+      },
+      {
+        "No": "3",
+        "Nama": "Kedai Amanda",
+        "Jenis": "Kuliner",
+        "Pemilik": "Novita Amelia",
+        "Lokasi": "RT 1 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Makanan ringan dan minuman",
+        "Jam Operasional": "09.00–21.00 WIB",
+        "Fasilitas Pendukung": "Tempat duduk, parkir"
+      },
+      {
+        "No": "4",
+        "Nama": "Mie Ayam 22 Prawoto",
+        "Jenis": "Kuliner",
+        "Pemilik": "Ibnu Kholfi",
+        "Lokasi": "RT 7 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Mie ayam dan minuman",
+        "Jam Operasional": "15.00–22.00 WIB",
+        "Fasilitas Pendukung": "Area makan, parkir"
+      },
+      {
+        "No": "5",
+        "Nama": "Warung Makan Bu Is",
+        "Jenis": "Kuliner",
+        "Pemilik": "Iswanti",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Makanan dan minuman",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Area makan, parkir"
+      },
+      {
+        "No": "6",
+        "Nama": "Warung Bu Maryani",
+        "Jenis": "Kuliner",
+        "Pemilik": "Maryani",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Makanan dan minuman",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Area makan, parkir"
+      },
+      {
+        "No": "7",
+        "Nama": "Warung Mak Mus",
+        "Jenis": "Kuliner",
+        "Pemilik": "Mustaniroh",
+        "Lokasi": "RT 6 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Makanan dan minuman",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Area makan, parkir"
+      },
+      {
+        "No": "8",
+        "Nama": "AHN Coffe",
+        "Jenis": "Kuliner",
+        "Pemilik": "Bima Fawaz",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Kopi, makanan ringan, dan minuman",
+        "Jam Operasional": "18.30–01.00 WIB",
+        "Fasilitas Pendukung": "Wi-Fi, tempat duduk, parkir"
+      },
+      {
+        "No": "9",
+        "Nama": "Ayam Gepuk Rizky",
+        "Jenis": "Kuliner",
+        "Pemilik": "Eni Mastutik",
+        "Lokasi": "RT 4 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Produk": "Ayam gepuk dan minuman",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "-"
+      },
+      {
+        "No": "10",
+        "Nama": "Konveksi Wijaya Warna",
+        "Jenis": "Fashion",
+        "Pemilik": "Yoga Dwija",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Jasa konveksi pakaian",
+        "Jam Operasional": "08.00–16.00 WIB",
+        "Fasilitas Pendukung": "Area produksi, parkir"
+      },
+      {
+        "No": "11",
+        "Nama": "Wulan Store",
+        "Jenis": "Fashion",
+        "Pemilik": "Wulandari",
+        "Lokasi": "RT 2 RW 4, Dukuh Grobog, Prawoto, Sukolilo, Pati",
+        "Produk": "Pakaian dan aksesoris",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Ruang display, ruang fitting, parkir"
+      },
+      {
+        "No": "12",
+        "Nama": "Toko Pakaian Mbak Zum",
+        "Jenis": "Fashion",
+        "Pemilik": "Zum",
+        "Lokasi": "RT 7 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Produk": "Pakaian",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Ruang display, parkir"
+      },
+      {
+        "No": "13",
+        "Nama": "Sheeris Fashion",
+        "Jenis": "Fashion",
+        "Pemilik": "Tasya",
+        "Lokasi": "RT 2 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Busana muslim",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Ruang display, parkir"
+      },
+      {
+        "No": "14",
+        "Nama": "Madinah Syar'i",
+        "Jenis": "Fashion",
+        "Pemilik": "Mundirin",
+        "Lokasi": "RT 2 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Busana muslim",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Ruang display, parkir"
+      },
+      {
+        "No": "15",
+        "Nama": "Elstore Distro",
+        "Jenis": "Fashion",
+        "Pemilik": "Maya",
+        "Lokasi": "RT 10 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Produk": "Pakaian distro",
+        "Jam Operasional": "07.00–22.00 WIB",
+        "Fasilitas Pendukung": "Ruang display, ruang fitting, parkir"
+      },
+      {
+        "No": "16",
+        "Nama": "Fara Fashion",
+        "Jenis": "Fashion",
+        "Pemilik": "Anik Damayanti",
+        "Lokasi": "RT 9 RW 6, Dukuh Perangan, Prawoto, Sukolilo, Pati",
+        "Produk": "Pakaian",
+        "Jam Operasional": "08.00–22.00 WIB",
+        "Fasilitas Pendukung": "Ruang display, ruang fitting, parkir"
+      },
+      {
+        "No": "17",
+        "Nama": "Himmah Collection",
+        "Jenis": "Fashion",
+        "Pemilik": "Himmah",
+        "Lokasi": "RT 6 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Pakaian dan aksesoris",
+        "Jam Operasional": "07.00–22.00 WIB",
+        "Fasilitas Pendukung": "Ruang display, ruang fitting, parkir"
+      },
+      {
+        "No": "18",
+        "Nama": "Toko Kosmetik Grudo",
+        "Jenis": "Kosmetik",
+        "Pemilik": "Sari",
+        "Lokasi": "RT 8 RW 5, Dukuh Gadu, Prawoto, Sukolilo, Pati",
+        "Produk": "Kosmetik dan skincare",
+        "Jam Operasional": "08.00–20.00 WIB",
+        "Fasilitas Pendukung": "Etalase produk"
+      },
+      {
+        "No": "19",
+        "Nama": "LLB Skincare",
+        "Jenis": "Kosmetik",
+        "Pemilik": "Leli Susanti",
+        "Lokasi": "RT 5 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Produk": "Produk perawatan kulit",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase produk"
+      },
+      {
+        "No": "20",
+        "Nama": "Toko Anis",
+        "Jenis": "Kelontong",
+        "Pemilik": "Anis",
+        "Lokasi": "RT 1 RW 4, Dukuh Grobog, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir"
+      },
+      {
+        "No": "21",
+        "Nama": "Toko Masrifoh",
+        "Jenis": "Kelontong",
+        "Pemilik": "Masrifoh",
+        "Lokasi": "RT 1 RW 4, Dukuh Grobog, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir"
+      },
+      {
+        "No": "22",
+        "Nama": "Toko Putri Jaya",
+        "Jenis": "Kelontong",
+        "Pemilik": "Putri",
+        "Lokasi": "RT 9 RW 5, Dukuh Gadu, Prawoto, Sukolilo, Pati",
+        "Produk": "Minimarket",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir, BRILink, Pertamini"
+      },
+      {
+        "No": "23",
+        "Nama": "Nusantara Mart",
+        "Jenis": "Kelontong",
+        "Pemilik": "Ali",
+        "Lokasi": "RT 1 RW 6, Dukuh Gesik, Prawoto, Sukolilo, Pati",
+        "Produk": "Minimarket",
+        "Jam Operasional": "06.00–22.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir, BRILink"
+      },
+      {
+        "No": "24",
+        "Nama": "Toko Ibu Lalik",
+        "Jenis": "Kelontong",
+        "Pemilik": "Lalik",
+        "Lokasi": "RT 1 RW 6, Dukuh Gesik, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir"
+      },
+      {
+        "No": "25",
+        "Nama": "Toko Sus Eni",
+        "Jenis": "Kelontong",
+        "Pemilik": "Eni Nur",
+        "Lokasi": "RT 1 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir, BRILink"
+      },
+      {
+        "No": "26",
+        "Nama": "Toko Sari Murni",
+        "Jenis": "Kelontong",
+        "Pemilik": "Sari",
+        "Lokasi": "RT 1 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir, Pertamini"
+      },
+      {
+        "No": "27",
+        "Nama": "Toko Eva",
+        "Jenis": "Kelontong",
+        "Pemilik": "Eva Lusiana",
+        "Lokasi": "RT 8 RW 4, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir, Pertamini"
+      },
+      {
+        "No": "28",
+        "Nama": "Toko Mbak Yuni",
+        "Jenis": "Kelontong",
+        "Pemilik": "Yuni",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir, Pertamini"
+      },
+      {
+        "No": "29",
+        "Nama": "Cak Marcum Toko Warga",
+        "Jenis": "Kelontong",
+        "Pemilik": "Alqomar",
+        "Lokasi": "RT 5 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir"
+      },
+      {
+        "No": "30",
+        "Nama": "Toko Syamsudin",
+        "Jenis": "Kelontong",
+        "Pemilik": "Syamsudin",
+        "Lokasi": "RT 9 RW 6, Dukuh Perangan, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir, Pertamini"
+      },
+      {
+        "No": "31",
+        "Nama": "Warung Ijo",
+        "Jenis": "Kelontong",
+        "Pemilik": "Tutik Invani",
+        "Lokasi": "RT 1 RW 2, Dukuh Sawahan, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir"
+      },
+      {
+        "No": "32",
+        "Nama": "Toko Handoyo",
+        "Jenis": "Kelontong",
+        "Pemilik": "Handoyo",
+        "Lokasi": "RT 3 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Produk": "Minimarket dan bangunan",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir, Pertamini"
+      },
+      {
+        "No": "33",
+        "Nama": "Toko Risma",
+        "Jenis": "Kelontong",
+        "Pemilik": "Rismawati",
+        "Lokasi": "RT 3 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako dan kebutuhan harian",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, pakir, BRILink"
+      },
+      {
+        "No": "34",
+        "Nama": "Toko Mbak Ida",
+        "Jenis": "Kelontong",
+        "Pemilik": "Ida",
+        "Lokasi": "RT 2 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Produk": "Sembako, kebutuhan harian, dan frozen food",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir"
+      },
+      {
+        "No": "35",
+        "Nama": "Salon Laras",
+        "Jenis": "Salon",
+        "Pemilik": "Ninik Tri",
+        "Lokasi": "RT 6 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Jasa salon kecantikan",
+        "Jam Operasional": "12.00–21.00 WIB",
+        "Fasilitas Pendukung": "Ruang perawatan, ruang tunggu, parkir"
+      },
+      {
+        "No": "36",
+        "Nama": "Wisma Rias Balqis",
+        "Jenis": "Salon",
+        "Pemilik": "Nurul",
+        "Lokasi": "RT 7 RW 3, Dukuh Lembur, Prawoto, Sukolilo, Pati",
+        "Produk": "Jasa makeup",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Ruang rias, ruang tunggu, parkir"
+      },
+      {
+        "No": "37",
+        "Nama": "Luthfiyah Makeup",
+        "Jenis": "Salon",
+        "Pemilik": "Luthfiyah",
+        "Lokasi": "RT 5 RW 6, Dukuh Klantangan, Prawoto, Sukolilo, Pati",
+        "Produk": "Jasa makeup",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Ruang rias, ruang tunggu, parkir"
+      },
+      {
+        "No": "38",
+        "Nama": "Mahkota Kertas",
+        "Jenis": "Fotokopi",
+        "Pemilik": "-",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Plastik dan kertas",
+        "Jam Operasional": "08.00–17.00 WIB",
+        "Fasilitas Pendukung": "Etalase, parkir"
+      },
+      {
+        "No": "39",
+        "Nama": "Noor Fotocopy",
+        "Jenis": "Fotokopi",
+        "Pemilik": "Rina",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Fotokopi dan percetakan",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Mesin fotokopi, print, area tunggu, parkir"
+      },
+      {
+        "No": "40",
+        "Nama": "Carwash Davino",
+        "Jenis": "Carwash",
+        "Pemilik": "Imam Junaidi",
+        "Lokasi": "RT 9 RW 5, Dukuh Gadu, Prawoto, Sukolilo, Pati",
+        "Produk": "Cuci kendaraan motor dan mobil",
+        "Jam Operasional": "09.00–17.00 WIB",
+        "Fasilitas Pendukung": "Area cuci, ruang tunggu"
+      },
+      {
+        "No": "41",
+        "Nama": "Bengkel Mas Pepen",
+        "Jenis": "Bengkel",
+        "Pemilik": "Mas Pepen",
+        "Lokasi": "RT 7 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Produk": "Servis sepeda motor",
+        "Jam Operasional": "24 jam",
+        "Fasilitas Pendukung": "Area servis, parkir"
+      },
+      {
+        "No": "42",
+        "Nama": "Bengkel Kasdek",
+        "Jenis": "Bengkel",
+        "Pemilik": "Akhlish",
+        "Lokasi": "RT 5 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Servis sepeda motor",
+        "Jam Operasional": "08.00–17.00 WIB",
+        "Fasilitas Pendukung": "Area servis, parkir"
+      },
+      {
+        "No": "43",
+        "Nama": "Bengkel AJM",
+        "Jenis": "Bengkel",
+        "Pemilik": "Gono",
+        "Lokasi": "RT 10 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Produk": "Servis sepeda motor",
+        "Jam Operasional": "08.00–17.00 WIB",
+        "Fasilitas Pendukung": "Area servis, parkir"
+      },
+      {
+        "No": "44",
+        "Nama": "AzzaRO Isi Ulang",
+        "Jenis": "Isi Ulang",
+        "Pemilik": "Andi Himawan",
+        "Lokasi": "RT 8 RW 4, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Air minum isi ulang",
+        "Jam Operasional": "07.00–21.00 WIB",
+        "Fasilitas Pendukung": "Galon, area pengisian"
+      },
+      {
+        "No": "45",
+        "Nama": "Isi Ulang ElDias",
+        "Jenis": "Isi Ulang",
+        "Pemilik": "Said",
+        "Lokasi": "RT 1 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Produk": "Air minum isi ulang",
+        "Jam Operasional": "06.00–21.00 WIB",
+        "Fasilitas Pendukung": "Galon, area pengisian"
+      },
+      {
+        "No": "46",
+        "Nama": "Jakarta Taylor",
+        "Jenis": "Penjahit",
+        "Pemilik": "-",
+        "Lokasi": "RT 5 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Jasa jahit pakaian",
+        "Jam Operasional": "09.00–21.00 WIB",
+        "Fasilitas Pendukung": "Mesin jahit, ruang kerja"
+      },
+      {
+        "No": "47",
+        "Nama": "Jagung Konco Tani Kartoyo",
+        "Jenis": "Pertanian",
+        "Pemilik": "Kartoyo",
+        "Lokasi": "RT 3 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Produk": "Jagung hasil pertanian",
+        "Jam Operasional": "06.00–16.00 WIB",
+        "Fasilitas Pendukung": "Tempat pengeringan, gudang penyimpanan"
+      },
+      {
+        "No": "48",
+        "Nama": "EMHA Farm",
+        "Jenis": "Ternak Ayam",
+        "Pemilik": "-",
+        "Lokasi": "Prawoto, Sukolilo, Pati",
+        "Produk": "Peternakan",
+        "Jam Operasional": "07.00–16.00 WIB",
+        "Fasilitas Pendukung": "Kandang, gudang pakan"
+      },
+      {
+        "No": "49",
+        "Nama": "Amira Farm",
+        "Jenis": "Ternak Sapi",
+        "Pemilik": "Galih Widarto",
+        "Lokasi": "RT 10 RW 6, Dukub Klantangan, prawoto, Sukolilo, Pati",
+        "Produk": "Peternakan kambing",
+        "Jam Operasional": "07.00–16.00 WIB",
+        "Fasilitas Pendukung": "Kandang, gudang pakan"
+      },
+      {
+        "No": "50",
+        "Nama": "Alfa Seluler Grobog",
+        "Jenis": "Paket Data",
+        "Pemilik": "-",
+        "Lokasi": "RT 1 RW 4, Dukuh Grobog, Prawoto, Sukolilo, Pati",
+        "Produk": "Pulsa dan aksesoris HP",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, layanan digital"
+      },
+      {
+        "No": "51",
+        "Nama": "Eksan Cell",
+        "Jenis": "Paket Data",
+        "Pemilik": "-",
+        "Lokasi": "RT 1 RW 6, Dukuh Gesik, Prawoto, Sukolilo, Pati",
+        "Produk": "Pulsa dan aksesoris HP",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, layanan digital"
+      },
+      {
+        "No": "52",
+        "Nama": "Nabila Cell",
+        "Jenis": "Paket Data",
+        "Pemilik": "Andi Himawan",
+        "Lokasi": "RT 8 RW 4, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Pulsa dan aksesoris HP",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, layanan digital"
+      },
+      {
+        "No": "53",
+        "Nama": "Purnama Cell",
+        "Jenis": "Paket Data",
+        "Pemilik": "Purnama",
+        "Lokasi": "RT 10 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Produk": "Pulsa dan aksesoris HP",
+        "Jam Operasional": "08.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, layanan digital"
+      },
+      {
+        "No": "54",
+        "Nama": "TB Putri Protoz",
+        "Jenis": "Toko Bangunan",
+        "Pemilik": "Suntiadi",
+        "Lokasi": "RT 1 RW 6, Dukuh Gesik, Prawoto, Sukolilo, Pati",
+        "Produk": "Material bangunan",
+        "Jam Operasional": "07.00–17.00 WIB",
+        "Fasilitas Pendukung": "Gudang, area bongkar muat, kendaraan muatan"
+      },
+      {
+        "No": "55",
+        "Nama": "UD Niti Mongso",
+        "Jenis": "Toko Bangunan",
+        "Pemilik": "Ah. Loso",
+        "Lokasi": "RT 5 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Peralatan rumah tangga, material bangunan, dan kebutuhan pertanian",
+        "Jam Operasional": "07.00–21.00 WIB",
+        "Fasilitas Pendukung": "Gudang, area bongkar muat, kendaraan muatan, BRILink"
+      },
+      {
+        "No": "56",
+        "Nama": "TB Tani Makmur",
+        "Jenis": "Toko Bangunan",
+        "Pemilik": "Risma",
+        "Lokasi": "RT 4 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Produk": "Material bangunan dan pertanian",
+        "Jam Operasional": "07.00–16.00 WIB",
+        "Fasilitas Pendukung": "Gudang, area bongkar muat, kendaraan muatan"
+      },
+      {
+        "No": "57",
+        "Nama": "Tiga Putra",
+        "Jenis": "Elektronik",
+        "Pemilik": "Henik Puasani",
+        "Lokasi": "RT 4 RW 5, Dukuh Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Produk": "Peralatan rumah tangga",
+        "Jam Operasional": "07.00–21.00 WIB",
+        "Fasilitas Pendukung": "Etalase, gudang, dan parkir"
+      },
+      {
+        "No": "58",
+        "Nama": "ATK Tiara",
+        "Jenis": "ATK",
+        "Pemilik": "-",
+        "Lokasi": "RT 5 RW 3, Dukuh Domasan, Prawoto, Sukolilo, Pati",
+        "Produk": "Alat tulis kantor dan sekolah",
+        "Jam Operasional": "07.00–17.00 WIB",
+        "Fasilitas Pendukung": "Etalase produk, area belanja"
+      }
+    ],
+    "tourism": [
+      {
+        "No": "1",
+        "Nama": "Sendang Jibing",
+        "Jenis": "Mata Air",
+        "Deskripsi": "Sendang Jibing merupakan kolam pemandian air alami yang menjadi destinasi wisata paling sering dikunjungi di Desa Prawoto. Sendang Jibing direnovasi menjadi sebuah kolam renang sejak tahun 2015.",
+        "Cagar Budaya": "No SK : 556/2730 tahun 2016\nTanggal SK : 2016-06-29 (Kategori Benda)",
+        "Lokasi": "RT 10 RW 4, Dukuh Karang Tandan, Prawoto, Sukolilo, Pati",
+        "Tarif": "Gratis",
+        "Fasilitas": "Sumber mata air, kolam pemandian, warung makan dan minum."
+      },
+      {
+        "No": "2",
+        "Nama": "Sendang Widodaren",
+        "Jenis": "Mata Air",
+        "Deskripsi": "Sendang Widodaren merupakan sumber mata air yang jernih dan terdiri dari beberapa pemandian air alami. Sendang Widodaren sering digunakan sebagai tempat pemandian warga sekitar.",
+        "Cagar Budaya": "No SK : 556/2730 tahun 2016\nTanggal SK : 2016-06-29 (Kategori Benda)",
+        "Lokasi": "RT 8 RW 3, Dukuh Lembur, Prawoto, Sukolilo, Pati",
+        "Tarif": "Gratis",
+        "Fasilitas": "Sumber mata air, aliran PDAM, kolam pemandian, warung makan dan minum."
+      },
+      {
+        "No": "3",
+        "Nama": "Petilasan Sunan Prawoto",
+        "Jenis": "Religi",
+        "Deskripsi": "Sunan Prawoto (Raden Mukmin) adalah raja keempat Kesultanan Demak (1546–1549), putra Sultan Trenggono yang memindahkan pusat pemerintahan ke Bukit Prawoto, Pati. Beliau lebih fokus sebagai ulama dan gugur dibunuh Rangkud, utusan Arya Penangsang pada 1549, yang memicu konflik keluarga kerajaan. Makamnya kini menjadi destinasi wisata religi di Desa Prawoto, Sukolilo, Pati, dengan peringatan haul setiap 17 Rajab.",
+        "Cagar Budaya": "No SK : 430/1236 tahun 2020\nTanggal SK : 2020-04-18 (Kategori Situs)",
+        "Lokasi": "RT 7 RW 5, Sewunegaran, Prawoto, Sukolilo, Pati",
+        "Tarif": "Gratis",
+        "Fasilitas": "Mushola, pondok pesantren, aula, warung makan dan minum."
+      },
+      {
+        "No": "4",
+        "Nama": "Kompleks Makan Tabek Merto",
+        "Jenis": "Religi",
+        "Deskripsi": "Kompleks Makam Tabek Merto di Bukit Kamdowo, Desa Prawoto, Sukolilo, Pati, merupakan situs ziarah yang diyakini sebagai makam Sunan Prawoto (Raden Bagus Hadi Mukmin), raja terakhir Kesultanan Demak. Lokasi ini sering disebut sebagai kompleks makam Mbah Tabek atau situs sejarah yang dikeramatkan warga.",
+        "Cagar Budaya": "No SK : 439/1238 tahun 2020\nTanggal SK : 2020-04-18 (Kategori Situs)",
+        "Lokasi": "RT 3 RW 3, Domasan, Prawoto, Sukolilo, Pati",
+        "Tarif": "Gratis",
+        "Fasilitas": "Mushola, aula, warung makan dan minum."
+      },
+      {
+        "No": "5",
+        "Nama": "Makam Wali Syeh Khalifah",
+        "Jenis": "Religi",
+        "Deskripsi": "Simbah Khalifah merupakan tokoh penyiar agama Islam dan putra dari Adipati Tuban yang merupakan bagian penting dari wilayah kekuasaan Majapahit. Semasa hidupnya beliau menyebarkan agama Islam di Desa Prawoto hingga akhir hayat, dan dimakamkan di sebelah utara desa dekat kompleks Masjid Wali (Masjid Kauman).",
+        "Cagar Budaya": "-",
+        "Lokasi": "Area Sawah Gadu, Prawoto, Sukolilo, Pati",
+        "Tarif": "Gratis",
+        "Fasilitas": "Mushola dan aula."
+      }
+    ]
+  }
+}
