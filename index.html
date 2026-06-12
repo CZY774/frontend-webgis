@@ -5,96 +5,403 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Sistem Informasi Potensi Desa Prawoto, Sukolilo, Pati. Peta interaktif fasilitas umum, UMKM, wisata, dan data kependudukan."
+      content="Sistem Informasi Potensi Desa Prawoto, Kecamatan Sukolilo, Kabupaten Pati."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https: http:; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https: http://localhost:8000 http://127.0.0.1:8000;"
     />
     <title>Sistem Informasi Potensi Desa Prawoto</title>
     <link
       rel="icon"
       type="image/svg+xml"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🗺️</text></svg>"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%232f5d50'/%3E%3Ctext x='50' y='64' text-anchor='middle' font-size='52' font-family='Arial' fill='white'%3EP%3C/text%3E%3C/svg%3E"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <!-- Progress Bar -->
     <div id="loadingProgress" class="loading-progress">
       <div class="progress-bar-container">
         <div class="progress-bar-fill" id="progressBarFill"></div>
       </div>
-      <div class="progress-text" id="progressText">Loading layers...</div>
+      <div class="progress-text" id="progressText">Memuat layer peta...</div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container-fluid px-4">
-        <a class="navbar-brand" href="#">
-          Sistem Informasi Potensi Desa Prawoto
-        </a>
+    <nav class="navbar navbar-expand-lg site-navbar fixed-top">
+      <div class="container-fluid px-lg-5">
+        <a class="navbar-brand" href="#home">Desa Prawoto</a>
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
             <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#profilModal"
-                >Profil Desa</a
-              >
+              <a class="nav-link" href="#infografis">Infografis Kependudukan</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fw-semibold" href="admin.html">Admin</a>
+              <a class="nav-link" href="#idm">Skor IDM</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#potensi">Data Potensi Desa</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#peta">Peta Desa</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="admin.html">Admin</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <div id="peta" class="container-fluid">
-      <div class="row">
-        <div class="col-lg-3 col-md-4 p-0">
-          <div class="sidebar">
+    <header id="home" class="hero-section">
+      <img
+        id="heroPhoto"
+        src="assets/home-profil-1.webp"
+        alt="Desa Prawoto"
+        class="hero-photo"
+      />
+      <div class="hero-shade"></div>
+      <div class="container-fluid px-lg-5 hero-content">
+        <p class="eyebrow">Sukolilo, Pati</p>
+        <h1 id="homeTitle">Desa Prawoto</h1>
+        <p id="homeTagline" class="hero-lead">
+          Sistem Informasi Potensi Desa Prawoto
+        </p>
+        <div class="hero-actions">
+          <a href="#infografis" class="btn btn-light btn-lg">Lihat Data</a>
+          <a href="#peta" class="btn btn-outline-light btn-lg">Buka Peta</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section-band profile-band" aria-labelledby="profilTitle">
+        <div class="container-fluid px-lg-5">
+          <div class="row g-5 align-items-start">
+            <div class="col-lg-5">
+              <p class="section-kicker">Profil Desa</p>
+              <h2 id="profilTitle">
+                Prawoto dalam konteks wilayah dan sejarah
+              </h2>
+            </div>
+            <div class="col-lg-7">
+              <p id="profileText" class="lead-copy"></p>
+              <div class="profile-media">
+                <img
+                  id="secondaryProfilePhoto"
+                  src="assets/home-profil-2.webp"
+                  alt="Lingkungan Desa Prawoto"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-5 mt-4">
+            <div class="col-lg-4">
+              <div class="text-rule-block">
+                <span>Visi Desa</span>
+                <p id="visionText"></p>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="text-rule-block">
+                <span>Misi Desa</span>
+                <ol id="missionList" class="ordered-copy"></ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="history-block mt-5">
+            <span>Sejarah Desa</span>
+            <div id="historyText" class="history-copy"></div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="infografis"
+        class="section-band data-band"
+        aria-labelledby="infografisTitle"
+      >
+        <div class="container-fluid px-lg-5">
+          <div class="section-heading">
+            <p class="section-kicker">Infografis Kependudukan</p>
+            <h2 id="infografisTitle">Komposisi penduduk Desa Prawoto</h2>
+          </div>
+
+          <div id="populationSummary" class="metric-strip"></div>
+
+          <div class="data-grid mt-5">
+            <section class="data-block wide">
+              <div class="block-header">
+                <h3>Kelompok Umur</h3>
+                <span>Laki-laki dan perempuan</span>
+              </div>
+              <div id="ageChart" class="age-chart"></div>
+            </section>
+
+            <section class="data-block">
+              <div class="block-header">
+                <h3>Berdasarkan Dusun</h3>
+                <span>Jumlah penduduk</span>
+              </div>
+              <div id="dusunTable" class="compact-table"></div>
+            </section>
+
+            <section class="data-block">
+              <div class="block-header">
+                <h3>Pendidikan</h3>
+                <span>Tingkat pendidikan</span>
+              </div>
+              <div id="educationBars" class="rank-list"></div>
+            </section>
+
+            <section class="data-block">
+              <div class="block-header">
+                <h3>Pekerjaan</h3>
+                <span>Kelompok pekerjaan</span>
+              </div>
+              <div id="occupationBars" class="rank-list"></div>
+            </section>
+
+            <section class="data-block">
+              <div class="block-header">
+                <h3>Status Perkawinan</h3>
+                <span>Jumlah penduduk</span>
+              </div>
+              <div id="maritalTable" class="compact-table"></div>
+            </section>
+
+            <section class="data-block">
+              <div class="block-header">
+                <h3>Agama</h3>
+                <span>Jumlah penduduk</span>
+              </div>
+              <div id="religionTable" class="compact-table"></div>
+            </section>
+
+            <section class="data-block wide">
+              <div class="block-header">
+                <h3>Desil Kesejahteraan</h3>
+                <span>Kepala keluarga dan individu</span>
+              </div>
+              <div id="welfareTable" class="table-responsive"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="idm"
+        class="section-band idm-band"
+        aria-labelledby="idmTitle"
+      >
+        <div class="container-fluid px-lg-5">
+          <div class="section-heading">
+            <p class="section-kicker">Skor IDM</p>
+            <h2 id="idmTitle">Indeks Desa Membangun</h2>
+          </div>
+
+          <div class="idm-layout">
+            <div class="idm-main">
+              <p>
+                Indeks Desa Membangun menilai ketahanan sosial, ketahanan
+                ekonomi, dan ketahanan ekologi atau lingkungan sebagai dasar
+                pemetaan status pembangunan desa.
+              </p>
+              <div id="idmGeneral" class="definition-list"></div>
+            </div>
+            <div class="idm-score">
+              <span>Nilai IDM</span>
+              <strong id="idmScore">0,8195</strong>
+              <em id="idmStatus">Mandiri</em>
+            </div>
+          </div>
+
+          <div class="row g-5 mt-4">
+            <div class="col-lg-5">
+              <section class="data-block flat">
+                <div class="block-header">
+                  <h3>Komposisi Indeks</h3>
+                  <span>Nilai dan kontribusi</span>
+                </div>
+                <div id="idmIndices" class="rank-list"></div>
+              </section>
+            </div>
+            <div class="col-lg-7">
+              <section class="data-block flat">
+                <div class="block-header">
+                  <h3>Prioritas Pembangunan</h3>
+                  <span>Permasalahan utama</span>
+                </div>
+                <div id="idmPriorities" class="table-responsive"></div>
+              </section>
+            </div>
+          </div>
+
+          <section class="data-block flat mt-5">
+            <div class="block-header">
+              <h3>Indikator Rekomendasi Perbaikan</h3>
+              <span>Item dengan nilai perbaikan</span>
+            </div>
+            <div id="idmRecommendations" class="table-responsive"></div>
+          </section>
+        </div>
+      </section>
+
+      <section
+        id="potensi"
+        class="section-band potential-band"
+        aria-labelledby="potensiTitle"
+      >
+        <div class="container-fluid px-lg-5">
+          <div class="section-heading">
+            <p class="section-kicker">Data Potensi Desa</p>
+            <h2 id="potensiTitle">Fasilitas umum, UMKM, dan wisata</h2>
+          </div>
+
+          <ul class="nav nav-pills data-tabs" id="potentialTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="facilities-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#facilities-pane"
+                type="button"
+                role="tab"
+              >
+                Fasilitas Umum
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="umkm-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#umkm-pane"
+                type="button"
+                role="tab"
+              >
+                UMKM
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="tourism-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#tourism-pane"
+                type="button"
+                role="tab"
+              >
+                Wisata
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content potential-content">
+            <div
+              class="tab-pane fade show active"
+              id="facilities-pane"
+              role="tabpanel"
+              aria-labelledby="facilities-tab"
+            >
+              <div class="table-toolbar">
+                <label for="facilitiesSearch">Cari fasilitas</label>
+                <input
+                  id="facilitiesSearch"
+                  type="search"
+                  class="form-control"
+                  placeholder="Nama, jenis, lokasi..."
+                />
+              </div>
+              <div id="facilitiesTable" class="table-responsive"></div>
+            </div>
+
+            <div
+              class="tab-pane fade"
+              id="umkm-pane"
+              role="tabpanel"
+              aria-labelledby="umkm-tab"
+            >
+              <div class="table-toolbar">
+                <label for="umkmSearch">Cari UMKM</label>
+                <input
+                  id="umkmSearch"
+                  type="search"
+                  class="form-control"
+                  placeholder="Nama, jenis, pemilik, produk..."
+                />
+              </div>
+              <div id="umkmTable" class="table-responsive"></div>
+            </div>
+
+            <div
+              class="tab-pane fade"
+              id="tourism-pane"
+              role="tabpanel"
+              aria-labelledby="tourism-tab"
+            >
+              <div class="table-toolbar">
+                <label for="tourismSearch">Cari wisata</label>
+                <input
+                  id="tourismSearch"
+                  type="search"
+                  class="form-control"
+                  placeholder="Nama, jenis, lokasi..."
+                />
+              </div>
+              <div id="tourismTable" class="table-responsive"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="peta" class="map-section" aria-labelledby="petaTitle">
+        <div class="container-fluid px-lg-5">
+          <div class="section-heading map-heading">
+            <p class="section-kicker">Peta Desa</p>
+            <h2 id="petaTitle">Peta interaktif potensi dan penggunaan lahan</h2>
+          </div>
+        </div>
+
+        <div class="map-shell">
+          <aside class="sidebar">
             <h5>Pencarian</h5>
             <div class="mb-4">
               <input
                 type="text"
                 class="form-control"
                 id="searchInput"
-                placeholder="Cari lokasi, nama tempat..."
+                placeholder="Cari lokasi atau nama tempat..."
               />
             </div>
 
             <h5>Layer Peta</h5>
             <div class="accordion" id="filterAccordion">
-              <!-- Wisata -->
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
@@ -107,6 +414,7 @@
                     <span class="layer-status ms-2" id="statusWisata">
                       <i class="fas fa-spinner fa-spin text-primary"></i>
                     </span>
+                  </button>
                 </h2>
                 <div
                   id="wisataFilter"
@@ -138,7 +446,6 @@
                 </div>
               </div>
 
-              <!-- Fasilitas Umum -->
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
@@ -223,7 +530,6 @@
                 </div>
               </div>
 
-              <!-- UMKM -->
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
@@ -416,7 +722,6 @@
                 </div>
               </div>
 
-              <!-- Penggunaan Lahan -->
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
@@ -467,7 +772,6 @@
                 </div>
               </div>
 
-              <!-- Kependudukan -->
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
@@ -501,7 +805,7 @@
                     </div>
 
                     <hr class="my-2" />
-                    <h6 class="mb-2">Visualisasi Data:</h6>
+                    <h6 class="mb-2">Visualisasi Data</h6>
 
                     <div class="mb-2">
                       <input
@@ -511,9 +815,7 @@
                         id="vizBasic"
                         checked
                       />
-                      <label for="vizBasic" style="font-size: 13px"
-                        >Dasar</label
-                      >
+                      <label for="vizBasic">Dasar</label>
                     </div>
 
                     <div class="mb-2">
@@ -523,15 +825,8 @@
                         value="umur"
                         id="vizUmur"
                       />
-                      <label for="vizUmur" style="font-size: 13px">Umur</label>
-                      <div
-                        id="umurOptions"
-                        style="
-                          display: none;
-                          margin-left: 20px;
-                          font-size: 12px;
-                        "
-                      >
+                      <label for="vizUmur">Umur</label>
+                      <div id="umurOptions" class="nested-options">
                         <input
                           type="radio"
                           name="umurAttr"
@@ -553,17 +848,8 @@
                         value="pendidikan"
                         id="vizPendidikan"
                       />
-                      <label for="vizPendidikan" style="font-size: 13px"
-                        >Pendidikan</label
-                      >
-                      <div
-                        id="pendidikanOptions"
-                        style="
-                          display: none;
-                          margin-left: 20px;
-                          font-size: 12px;
-                        "
-                      >
+                      <label for="vizPendidikan">Pendidikan</label>
+                      <div id="pendidikanOptions" class="nested-options">
                         <input
                           type="radio"
                           name="pendidikanAttr"
@@ -611,17 +897,8 @@
                         value="pekerjaan"
                         id="vizPekerjaan"
                       />
-                      <label for="vizPekerjaan" style="font-size: 13px"
-                        >Pekerjaan</label
-                      >
-                      <div
-                        id="pekerjaanOptions"
-                        style="
-                          display: none;
-                          margin-left: 20px;
-                          font-size: 12px;
-                        "
-                      >
+                      <label for="vizPekerjaan">Pekerjaan</label>
+                      <div id="pekerjaanOptions" class="nested-options">
                         <input
                           type="radio"
                           name="pekerjaanAttr"
@@ -669,103 +946,33 @@
             <button class="btn btn-primary mt-3" id="routingBtn">
               <i class="fas fa-route me-2"></i> Aktifkan Navigasi
             </button>
+          </aside>
 
-            <div
-              class="mt-4 p-3"
-              style="
-                background: #f0f9ff;
-                border-radius: 12px;
-                border-left: 4px solid #0ea5e9;
-              "
-            >
-              <small class="text-muted d-block mb-2" style="font-weight: 600"
-                >Petunjuk:</small
-              >
-              <small class="text-muted d-block"
-                >• Klik marker untuk info detail</small
-              >
-              <small class="text-muted d-block"
-                >• Gunakan scroll untuk zoom</small
-              >
-              <small class="text-muted d-block"
-                >• Aktifkan navigasi untuk rute</small
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-9 col-md-8 p-0">
-          <div id="map"></div>
-          <div
-            id="loading"
-            style="
-              display: none;
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              z-index: 1000;
-            "
-          >
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Profil Desa Modal -->
-    <div
-      class="modal fade"
-      id="profilModal"
-      tabindex="-1"
-      aria-labelledby="profilModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="profilModalLabel">
-              Profil Desa Prawoto
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="row align-items-center">
-              <div class="col-md-5 mb-3 mb-md-0">
-                <img
-                  id="profilDesaPhoto"
-                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect fill='%23e0e0e0' width='600' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='%23666'%3EGerbang Desa Prawoto%3C/text%3E%3C/svg%3E"
-                  alt="Gerbang Desa Prawoto"
-                  class="img-fluid rounded"
-                />
+          <div class="map-canvas">
+            <div class="map-intro" id="mapIntro">
+              <div>
+                <span>Peta interaktif</span>
+                <strong>Layer peta dimuat saat bagian ini dibuka</strong>
               </div>
-              <div class="col-md-7">
-                <p class="text-justify">
-                  Desa Prawoto merupakan sebuah desa yang terletak di Kecamatan
-                  Sukolilo, Kabupaten Pati, Provinsi Jawa Tengah. Desa Prawoto
-                  dijuluki "Bumi Telon" karena lokasinya yang strategis diapit
-                  tiga wilayah: Pati, Grobogan, dan Kudus. Desa ini berada di
-                  Pegunungan Kendeng dan secara historis merupakan situs Istana
-                  Prawoto serta pusat penting Kesultanan Demak.
-                </p>
+              <button class="btn btn-primary" id="loadMapBtn" type="button">
+                Buka Peta
+              </button>
+            </div>
+            <div id="map"></div>
+            <div id="loading" class="map-loading">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="js/utils.js"></script>
-    <script src="js/map.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/map-loader.js"></script>
   </body>
 </html>
