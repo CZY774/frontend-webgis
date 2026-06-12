@@ -6,11 +6,41 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+function escapeAttr(text) {
+  return escapeHtml(String(text ?? "")).replace(/`/g, "&#96;");
+}
+
+function isSafeImageSrc(value) {
+  if (!value || typeof value !== "string") return false;
+
+  const trimmed = value.trim();
+  if (
+    /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=\s]+$/i.test(trimmed)
+  ) {
+    return true;
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    try {
+      const url = new URL(trimmed);
+      return url.protocol === "https:" || url.protocol === "http:";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  return /^(?:\.{0,2}\/)?[\w./-]+\.(?:jpe?g|png|webp|gif|svg)$/i.test(trimmed);
+}
+
+function safeImageSrc(value) {
+  return isSafeImageSrc(value) ? value.trim() : "";
+}
+
 // API Client with error handling
-const API_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:8000/api"
-    : "https://backend-webgis-production.up.railway.app/api";
+const LOCAL_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"];
+const API_URL = LOCAL_HOSTS.includes(window.location.hostname)
+  ? "http://localhost:8000/api"
+  : "https://backend-webgis-production.up.railway.app/api";
 
 async function apiRequest(endpoint, options = {}) {
   try {
