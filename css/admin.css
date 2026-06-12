@@ -180,6 +180,38 @@ body {
   background: rgba(47, 93, 80, 0.055);
 }
 
+.admin-table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.85rem;
+  margin-bottom: 1.35rem;
+  color: var(--muted);
+}
+
+.pagination-summary {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.pagination-controls .form-select {
+  width: auto;
+  min-height: 34px;
+}
+
+.pagination-controls strong {
+  color: var(--ink);
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
 .btn-group-sm .btn {
   border-radius: 6px;
   font-size: 0.82rem;
@@ -252,5 +284,14 @@ body {
 
   .table-responsive {
     max-height: 70vh;
+  }
+
+  .admin-table-pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pagination-controls {
+    flex-wrap: wrap;
   }
 }
