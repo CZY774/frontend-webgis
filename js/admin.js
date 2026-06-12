@@ -6,6 +6,146 @@ let authToken = localStorage.getItem("authToken");
 let editMap = null;
 let editMarker = null;
 
+const ADMIN_DEFAULT_LIMIT = 10;
+const ADMIN_LIMIT_OPTIONS = [10, 25, 50];
+const adminTableState = {
+  fasilitas: { page: 1, limit: ADMIN_DEFAULT_LIMIT },
+  umkm: { page: 1, limit: ADMIN_DEFAULT_LIMIT },
+  wisata: { page: 1, limit: ADMIN_DEFAULT_LIMIT },
+  sda: { page: 1, limit: ADMIN_DEFAULT_LIMIT },
+  kependudukan: { page: 1, limit: ADMIN_DEFAULT_LIMIT },
+};
+
+const adminTableMeta = {
+  fasilitas: {
+    tableId: "fasilitasTable",
+    colspan: 6,
+    loader: loadFasilitasData,
+  },
+  umkm: { tableId: "umkmTable", colspan: 6, loader: loadUMKMData },
+  wisata: { tableId: "wisataTable", colspan: 5, loader: loadWisataData },
+  sda: { tableId: "sdaTable", colspan: 4, loader: loadSDAData },
+  kependudukan: {
+    tableId: "kependudukanTable",
+    colspan: 5,
+    loader: loadKependudukanData,
+  },
+};
+
+function buildAdminListUrl(endpoint, entity, extraParams = {}) {
+  const state = adminTableState[entity];
+  const params = new URLSearchParams({
+    page: String(state.page),
+    limit: String(state.limit),
+    ...extraParams,
+  });
+  return `${API_URL}/${endpoint}/?${params.toString()}`;
+}
+
+function normalizePaginatedPayload(payload, state) {
+  if (Array.isArray(payload)) {
+    return {
+      items: payload,
+      page: 1,
+      limit: payload.length || state.limit,
+      total: payload.length,
+      total_pages: payload.length ? 1 : 0,
+    };
+  }
+
+  return {
+    items: payload.items || [],
+    page: payload.page || state.page,
+    limit: payload.limit || state.limit,
+    total: payload.total || 0,
+    total_pages: payload.total_pages || 0,
+  };
+}
+
+async function fetchAdminPage(endpoint, entity, extraParams = {}) {
+  const state = adminTableState[entity];
+  const response = await fetch(
+    buildAdminListUrl(endpoint, entity, extraParams),
+    {
+      headers: { Authorization: `Bearer ${authToken}` },
+    },
+  );
+  const payload = await response.json();
+  const meta = normalizePaginatedPayload(payload, state);
+
+  if (
+    meta.items.length === 0 &&
+    meta.total > 0 &&
+    state.page > meta.total_pages
+  ) {
+    state.page = Math.max(meta.total_pages, 1);
+    return fetchAdminPage(endpoint, entity, extraParams);
+  }
+
+  state.page = meta.page;
+  state.limit = meta.limit;
+  return meta;
+}
+
+function renderEmptyAdminRow(tableId, colspan, message = "Tidak ada data.") {
+  const tbody = document.getElementById(tableId);
+  if (!tbody) return;
+  tbody.innerHTML = `<tr><td colspan="${colspan}" class="text-muted text-center py-4">${escapeHtml(message)}</td></tr>`;
+}
+
+function renderAdminPagination(entity, meta) {
+  const config = adminTableMeta[entity];
+  const state = adminTableState[entity];
+  const tbody = document.getElementById(config.tableId);
+  const tableWrapper = tbody?.closest(".table-responsive");
+  if (!tableWrapper) return;
+
+  let pager = document.getElementById(`${config.tableId}Pagination`);
+  if (!pager) {
+    pager = document.createElement("div");
+    pager.id = `${config.tableId}Pagination`;
+    pager.className = "admin-table-pagination";
+    tableWrapper.insertAdjacentElement("afterend", pager);
+  }
+
+  const start = meta.total ? (meta.page - 1) * meta.limit + 1 : 0;
+  const end = Math.min(meta.page * meta.limit, meta.total);
+  const totalPages = meta.total_pages || 1;
+
+  pager.innerHTML = `
+    <div class="pagination-summary">Menampilkan ${start}-${end} dari ${meta.total} data</div>
+    <div class="pagination-controls">
+      <select class="form-select form-select-sm" aria-label="Jumlah data per halaman" onchange="changeAdminPageSize('${entity}', this.value)">
+        ${ADMIN_LIMIT_OPTIONS.map(
+          (option) =>
+            `<option value="${option}" ${Number(option) === Number(state.limit) ? "selected" : ""}>${option}/halaman</option>`,
+        ).join("")}
+      </select>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="changeAdminPage('${entity}', ${meta.page - 1})" ${meta.page <= 1 ? "disabled" : ""}>Sebelumnya</button>
+      <strong>${meta.page} / ${totalPages}</strong>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="changeAdminPage('${entity}', ${meta.page + 1})" ${meta.page >= totalPages ? "disabled" : ""}>Berikutnya</button>
+    </div>
+  `;
+}
+
+function changeAdminPage(entity, page) {
+  const config = adminTableMeta[entity];
+  if (!config || page < 1) return;
+  adminTableState[entity].page = page;
+  config.loader();
+}
+
+function changeAdminPageSize(entity, limit) {
+  const config = adminTableMeta[entity];
+  if (!config) return;
+  adminTableState[entity].limit = Number(limit) || ADMIN_DEFAULT_LIMIT;
+  adminTableState[entity].page = 1;
+  config.loader();
+}
+
+window.changeAdminPage = changeAdminPage;
+window.changeAdminPageSize = changeAdminPageSize;
+
 // Toast functions
 function showToast(type, message) {
   const toastEl = document.getElementById(
@@ -109,12 +249,15 @@ async function loadFasilitasData() {
   console.log("Loading Fasilitas...");
   const start = Date.now();
   try {
-    const response = await fetch(`${API_URL}/fasilitas/`, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
-    const data = await response.json();
+    const meta = await fetchAdminPage("fasilitas", "fasilitas");
+    const data = meta.items;
 
     const tbody = document.getElementById("fasilitasTable");
+    if (!data.length) {
+      renderEmptyAdminRow("fasilitasTable", 6);
+      renderAdminPagination("fasilitas", meta);
+      return;
+    }
 
     const rows = data
       .map(
@@ -137,6 +280,7 @@ async function loadFasilitasData() {
       .join("");
 
     tbody.innerHTML = rows;
+    renderAdminPagination("fasilitas", meta);
     console.log(`Fasilitas loaded in ${Date.now() - start}ms`);
   } catch (error) {
     console.error("Error loading fasilitas:", error);
@@ -204,16 +348,19 @@ async function loadUMKMData() {
   console.log("Loading UMKM...");
   const start = Date.now();
   try {
-    const response = await fetch(`${API_URL}/umkm/`, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
-    const data = await response.json();
+    const meta = await fetchAdminPage("umkm", "umkm");
+    const data = meta.items;
 
     const tbody = document.getElementById("umkmTable");
-    tbody.innerHTML = "";
+    if (!data.length) {
+      renderEmptyAdminRow("umkmTable", 6);
+      renderAdminPagination("umkm", meta);
+      return;
+    }
 
-    data.forEach((item) => {
-      const row = `
+    tbody.innerHTML = data
+      .map(
+        (item) => `
         <tr>
           <td>${item.id_umkm}</td>
           <td>${escapeHtml(item.nama)}</td>
@@ -227,9 +374,10 @@ async function loadUMKMData() {
             </div>
           </td>
         </tr>
-      `;
-      tbody.innerHTML += row;
-    });
+      `,
+      )
+      .join("");
+    renderAdminPagination("umkm", meta);
   } catch (error) {
     console.error("Error loading UMKM:", error);
   }
@@ -288,16 +436,19 @@ async function loadWisataData() {
   console.log("Loading Wisata...");
   const start = Date.now();
   try {
-    const response = await fetch(`${API_URL}/wisata/`, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
-    const data = await response.json();
+    const meta = await fetchAdminPage("wisata", "wisata");
+    const data = meta.items;
 
     const tbody = document.getElementById("wisataTable");
-    tbody.innerHTML = "";
+    if (!data.length) {
+      renderEmptyAdminRow("wisataTable", 5);
+      renderAdminPagination("wisata", meta);
+      return;
+    }
 
-    data.forEach((item) => {
-      const row = `
+    tbody.innerHTML = data
+      .map(
+        (item) => `
         <tr>
           <td>${item.id_wisata}</td>
           <td>${escapeHtml(item.nama)}</td>
@@ -311,9 +462,10 @@ async function loadWisataData() {
             </div>
           </td>
         </tr>
-      `;
-      tbody.innerHTML += row;
-    });
+      `,
+      )
+      .join("");
+    renderAdminPagination("wisata", meta);
     console.log(`Wisata loaded in ${Date.now() - start}ms`);
   } catch (error) {
     console.error("Error loading wisata:", error);
@@ -376,13 +528,18 @@ async function loadSDAData() {
   console.log("Loading SDA...");
   const start = Date.now();
   try {
-    const response = await fetch(`${API_URL}/sda/`, {
-      headers: { Authorization: `Bearer ${authToken}` },
+    const meta = await fetchAdminPage("sda", "sda", {
+      include_geometry: "false",
     });
-    const data = await response.json();
-    console.log(`SDA API returned ${data.length} records`);
+    const data = meta.items;
+    console.log(`SDA API returned ${meta.total} records`);
 
     const tbody = document.getElementById("sdaTable");
+    if (!data.length) {
+      renderEmptyAdminRow("sdaTable", 4);
+      renderAdminPagination("sda", meta);
+      return;
+    }
 
     // Build all rows at once instead of += in loop (massive performance improvement)
     const rows = data
@@ -403,6 +560,7 @@ async function loadSDAData() {
       .join("");
 
     tbody.innerHTML = rows;
+    renderAdminPagination("sda", meta);
     console.log(`SDA loaded in ${Date.now() - start}ms`);
   } catch (error) {
     console.error("Error loading SDA:", error);
@@ -515,20 +673,25 @@ async function loadKependudukanData() {
   console.log("Loading Kependudukan...");
   const start = Date.now();
   try {
-    const response = await fetch(`${API_URL}/kependudukan/`, {
-      headers: { Authorization: `Bearer ${authToken}` },
+    const meta = await fetchAdminPage("kependudukan", "kependudukan", {
+      include_geometry: "false",
     });
-    const data = await response.json();
+    const data = meta.items;
 
     const tbody = document.getElementById("kependudukanTable");
-    tbody.innerHTML = "";
+    if (!data.length) {
+      renderEmptyAdminRow("kependudukanTable", 5);
+      renderAdminPagination("kependudukan", meta);
+      return;
+    }
 
-    data.forEach((item) => {
-      const areaLabel =
-        item.nomor_rt !== undefined && item.nomor_rt !== null
-          ? `RT ${item.nomor_rt} / RW ${item.nomor_rw}`
-          : `RW ${item.nomor_rw}`;
-      const row = `
+    tbody.innerHTML = data
+      .map((item) => {
+        const areaLabel =
+          item.nomor_rt !== undefined && item.nomor_rt !== null
+            ? `RT ${item.nomor_rt} / RW ${item.nomor_rw}`
+            : `RW ${item.nomor_rw}`;
+        return `
         <tr>
           <td>${escapeHtml(areaLabel)}</td>
           <td>${item.jumlah_warga}</td>
@@ -541,8 +704,9 @@ async function loadKependudukanData() {
           </td>
         </tr>
       `;
-      tbody.innerHTML += row;
-    });
+      })
+      .join("");
+    renderAdminPagination("kependudukan", meta);
     console.log(`Kependudukan loaded in ${Date.now() - start}ms`);
   } catch (error) {
     console.error("Error loading kependudukan:", error);
