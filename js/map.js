@@ -68,7 +68,7 @@ const legendConfig = {
     title: "Penggunaan Lahan",
     items: [
       { label: "Tempat Tinggal", color: "#F4A6A6" },
-      { label: "Pekarangan", color: "#E6D5B8" },
+      { label: "Pemukiman", color: "#E6D5B8" },
       { label: "Perkantoran", color: "#8D6E63" },
       { label: "Pendidikan", color: "#42A5F5" },
       { label: "Perdagangan dan Jasa", color: "#EF5350" },
@@ -299,9 +299,16 @@ function initMap() {
         attribution: "© Mapbox",
       },
     ),
+    "Google Terrain": L.tileLayer(
+      "https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",
+      {
+        attribution: "© Google",
+        maxZoom: 20,
+      },
+    ),
   };
 
-  basemaps["Google Satellite"].addTo(map);
+  basemaps["Google Terrain"].addTo(map);
   L.control.layers(basemaps, null, { position: "topright" }).addTo(map);
 
   // Add map controls
